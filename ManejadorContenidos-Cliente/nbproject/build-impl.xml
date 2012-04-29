@@ -478,11 +478,11 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps">
         <ant antfile="${project.Dominio}/build.xml" inheritall="false" target="jar"/>
-        <ant antfile="${project.ManejadorContenidosCommnos}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.ManejadorContenidosCommons}/build.xml" inheritall="false" target="jar"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
         <ant antfile="${project.Dominio}/build.xml" inheritall="false" target="jar"/>
-        <ant antfile="${project.ManejadorContenidosCommnos}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.ManejadorContenidosCommons}/build.xml" inheritall="false" target="jar"/>
     </target>
     <target depends="init, -check-main-class, -deps-module-jar, -deps-ear-jar" name="deps-jar"/>
     <target depends="init,deps-jar" name="-pre-pre-compile">
@@ -494,18 +494,18 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile" if="is.server.weblogic" name="library-inclusion-in-archive">
         <basename file="${reference.Dominio.jar}" property="manifest.reference.Dominio.jar"/>
-        <basename file="${reference.ManejadorContenidosCommnos.jar}" property="manifest.reference.ManejadorContenidosCommnos.jar"/>
+        <basename file="${reference.ManejadorContenidosCommons.jar}" property="manifest.reference.ManejadorContenidosCommons.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Extension-List" value="jar-1 jar-2 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.reference.Dominio.jar}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.reference.ManejadorContenidosCommnos.jar}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.reference.ManejadorContenidosCommons.jar}"/>
         </manifest>
     </target>
     <target depends="compile" if="dist.ear.dir" name="library-inclusion-in-manifest">
         <copyfiles files="${reference.Dominio.jar}" manifestproperty="manifest.reference.Dominio.jar" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${reference.ManejadorContenidosCommnos.jar}" manifestproperty="manifest.reference.ManejadorContenidosCommnos.jar" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${reference.ManejadorContenidosCommons.jar}" manifestproperty="manifest.reference.ManejadorContenidosCommons.jar" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value="${manifest.reference.Dominio.jar} lib/${manifest.reference.Dominio.jar} ${manifest.reference.ManejadorContenidosCommnos.jar} lib/${manifest.reference.ManejadorContenidosCommnos.jar} "/>
+            <attribute name="Class-Path" value="${manifest.reference.Dominio.jar} lib/${manifest.reference.Dominio.jar} ${manifest.reference.ManejadorContenidosCommons.jar} lib/${manifest.reference.ManejadorContenidosCommons.jar} "/>
         </manifest>
     </target>
     <target name="-copy-meta-inf">
@@ -1005,7 +1005,7 @@ exists or setup the property manually. For example like this:
             -->
     <target depends="init" name="deps-clean" unless="no.deps">
         <ant antfile="${project.Dominio}/build.xml" inheritall="false" target="clean"/>
-        <ant antfile="${project.ManejadorContenidosCommnos}/build.xml" inheritall="false" target="clean"/>
+        <ant antfile="${project.ManejadorContenidosCommons}/build.xml" inheritall="false" target="clean"/>
     </target>
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
