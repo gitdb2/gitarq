@@ -4,13 +4,14 @@
  */
 package uy.edu.ort.laboratorio.dominio;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author tanquista
  */
-public abstract class Contenido {
+public abstract class Contenido implements Serializable{
     
     private Date fechaPublicacion;
 
