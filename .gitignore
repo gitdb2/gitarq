@@ -4,3 +4,5 @@
 *.jar
 *.ear
 *.orig
+/ManejadorContenidos-Cliente/nbproject/private/
+/ManejadorContenidosCommnos/nbproject/private/
