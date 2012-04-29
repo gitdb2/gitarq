@@ -1,0 +1,6 @@
+/ManejadorContenidos/nbproject/private/
+/ManejadorContenidos/ManejadorContenidos-ejb/nbproject/private/
+*.class
+*.jar
+*.ear
+*.orig
