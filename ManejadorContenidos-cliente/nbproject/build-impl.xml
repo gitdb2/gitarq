@@ -19,7 +19,7 @@
         - cleanup
 
         -->
-<project xmlns:carproject="http://www.netbeans.org/ns/car-project/1" basedir=".." default="default" name="ManejadorContenidos-Cliente-impl">
+<project xmlns:carproject="http://www.netbeans.org/ns/car-project/1" basedir=".." default="default" name="ManejadorContenidos-cliente-impl">
     <import file="ant-deploy.xml"/>
     <fail message="Please build using Ant 1.7.1 or higher.">
         <condition>
@@ -465,7 +465,7 @@ exists or setup the property manually. For example like this:
             -->
     <target name="-check-main-class">
         <fail>
-                    Main class must be set. Go to ManejadorContenidos-Cliente project properties -&gt; Run and set the main class there.
+                    Main class must be set. Go to ManejadorContenidos-cliente project properties -&gt; Run and set the main class there.
                     <condition>
                 <not>
                     <or>
@@ -660,17 +660,17 @@ exists or setup the property manually. For example like this:
         </macrodef>
     </target>
     <target if="j2ee.appclient.mainclass.args" name="-as-retrieve-option-workaround" unless="j2ee.clientName">
-        <property name="client.jar" value="${dist.dir}/ManejadorContenidos-ClienteClient.jar"/>
+        <property name="client.jar" value="${dist.dir}/ManejadorContenidos-clienteClient.jar"/>
         <sleep seconds="3"/>
-        <copy failonerror="false" file="${wa.copy.client.jar.from}/ManejadorContenidos-Cliente/ManejadorContenidos-ClienteClient.jar" todir="${dist.dir}"/>
+        <copy failonerror="false" file="${wa.copy.client.jar.from}/ManejadorContenidos-cliente/ManejadorContenidos-clienteClient.jar" todir="${dist.dir}"/>
         <copy failonerror="false" flatten="true" todir="${dist.dir}/">
-            <fileset dir="${wa.copy.client.jar.from}/ManejadorContenidos-Cliente" includes="**/ManejadorContenidos-ClienteClient.jar"/>
+            <fileset dir="${wa.copy.client.jar.from}/ManejadorContenidos-cliente" includes="**/ManejadorContenidos-clienteClient.jar"/>
         </copy>
-        <copy flatten="true" todir="${dist.dir}/ManejadorContenidos-ClienteClient">
-            <fileset dir="${wa.copy.client.jar.from}/ManejadorContenidos-Cliente" includes="**/*.*ar"/>
+        <copy flatten="true" todir="${dist.dir}/ManejadorContenidos-clienteClient">
+            <fileset dir="${wa.copy.client.jar.from}/ManejadorContenidos-cliente" includes="**/*.*ar"/>
         </copy>
-        <copy failonerror="false" flatten="false" todir="${dist.dir}/ManejadorContenidos-ClienteClient">
-            <fileset dir="${dist.dir}/gfdeploy/ManejadorContenidos-Cliente" includes="**/*.jar"/>
+        <copy failonerror="false" flatten="false" todir="${dist.dir}/ManejadorContenidos-clienteClient">
+            <fileset dir="${dist.dir}/gfdeploy/ManejadorContenidos-cliente" includes="**/*.jar"/>
         </copy>
     </target>
     <target name="pre-run-deploy">

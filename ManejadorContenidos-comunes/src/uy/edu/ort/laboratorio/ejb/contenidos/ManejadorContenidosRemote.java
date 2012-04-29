@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.ejb.content;
+package uy.edu.ort.laboratorio.ejb.contenidos;
 
 import javax.ejb.Remote;
 
@@ -11,6 +11,6 @@ import javax.ejb.Remote;
  * @author rodrigo
  */
 @Remote
-public interface ContentHandlerRemote {
+public interface ManejadorContenidosRemote {
     
 }
