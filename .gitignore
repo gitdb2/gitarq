@@ -4,7 +4,6 @@
 *.orig
 /Dominio/build/
 /Dominio/dist/
-/Dominio/nbproject/private/
 /ManejadorContenidos/build/
 /ManejadorContenidos/dist/
 /ManejadorContenidos/nbproject/private/
