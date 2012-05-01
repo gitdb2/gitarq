@@ -1,7 +1,3 @@
-*.class
-*.jar
-*.ear
-*.orig
 /Dominio/build/
 /Dominio/dist/
 /Dominio/nbproject/private/
