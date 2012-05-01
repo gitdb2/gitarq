@@ -22,11 +22,11 @@ import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 public class ManejadorContenidosWebService {
     
     @EJB
-    private ManejadorContenidosLocal ejbRef;
+    private ManejadorContenidosLocal manejadorContenidos;
 
     @WebMethod(operationName = "prueba")
     public String prueba(@WebParam(name = "entra") String entra) {
-        return ejbRef.prueba(entra);
+        return manejadorContenidos.prueba(entra);
     }
 
     @WebMethod(operationName = "crearContenidoEntradaBlog")
@@ -36,7 +36,7 @@ public class ManejadorContenidosWebService {
                                           @WebParam(name = "texto") String texto, 
                                           @WebParam(name = "tags") List tags) {
         
-        return ejbRef.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
+        return manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
     }
 
     @WebMethod(operationName = "crearContenidoPaginaWeb")
@@ -44,7 +44,7 @@ public class ManejadorContenidosWebService {
                                         @WebParam(name = "fechaPublicacion") Date fechaPublicacion, 
                                         @WebParam(name = "html") String html) {
         
-        return ejbRef.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
+        return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
     }
     
 }

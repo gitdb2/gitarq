@@ -21,10 +21,10 @@ import uy.edu.ort.laboratorio.ejb.serializador.ManejadorPersistenciaLocal;
 public class ManejadorContenidos implements ManejadorContenidosRemote, ManejadorContenidosLocal {
 
     @EJB
-    private ManejadorPersistenciaLocal manPersist;
+    private ManejadorPersistenciaLocal manejadorPersistencia;
     
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
-        Long ret = manPersist.persistir(contenido);
+        Long ret = manejadorPersistencia.persistir(contenido);
         return ret;
     }
     

@@ -21,7 +21,7 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
         return System.currentTimeMillis();
     }
 
-     @Override
+    @Override
     public Long persistir(String contenido) throws ArquitecturaException {
         //marsharll y save xml
         return System.currentTimeMillis();
