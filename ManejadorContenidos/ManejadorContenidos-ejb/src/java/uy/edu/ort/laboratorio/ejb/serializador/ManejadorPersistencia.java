@@ -27,7 +27,4 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
         return System.currentTimeMillis();
     }
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
 }

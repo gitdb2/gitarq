@@ -5,50 +5,42 @@
 package uy.edu.ort.laboratorio.ejb.contenidos;
 
 
+import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
 import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.serializador.ManejadorPersistenciaLocal;
-
 
 /**
  *
  * @author rodrigo
  */
 @Stateless
-@WebService
 public class ManejadorContenidos implements ManejadorContenidosRemote, ManejadorContenidosLocal {
 
     @EJB
     private ManejadorPersistenciaLocal manPersist;
     
-    @WebMethod
-    public Long crearContenido(@WebParam(name="contenido") Contenido contenido) 
-                                                          throws ArquitecturaException{
+    public Long crearContenido(Contenido contenido) throws ArquitecturaException {
         Long ret = manPersist.persistir(contenido);
-        
-        
         return ret;
-        
-    }
-    
-    
-    @WebMethod
-    public Long crearContenido2(@WebParam(name="contenido") String contenido)throws ArquitecturaException {
-        return manPersist.persistir(contenido);
     }
     
     @Override
-    @WebMethod
     public String prueba(String entra) {
         return "pasado por ejb "+entra;
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    
+    @Override
+    public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List tags) {
+        return System.currentTimeMillis();
+    }
+
+    @Override
+    public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, String html) {
+        return System.currentTimeMillis();
+    }
+
 }

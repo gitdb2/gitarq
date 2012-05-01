@@ -14,8 +14,9 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
  */
 @Local
 public interface ManejadorPersistenciaLocal {
-
+    
     public Long persistir(Contenido contenido)throws ArquitecturaException;
+    
     public Long persistir(String contenido)throws ArquitecturaException;
     
 }
