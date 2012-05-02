@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.serializador.ManejadorPersistenciaLocal;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
@@ -24,17 +25,20 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     private ManejadorPersistenciaLocal manejadorPersistencia;
     
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, contenido);
         Long ret = manejadorPersistencia.persistir(contenido);
         return ret;
     }
     
     @Override
     public String prueba(String entra) {
+         Logger.info(ManejadorContenidos.class, entra);
         return "pasado por ejb "+entra;
     }
 
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List tags) {
+        Logger.info(ManejadorContenidos.class, titulo );
         return System.currentTimeMillis();
     }
 
