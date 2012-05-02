@@ -1,3 +1,4 @@
+*.orig
 /Dominio/build/
 /Dominio/dist/
 /Dominio/nbproject/private/
@@ -13,3 +14,9 @@
 /ManejadorContenidos-comunes/build/
 /ManejadorContenidos-comunes/dist/
 /ManejadorContenidos-comunes/nbproject/private/
+/ManejadorContenidos-logger/dist/
+/ManejadorContenidos-logger/build/
+/ManejadorContenidos-logger/nbproject/private/
+/ManejadorContenidos-config/dist/
+/ManejadorContenidos-config/build/
+/ManejadorContenidos-config/nbproject/private/
