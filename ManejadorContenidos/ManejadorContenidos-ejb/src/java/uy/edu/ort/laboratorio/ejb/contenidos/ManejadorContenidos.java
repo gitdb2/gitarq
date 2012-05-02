@@ -9,9 +9,10 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import uy.edu.ort.laboratorio.dominio.Contenido;
+import uy.edu.ort.laboratorio.dominio.EntradaBlog;
+import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.serializador.ManejadorPersistenciaLocal;
+import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistenciaLocal;
 
 /**
  *
@@ -23,24 +24,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @EJB
     private ManejadorPersistenciaLocal manejadorPersistencia;
     
-    public Long crearContenido(Contenido contenido) throws ArquitecturaException {
-        Long ret = manejadorPersistencia.persistir(contenido);
-        return ret;
-    }
-    
     @Override
-    public String prueba(String entra) {
-        return "pasado por ejb "+entra;
+    public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
+        return manejadorPersistencia.persistir(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
     }
 
     @Override
-    public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List tags) {
-        return System.currentTimeMillis();
-    }
-
-    @Override
-    public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, String html) {
-        return System.currentTimeMillis();
+    public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
+        return manejadorPersistencia.persistir(new PaginaWeb(nombre, html, fechaPublicacion));
     }
 
 }
