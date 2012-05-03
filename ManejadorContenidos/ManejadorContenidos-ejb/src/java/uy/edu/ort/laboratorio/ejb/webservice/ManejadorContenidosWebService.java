@@ -7,8 +7,6 @@ package uy.edu.ort.laboratorio.ejb.webservice;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
@@ -29,13 +27,13 @@ public class ManejadorContenidosWebService {
     
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
-
+/*
     @WebMethod(operationName = "crearContenido")
       public Long crearContenido(@WebParam(name = "contenido") Contenido contenido) throws ArquitecturaException {
            return manejadorContenidos.crearContenido(contenido);
       }
+    */
     
-    /*
     @WebMethod(operationName = "crearContenidoEntradaBlog")
     public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
@@ -45,8 +43,7 @@ public class ManejadorContenidosWebService {
         
         return manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
     }
-    * 
-    */
+ 
 
     @WebMethod(operationName = "crearContenidoPaginaWeb")
     public Long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
@@ -56,7 +53,7 @@ public class ManejadorContenidosWebService {
         return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
     }
 
-     @WebMethod(operationName = "crearContenidoPaginaWeb2")
+    @WebMethod(operationName = "crearContenidoPaginaWeb2")
     public Long crearContenidoPaginaWeb2(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") String fechaPublicacion, 
                                         @WebParam(name = "html") String html) throws ArquitecturaException {
