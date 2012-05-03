@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
@@ -25,26 +26,24 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @EJB
     private ManejadorPersistenciaLocal manejadorPersistencia;
     
+    @Override
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
         Logger.info(ManejadorContenidos.class, contenido);
         Long ret = manejadorPersistencia.persistir(contenido);
         return ret;
     }
     
-    @Override
-    public String prueba(String entra) {
-         Logger.info(ManejadorContenidos.class, entra);
-        return "pasado por ejb "+entra;
-    }
+
 
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-		Logger.info(ManejadorContenidos.class, titulo );
+	Logger.info(ManejadorContenidos.class, titulo );
         return manejadorPersistencia.persistir(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
     }
 
     @Override
     public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, nombre );
         return manejadorPersistencia.persistir(new PaginaWeb(nombre, html, fechaPublicacion));
     }
 

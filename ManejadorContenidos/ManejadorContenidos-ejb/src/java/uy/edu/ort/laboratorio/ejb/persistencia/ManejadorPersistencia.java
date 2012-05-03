@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import javax.ejb.Stateless;
 import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
@@ -19,12 +20,14 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 @Stateless
 public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
 
-    private static final String REPOSITORIO_XML = "C:\\xmls\\";
+    private static final String REPOSITORIO_XML = "/storage/ORT/";
     
     @Override
     public Long persistir(Contenido contenido) throws ArquitecturaException {
         try {
+            
             String rutaXML = REPOSITORIO_XML + contenido.toString() + ".xml";
+            Logger.info(ManejadorPersistencia.class, rutaXML);
             XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(rutaXML)));
             encoder.writeObject(contenido);
             encoder.close();
