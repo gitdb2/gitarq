@@ -11,7 +11,9 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
+import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 
 /**
  *
@@ -24,17 +26,12 @@ public class ManejadorContenidosWebService {
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
 
-    @WebMethod(operationName = "prueba")
-    public String prueba(@WebParam(name = "entra") String entra) {
-        return manejadorContenidos.prueba(entra);
-    }
-
     @WebMethod(operationName = "crearContenidoEntradaBlog")
     public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") Date fechaPublicacion, 
                                           @WebParam(name = "texto") String texto, 
-                                          @WebParam(name = "tags") List tags) {
+                                          @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
         
         return manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
     }
@@ -42,9 +39,9 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "crearContenidoPaginaWeb")
     public Long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") Date fechaPublicacion, 
-                                        @WebParam(name = "html") String html) {
+                                        @WebParam(name = "html") byte[] html) throws ArquitecturaException {
         
         return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
     }
-    
+
 }
