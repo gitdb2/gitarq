@@ -13,9 +13,11 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.logger.Logger;
+import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistencia;
+//import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
@@ -24,7 +26,8 @@ import uy.edu.ort.laboratorio.logger.Logger;
 @WebService(serviceName = "ManejadorContenidosWebService")
 @Stateless()
 public class ManejadorContenidosWebService {
-    
+         private static Logger logger = Logger.getLogger(ManejadorContenidosWebService.class);
+
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
 /*
@@ -62,7 +65,7 @@ public class ManejadorContenidosWebService {
              
             return manejadorContenidos.crearContenidoPaginaWeb(nombre, sdf.parse(fechaPublicacion), html.getBytes());
         } catch (ParseException ex) {
-            Logger.error(ManejadorContenidosWebService.class, ex.getMessage());
+            logger.error(ex.getMessage());
             throw new ArquitecturaException(ex);
         }
     }

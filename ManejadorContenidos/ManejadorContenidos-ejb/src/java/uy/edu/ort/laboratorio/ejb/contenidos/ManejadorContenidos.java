@@ -9,11 +9,12 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.apache.log4j.Logger;
 import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.logger.Logger;
+
 import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistenciaLocal;
 
 /**
@@ -22,13 +23,13 @@ import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistenciaLocal;
  */
 @Stateless
 public class ManejadorContenidos implements ManejadorContenidosRemote, ManejadorContenidosLocal {
-
+    private static Logger logger = Logger.getLogger(ManejadorContenidos.class);
     @EJB
     private ManejadorPersistenciaLocal manejadorPersistencia;
     
     @Override
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, contenido);
+        logger.info(contenido);
         Long ret = manejadorPersistencia.persistir(contenido);
         return ret;
     }
@@ -37,13 +38,13 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
 
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-	Logger.info(ManejadorContenidos.class, titulo );
+	logger.info( titulo );
         return manejadorPersistencia.persistir(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
     }
 
     @Override
     public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, nombre );
+        logger.info(nombre );
         return manejadorPersistencia.persistir(new PaginaWeb(nombre, html, fechaPublicacion));
     }
 

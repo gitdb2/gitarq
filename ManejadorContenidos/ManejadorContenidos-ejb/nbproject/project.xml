@@ -10,8 +10,7 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <included-library dirs="200">file.reference.ManejadorContenidos-comunes.jar</included-library>
             <included-library dirs="200">file.reference.Dominio.jar</included-library>
-            <included-library dirs="200">file.reference.ManejadorContenidos-logger-bundle.jar</included-library>
-            <included-library dirs="200">file.reference.ManejadorContenidos-config.jar</included-library>
+            <included-library dirs="200">file.reference.log4j-1.2.16.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
