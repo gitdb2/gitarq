@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://ubuntu:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?wsdl" uri="wsdl/ubuntu_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.wsdl"/>
+    <system systemId="http://ubuntu:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?xsd=1" uri="wsdl/ubuntu_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.xsd_1.xsd"/>
+</catalog>

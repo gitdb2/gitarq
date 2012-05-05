@@ -1,0 +1,44 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package cliente;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import ws.ArquitecturaException_Exception;
+import ws.ManejadorContenidosWebService;
+import ws.ManejadorContenidosWebService_Service;
+
+/**
+ *
+ * @author rodrigo
+ */
+public class Cliente {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws DatatypeConfigurationException {
+        try {
+            ManejadorContenidosWebService_Service pepe = new ManejadorContenidosWebService_Service();
+             ManejadorContenidosWebService serv = pepe.getManejadorContenidosWebServicePort();
+
+             GregorianCalendar c = new GregorianCalendar();
+             c.setTime(new Date());
+             XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+
+
+                
+             Long lon = serv.crearContenidoPaginaWeb("pepe","1222-1999", "hola".getBytes());
+             System.out.println(lon);
+        } catch (ArquitecturaException_Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+}
