@@ -9,8 +9,6 @@ package uy.edu.ort.laboratorio.logger;
  * @author rodrigo
  */
 public class Logger {
-   // DEBUG, INFO, WARN, ERROR and FATAL
-    static private boolean inicializado = false;
     
     public static void debug(Class<?> objectClass, Object message) {
         org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(objectClass);

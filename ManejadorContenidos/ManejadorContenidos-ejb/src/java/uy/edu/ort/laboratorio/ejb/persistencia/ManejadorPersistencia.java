@@ -20,21 +20,31 @@ import uy.edu.ort.laboratorio.logger.Logger;
 @Stateless
 public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
 
-    private static final String REPOSITORIO_XML = "/storage/ORT/";
+    private static final String REPOSITORIO_XML = "C:\\arqsoft\\";
+    
+    private static Long idObjeto = 0l;
     
     @Override
     public Long persistir(Contenido contenido) throws ArquitecturaException {
+        String rutaXML = obtenerRutaXML(contenido);
         try {
-            
-            String rutaXML = REPOSITORIO_XML + contenido.toString() + ".xml";
-            Logger.info(ManejadorPersistencia.class, rutaXML);
-            XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(rutaXML)));
-            encoder.writeObject(contenido);
-            encoder.close();
-            return System.currentTimeMillis();
+            guardarArchivoEnDisco(contenido, rutaXML);
+            Logger.info(ManejadorPersistencia.class, "Se guardo correctamente el archivo " + rutaXML);
+            return idObjeto++;
         } catch (FileNotFoundException ex) {
+            Logger.error(ManejadorPersistencia.class, "Error al guardar el archivo " + rutaXML);
             return null;
         }
+    }
+    
+    private void guardarArchivoEnDisco(Contenido contenido, String rutaAbsoluta) throws FileNotFoundException {
+        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(rutaAbsoluta)));
+        encoder.writeObject(contenido);
+        encoder.close();
+    }
+    
+    private String obtenerRutaXML(Contenido contenido) {
+        return REPOSITORIO_XML + idObjeto + "\\" + contenido.toString() + ".xml";
     }
 
 }
