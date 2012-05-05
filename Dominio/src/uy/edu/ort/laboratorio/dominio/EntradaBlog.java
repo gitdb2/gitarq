@@ -5,6 +5,7 @@
 package uy.edu.ort.laboratorio.dominio;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class EntradaBlog extends Contenido {
     private String titulo;
     private String nombreAutor;
     private String texto;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<String>();
 
     public EntradaBlog() {
     }

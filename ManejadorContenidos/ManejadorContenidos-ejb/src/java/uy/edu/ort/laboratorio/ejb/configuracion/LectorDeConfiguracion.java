@@ -55,21 +55,11 @@ public final class LectorDeConfiguracion {
 	} catch (IOException e) {
 	    Logger.error(LectorDeConfiguracion.class, "No se pudo cargar la "
 		    +"configuracion configuracion " + PROP_FILE);
-	    Logger.debug(LectorDeConfiguracion.class, getStackTrace(e));
+	    Logger.debug(LectorDeConfiguracion.class, Logger.getStackTrace(e));
 	}
     }
     
-    /**
-     * Metodo interno para poder imprimir el stacktrace de una excepcion.
-     * @param aThrowable
-     * @return retorna el tostring del stacktrace
-     */
-    public String getStackTrace(final Exception aThrowable) {
-	final Writer result = new StringWriter();
-	final PrintWriter printWriter = new PrintWriter(result);
-	aThrowable.printStackTrace(printWriter);
-	return result.toString();
-    }
+  
 
     /**
      * .

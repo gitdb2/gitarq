@@ -35,7 +35,8 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
             return idObjeto;
         } catch (FileNotFoundException ex) {
             Logger.error(ManejadorPersistencia.class, "Error al guardar el archivo " + rutaXML);
-            return null;
+            Logger.debug(ManejadorPersistencia.class, Logger.getStackTrace(ex));
+            throw  new ArquitecturaException("Error al guardar el archivo " + rutaXML);
         }
     }
     
@@ -47,7 +48,7 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
     }
     
     private String obtenerRutaXML(Contenido contenido) {
-        return REPOSITORIO_XML + contenido.obtenerRutaArchivo() + EXTENSION_ARCHIVO;
+        return REPOSITORIO_XML + File.separator + contenido.obtenerRutaArchivo() + EXTENSION_ARCHIVO;
     }
     
     private Long obtenerIdObjeto() {
@@ -58,7 +59,7 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
         File rutaAbsoluta = new File(rutaArchivo);
         File directorio = new File (rutaAbsoluta.getParent());
         if (!directorio.exists()) {
-            directorio.mkdir();
+            directorio.mkdirs();
         }
     }
 
