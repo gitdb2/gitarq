@@ -7,7 +7,9 @@ package uy.edu.ort.laboratorio.ejb.webservice;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionRolledbackLocalException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -15,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
@@ -45,8 +48,15 @@ public class ManejadorContenidosWebService {
                                                 Date fechaPublicacion, 
                                         @WebParam(name = "html") byte[] html) 
             throws ArquitecturaException {
-       
-        return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
+       try{
+            return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class, e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "---->"+ e.getClass().getName());
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al crearContenidoPaginaWeb, solicite asistencia tecnica a su michi de confianza");
+       }
     }
 
 }
