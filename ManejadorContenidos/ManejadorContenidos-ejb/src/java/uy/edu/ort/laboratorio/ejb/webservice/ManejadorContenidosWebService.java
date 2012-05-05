@@ -11,8 +11,10 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
+import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 
 /**
  *
@@ -38,9 +40,12 @@ public class ManejadorContenidosWebService {
 
     @WebMethod(operationName = "crearContenidoPaginaWeb")
     public Long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
-                                        @WebParam(name = "fechaPublicacion") Date fechaPublicacion, 
-                                        @WebParam(name = "html") byte[] html) throws ArquitecturaException {
-        
+                                        @WebParam(name = "fechaPublicacion") 
+                                        @XmlJavaTypeAdapter(DateAdapter.class) 
+                                                Date fechaPublicacion, 
+                                        @WebParam(name = "html") byte[] html) 
+            throws ArquitecturaException {
+       
         return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
     }
 
