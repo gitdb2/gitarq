@@ -4,6 +4,7 @@
  */
 package uy.edu.ort.laboratorio.dominio;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -28,11 +29,6 @@ public class PaginaWeb extends Contenido {
         this.html = html;
     }
     
-    @Override
-    public String toString() {
-        return "PaginaWeb" + "_" + this.getFechaPublicacionFormateada() + "_" + nombre;
-    }
-
     public byte[] getHtml() {
         return html;
     }
@@ -47,6 +43,16 @@ public class PaginaWeb extends Contenido {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    protected String obtenerNombreCarpeta() {
+        return "pagina_web";
+    }
+    
+    @Override
+    public String obtenerRutaArchivo() {
+        return obtenerNombreCarpeta() + File.separator + oid + "_" + this.getFechaPublicacionFormateada() + "_" + nombre;
     }
     
 }

@@ -15,15 +15,20 @@ import java.util.Date;
  */
 public abstract class Contenido implements Serializable {
 
+    protected Long oid;
     protected static final String FORMATO_FECHA = "dd-MM-yyyy";
     protected Date fechaPublicacion;
 
     public Contenido() {
     }
-    
+
     public Contenido(Date fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
+    
+    protected abstract String obtenerNombreCarpeta();
+    
+    public abstract String obtenerRutaArchivo();
 
     public Date getFechaPublicacion() {
         return fechaPublicacion;
@@ -36,6 +41,14 @@ public abstract class Contenido implements Serializable {
     public String getFechaPublicacionFormateada() {
         Format formatter = new SimpleDateFormat(FORMATO_FECHA);
         return formatter.format(fechaPublicacion);
+    }
+
+    public Long getOid() {
+        return oid;
+    }
+
+    public void setOid(Long oid) {
+        this.oid = oid;
     }
     
 }

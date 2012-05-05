@@ -4,8 +4,6 @@
  */
 package uy.edu.ort.laboratorio.ejb.webservice;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -15,7 +13,6 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
@@ -27,12 +24,6 @@ public class ManejadorContenidosWebService {
     
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
-/*
-    @WebMethod(operationName = "crearContenido")
-      public Long crearContenido(@WebParam(name = "contenido") Contenido contenido) throws ArquitecturaException {
-           return manejadorContenidos.crearContenido(contenido);
-      }
-    */
     
     @WebMethod(operationName = "crearContenidoEntradaBlog")
     public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
@@ -53,17 +44,4 @@ public class ManejadorContenidosWebService {
         return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
     }
 
-    @WebMethod(operationName = "crearContenidoPaginaWeb2")
-    public Long crearContenidoPaginaWeb2(@WebParam(name = "nombre") String nombre, 
-                                        @WebParam(name = "fechaPublicacion") String fechaPublicacion, 
-                                        @WebParam(name = "html") String html) throws ArquitecturaException {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-             
-            return manejadorContenidos.crearContenidoPaginaWeb(nombre, sdf.parse(fechaPublicacion), html.getBytes());
-        } catch (ParseException ex) {
-            Logger.error(ManejadorContenidosWebService.class, ex.getMessage());
-            throw new ArquitecturaException(ex);
-        }
-    }
 }

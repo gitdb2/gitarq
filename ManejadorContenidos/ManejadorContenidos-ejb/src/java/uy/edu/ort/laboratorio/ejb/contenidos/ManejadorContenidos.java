@@ -4,7 +4,6 @@
  */
 package uy.edu.ort.laboratorio.ejb.contenidos;
 
-
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,11 +28,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
         Logger.info(ManejadorContenidos.class, contenido);
-        Long ret = manejadorPersistencia.persistir(contenido);
-        return ret;
+        return manejadorPersistencia.persistir(contenido);
     }
-    
-
 
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
