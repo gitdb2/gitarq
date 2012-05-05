@@ -13,8 +13,8 @@ import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistenciaLocal;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  *
