@@ -6,7 +6,6 @@ import javax.ejb.Local;
 import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 
-
 @Local
 public interface ManejadorContenidosLocal {
     

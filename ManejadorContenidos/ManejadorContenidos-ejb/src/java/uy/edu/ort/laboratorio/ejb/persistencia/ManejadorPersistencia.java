@@ -6,6 +6,7 @@ package uy.edu.ort.laboratorio.ejb.persistencia;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import javax.ejb.Stateless;
@@ -20,17 +21,18 @@ import uy.edu.ort.laboratorio.logger.Logger;
 @Stateless
 public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
 
+    private static final String EXTENSION_ARCHIVO = ".xml";
     private static final String REPOSITORIO_XML = "C:\\arqsoft\\";
-    
-    private static Long idObjeto = 0l;
     
     @Override
     public Long persistir(Contenido contenido) throws ArquitecturaException {
+        Long idObjeto = obtenerIdObjeto();
+        contenido.setOid(idObjeto);
         String rutaXML = obtenerRutaXML(contenido);
         try {
             guardarArchivoEnDisco(contenido, rutaXML);
             Logger.info(ManejadorPersistencia.class, "Se guardo correctamente el archivo " + rutaXML);
-            return idObjeto++;
+            return idObjeto;
         } catch (FileNotFoundException ex) {
             Logger.error(ManejadorPersistencia.class, "Error al guardar el archivo " + rutaXML);
             return null;
@@ -38,13 +40,26 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
     }
     
     private void guardarArchivoEnDisco(Contenido contenido, String rutaAbsoluta) throws FileNotFoundException {
+        crearRutaDestino(rutaAbsoluta);
         XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(rutaAbsoluta)));
         encoder.writeObject(contenido);
         encoder.close();
     }
     
     private String obtenerRutaXML(Contenido contenido) {
-        return REPOSITORIO_XML + idObjeto + "\\" + contenido.toString() + ".xml";
+        return REPOSITORIO_XML + contenido.obtenerRutaArchivo() + EXTENSION_ARCHIVO;
+    }
+    
+    private Long obtenerIdObjeto() {
+        return System.currentTimeMillis();
+    }
+
+    private void crearRutaDestino(String rutaArchivo) {
+        File rutaAbsoluta = new File(rutaArchivo);
+        File directorio = new File (rutaAbsoluta.getParent());
+        if (!directorio.exists()) {
+            directorio.mkdir();
+        }
     }
 
 }

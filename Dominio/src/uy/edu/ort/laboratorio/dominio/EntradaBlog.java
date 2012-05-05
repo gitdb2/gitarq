@@ -4,6 +4,7 @@
  */
 package uy.edu.ort.laboratorio.dominio;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -24,18 +25,13 @@ public class EntradaBlog extends Contenido {
     public EntradaBlog(Date fechaPublicacion) {
         super(fechaPublicacion);
     }
-
+    
     public EntradaBlog(String titulo, String nombreAutor, String texto, List<String> tags, Date fechaPublicacion) {
         super(fechaPublicacion);
         this.titulo = titulo;
         this.nombreAutor = nombreAutor;
         this.texto = texto;
         this.tags = tags;
-    }
-    
-    @Override
-    public String toString() {
-        return "EntradaBlog" + "_" + this.getFechaPublicacionFormateada() + "_" + nombreAutor + "_" + titulo;
     }
 
     public String getNombreAutor() {
@@ -68,6 +64,16 @@ public class EntradaBlog extends Contenido {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+    
+    @Override
+    protected String obtenerNombreCarpeta() {
+        return "entrada_blog";
+    }
+
+    @Override
+    public String obtenerRutaArchivo() {
+        return obtenerNombreCarpeta() + File.separator + nombreAutor + File.separator + oid + "_" + this.getFechaPublicacionFormateada() + "_" + titulo;
     }
     
 }
