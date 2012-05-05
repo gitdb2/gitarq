@@ -20,5 +20,7 @@
 /ManejadorContenidos-config/dist/
 /ManejadorContenidos-config/build/
 /ManejadorContenidos-config/nbproject/private/
-/borrar/nbproject/private/
-/borrar/build/
+/cliente/build/
+/cliente/dist/
+/cliente/nbproject/private/
+
