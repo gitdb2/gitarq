@@ -4,8 +4,10 @@
  */
 package cliente;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -35,7 +37,11 @@ public class Cliente {
 
 
                 
-             Long lon = serv.crearContenidoPaginaWeb("pepe44","12-01-1999", "hola".getBytes());
+           // Long lon = serv.crearContenidoPaginaWeb("pepe44","12-01-1999", "hola".getBytes());
+             List<String> tags = new ArrayList<String>();
+             tags.add("tag1");
+             tags.add("tag2");
+              Long lon = serv.crearContenidoEntradaBlog("titulos","rodrigo", date2, "hola", tags);
              System.out.println(lon);
         } catch (ArquitecturaException_Exception ex) {
             System.out.println(ex.getMessage());

@@ -6,6 +6,8 @@ package uy.edu.ort.laboratorio.ejb.persistencia;
 
 import javax.ejb.Local;
 import uy.edu.ort.laboratorio.dominio.Contenido;
+import uy.edu.ort.laboratorio.dominio.EntradaBlog;
+import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 
 /**
@@ -20,6 +22,9 @@ public interface ManejadorPersistenciaLocal {
      * @return identificador unico del objeto.
      * @throws ArquitecturaException
      */
-    public Long persistir(Contenido contenido) throws ArquitecturaException;
+  //  public Long persistir(Contenido contenido) throws ArquitecturaException;
+    
+     public Long persistir(PaginaWeb contenido) throws ArquitecturaException;
+     public Long persistir(EntradaBlog contenido) throws ArquitecturaException;
     
 }

@@ -77,8 +77,13 @@ public class EntradaBlog extends Contenido {
     @Override
     public String obtenerRutaArchivo() {
         return obtenerNombreCarpeta() + File.separator + 
-               nombreAutor + File.separator + oid + 
-               "_" + this.getFechaPublicacionFormateada() + "_" + titulo;
+               nombreAutor + File.separator + "blog";
     }
+
+    @Override
+    public String toString() {
+        return super.getOid()+ "|"+ nombreAutor + "|"+super.getFechaPublicacionFormateada() + "|" + titulo + "|"  + texto + "|" + tags + "|";
+    }
+
     
 }
