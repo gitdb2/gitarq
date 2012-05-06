@@ -46,7 +46,9 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "crearContenidoEntradaBlog")
     public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
-                                          @WebParam(name = "fechaPublicacion") Date fechaPublicacion, 
+                                          @WebParam(name = "fechaPublicacion") 
+                                          @XmlJavaTypeAdapter(DateAdapter.class) 
+                                          Date fechaPublicacion, 
                                           @WebParam(name = "texto") String texto, 
                                           @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
         

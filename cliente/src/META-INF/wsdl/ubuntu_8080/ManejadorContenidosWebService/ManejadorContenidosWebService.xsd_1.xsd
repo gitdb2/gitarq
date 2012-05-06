@@ -34,7 +34,7 @@
 <xs:sequence>
 <xs:element name="titulo" type="xs:string" minOccurs="0"/>
 <xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaPublicacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
 <xs:element name="texto" type="xs:string" minOccurs="0"/>
 <xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
