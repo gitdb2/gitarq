@@ -9,7 +9,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- *
+ * Wrapper de log4j para encapsular el mecanismo de logueo.
+ * Se busca hacer el mecanismo de logueo independiente
+ * de la libreria que se use.
  * @author rodrigo
  */
 public class Logger {

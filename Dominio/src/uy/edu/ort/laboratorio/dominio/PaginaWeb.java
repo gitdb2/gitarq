@@ -8,7 +8,9 @@ import java.io.File;
 import java.util.Date;
 
 /**
- *
+ * Clase que representa las paginas web.
+ * Se le agregaron contstructor por defecto, getters y setters para
+ * poder persistirla.
  * @author tanquista
  */
 public class PaginaWeb extends Contenido {

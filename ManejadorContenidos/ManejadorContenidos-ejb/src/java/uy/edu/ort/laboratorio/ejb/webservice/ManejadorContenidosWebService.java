@@ -7,9 +7,7 @@ package uy.edu.ort.laboratorio.ejb.webservice;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionRolledbackLocalException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -20,7 +18,8 @@ import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
- *
+ * Fachada de la aplicacion para exponer como webservice.
+ * Delega el comportamiento un ejb.
  * @author tanquista
  */
 @WebService(serviceName = "ManejadorContenidosWebService")
@@ -30,6 +29,16 @@ public class ManejadorContenidosWebService {
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
     
+    /**
+     * crea un Contenido del tipo entrada de blog.
+     * @param titulo
+     * @param nombreAutor
+     * @param fechaPublicacion
+     * @param texto
+     * @param tags
+     * @return
+     * @throws ArquitecturaException
+     */
     @WebMethod(operationName = "crearContenidoEntradaBlog")
     public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
@@ -40,7 +49,14 @@ public class ManejadorContenidosWebService {
         return manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
     }
  
-
+    /**
+     * crea un Contenido del tipo pagina web.
+     * @param nombre
+     * @param fechaPublicacion
+     * @param html
+     * @return
+     * @throws ArquitecturaException
+     */
     @WebMethod(operationName = "crearContenidoPaginaWeb")
     public Long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 

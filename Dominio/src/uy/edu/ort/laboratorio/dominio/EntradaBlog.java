@@ -10,7 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Clase que representa las entradas de blog.
+ * Se le agregaron contstructor por defecto, getters y setters para
+ * poder persistirla.
  * @author tanquista
  */
 public class EntradaBlog extends Contenido {

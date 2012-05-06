@@ -5,17 +5,14 @@
 package uy.edu.ort.laboratorio.ejb.configuracion;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.util.Properties;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  * .
- * Clase encargada de levantatr la configuracion de la aplicacion y brindar
- * metodos para acceder a los datos de la configuracion
+ * Clase encargada de levantar la configuracion de la aplicacion y brindar
+ * metodos para acceder a los datos de la configuracion.
  *
  * @author rodrigo
  */
@@ -54,17 +51,11 @@ public final class LectorDeConfiguracion {
 		    + PROP_FILE + " cargada con exito");
 	} catch (IOException e) {
 	    Logger.error(LectorDeConfiguracion.class, "No se pudo cargar la "
-		    +"configuracion configuracion " + PROP_FILE);
+		    + "configuracion configuracion " + PROP_FILE);
 	    Logger.debug(LectorDeConfiguracion.class, Logger.getStackTrace(e));
 	}
     }
     
-  
-
-    /**
-     * .
-     * @return instance
-     */
     public static LectorDeConfiguracion getInstance() {
 	return instance;
     }
@@ -80,13 +71,13 @@ public final class LectorDeConfiguracion {
     }
 
     /**
-     * * metodo para acceder a los valores del properties por medio de la clave
-     * y se pasa un valor por defecto que en caso de no encontrarse la propiedad
-     * se retorna dicho valor
+     * * metodo para acceder a los valores del properties por medio de la clave.
+     * se pasa un valor por defecto que en caso de no encontrarse la propiedad
+     * se retorna dicho valor.
      *
      * @param clave
      * @param valorporDefecto
-     * @return
+     * @return valor de la propiedad o valor por defecto.
      */
     public String getMensaje(String clave, String valorporDefecto) {
 	return prop.getProperty(clave, valorporDefecto);

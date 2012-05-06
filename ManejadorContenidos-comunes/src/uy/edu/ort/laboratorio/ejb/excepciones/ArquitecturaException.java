@@ -1,7 +1,7 @@
 package uy.edu.ort.laboratorio.ejb.excepciones;
 
 /**
- *
+ * Excepcion creada por nosotros para enviarle al cliente del webservice.
  * @author rodrigo
  */
 public class ArquitecturaException extends Exception {
@@ -21,7 +21,5 @@ public class ArquitecturaException extends Exception {
     public ArquitecturaException(String string, Throwable thrwbl) {
         super(string, thrwbl);
     }
-    
-    
     
 }

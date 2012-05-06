@@ -11,6 +11,8 @@ import java.util.Date;
 
 /**
  * Clase abstracta que representa los datos a guardar.
+ * Se le agregaron contstructor por defecto, getters y setters para
+ * poder persistirla.
  * @author tanquista
  */
 public abstract class Contenido implements Serializable {
