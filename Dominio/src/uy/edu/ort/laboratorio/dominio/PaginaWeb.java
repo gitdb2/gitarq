@@ -52,7 +52,9 @@ public class PaginaWeb extends Contenido {
     
     @Override
     public String obtenerRutaArchivo() {
-        return obtenerNombreCarpeta() + File.separator + oid + "_" + this.getFechaPublicacionFormateada() + "_" + nombre;
+        return obtenerNombreCarpeta() + 
+               File.separator + oid + "_" + 
+               this.getFechaPublicacionFormateada() + "_" + nombre;
     }
     
 }

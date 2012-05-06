@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
+ * Clase abstracta que representa los datos a guardar.
  * @author tanquista
  */
 public abstract class Contenido implements Serializable {
