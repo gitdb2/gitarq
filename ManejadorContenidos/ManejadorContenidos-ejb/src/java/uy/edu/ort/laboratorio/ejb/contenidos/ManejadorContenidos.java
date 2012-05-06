@@ -29,31 +29,6 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     private ManejadorPersistenciaLocal manejadorPersistencia;
     
     /**
-     * Crea y persiste un objeto de tipo Contenido.
-     * @param contenido
-     * @return identificador unico
-     * @throws ArquitecturaException
-     */
-    @Override
-    public Long crearContenido(Contenido contenido) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, contenido);
-//        try {
-//            return manejadorPersistencia.persistir(contenido);
-//        } catch (ArquitecturaException ex) {
-//            Logger.error(ManejadorContenidos.class,
-//                    "No se pudo persistir crearContenido");
-//            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
-//            throw ex;
-//        }catch(Exception ex){
-//             Logger.error(ManejadorContenidos.class,
-//                    "No se pudo persistir crearContenido: Otra exception :->" + ex.getClass().getName());
-//            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
-//            throw new ArquitecturaException(ex.getMessage());
-//        }
-        return 1L;
-    }
-
-    /**
      * crea y persiste una entrada de blog.
      * @param titulo
      * @param nombreAutor
@@ -74,6 +49,11 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
                     "No se pudo persistir crearContenidoEntradaBlog");
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw ex;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenidoEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
         }
     }
 
@@ -97,6 +77,11 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
                     "No se pudo persistir crearContenidoPaginaWeb");
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw ex;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
         }
     }
 

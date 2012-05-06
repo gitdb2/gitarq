@@ -8,13 +8,7 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 
 @Local
 public interface ManejadorContenidosLocal {
-     /**
-     * Crea y persiste un objeto de tipo Contenido.
-     * @param contenido
-     * @return identificador unico
-     * @throws ArquitecturaException
-     */
-    public Long crearContenido(Contenido contenido) throws ArquitecturaException;
+
      /**
      * crea y persiste una entrada de blog.
      * @param titulo

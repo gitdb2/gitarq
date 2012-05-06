@@ -117,16 +117,9 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
         FileWriter out = null;
         try {
             crearRutaDestino(rutaAbsoluta);
-//            File archivo = new File(rutaAbsoluta);
-//            if (!archivo.exists()) {
-//            }
             out = new FileWriter(rutaAbsoluta, true);
             out.write(contenido.toString() + "\n");
             out.close();
-//            XMLEncoder encoder = new XMLEncoder(
-//                    new BufferedOutputStream(new FileOutputStream(rutaAbsoluta)));
-//            encoder.writeObject(contenido);
-//            encoder.close();
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(ManejadorPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
