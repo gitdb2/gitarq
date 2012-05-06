@@ -57,6 +57,14 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
             
             throw new ArquitecturaException(
                     "Error al guardar el archivo " + rutaXML);
+        } catch (Exception ex) {
+            Logger.error(ManejadorPersistencia.class,
+                    "No se pudo guardar el acrchivo " + rutaXML);
+            
+            Logger.debug(ManejadorPersistencia.class, Logger.getStackTrace(ex));
+            
+            throw new ArquitecturaException(
+                    "Error, No se pudo guardar el acrchivo " + rutaXML);
         }
     }
     

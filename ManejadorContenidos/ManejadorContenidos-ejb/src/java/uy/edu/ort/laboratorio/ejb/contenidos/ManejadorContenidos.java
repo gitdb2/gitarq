@@ -37,7 +37,19 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public Long crearContenido(Contenido contenido) throws ArquitecturaException {
         Logger.info(ManejadorContenidos.class, contenido);
-        return manejadorPersistencia.persistir(contenido);
+        try {
+            return manejadorPersistencia.persistir(contenido);
+        } catch (ArquitecturaException ex) {
+            Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenido");
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw ex;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenido: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
     }
 
     /**
@@ -52,8 +64,16 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-	Logger.info(ManejadorContenidos.class, titulo );
-        return manejadorPersistencia.persistir(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
+	Logger.info(ManejadorContenidos.class, "Entra en crearContenidoEntradaBlog" );
+        Logger.debug(ManejadorContenidos.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
+        try {
+            return this.crearContenido(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
+        } catch (ArquitecturaException ex) {
+            Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenidoEntradaBlog");
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw ex;
+        }
     }
 
     /**
@@ -68,8 +88,15 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion,
                             byte[] html) throws ArquitecturaException {
         Logger.info(ManejadorContenidos.class, nombre);
-        return manejadorPersistencia.persistir(
-                new PaginaWeb(nombre, html, fechaPublicacion));
+        Logger.debug(ManejadorContenidos.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
+        try {
+            return this.crearContenido(new PaginaWeb(nombre, html, fechaPublicacion));
+        } catch (ArquitecturaException ex) {
+            Logger.error(ManejadorContenidos.class,
+                    "No se pudo persistir crearContenidoPaginaWeb");
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw ex;
+        }
     }
 
 }

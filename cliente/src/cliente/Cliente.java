@@ -35,7 +35,7 @@ public class Cliente {
 
 
                 
-             Long lon = serv.crearContenidoPaginaWeb("pepe","1222-1999", "hola".getBytes());
+             Long lon = serv.crearContenidoPaginaWeb("pepe44","12-01-1999", "hola".getBytes());
              System.out.println(lon);
         } catch (ArquitecturaException_Exception ex) {
             System.out.println(ex.getMessage());

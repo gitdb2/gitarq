@@ -14,7 +14,12 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
  */
 @Local
 public interface ManejadorPersistenciaLocal {
-    
+     /**
+     * persiste en disco el objeto recibido por parametro.
+     * @param contenido
+     * @return identificador unico del objeto.
+     * @throws ArquitecturaException
+     */
     public Long persistir(Contenido contenido) throws ArquitecturaException;
     
 }
