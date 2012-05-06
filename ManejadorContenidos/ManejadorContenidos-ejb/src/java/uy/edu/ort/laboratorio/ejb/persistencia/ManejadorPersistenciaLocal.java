@@ -5,7 +5,6 @@
 package uy.edu.ort.laboratorio.ejb.persistencia;
 
 import javax.ejb.Local;
-import uy.edu.ort.laboratorio.dominio.Contenido;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
