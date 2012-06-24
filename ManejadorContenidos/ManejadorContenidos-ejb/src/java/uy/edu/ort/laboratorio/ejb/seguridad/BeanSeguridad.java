@@ -36,15 +36,25 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
 
     @Override
     public boolean autenticar(String login, String passwordEncriptdo) {
-        Usuario usuario = findUserByLogin(login);
+        
+        Usuario usuario = null;
+        boolean ret= false;
+         try{
+                usuario = findUserByLogin(login);
+                DesEncrypter encriptador = new DesEncrypter(usuario.getContrasena());
+        
+                String desencriptado = encriptador.decrypt(passwordEncriptdo);
+        
+                ret = usuario!= null && usuario.getContrasena()!= null && usuario.getContrasena().equals(desencriptado);
+
+            }catch(javax.persistence.NoResultException e){
+                //el rol no fue dado de alta por lo que sugo
+                Logger.info(this.getClass(), "El login "+ login + "no fue dado de alta aun en la db");
+            }
         
         
-        DesEncrypter encriptador = new DesEncrypter(usuario.getContrasena());
         
-        String desencriptado = encriptador.decrypt(passwordEncriptdo);
-        
-        return usuario!= null && usuario.getContrasena()!= null && usuario.getContrasena().equals(desencriptado);
-        
+        return ret;
         //List<paginaWeb> result = manejadorPersistenciaDB.createQuery(query).getResultList();
     }
 

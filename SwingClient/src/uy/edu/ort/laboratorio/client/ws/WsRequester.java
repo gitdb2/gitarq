@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uy.edu.ort.laboratorio.client.SwingClient;
+import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
+import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
+import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
@@ -19,51 +22,63 @@ import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
  * @author rodrigo
  */
 public class WsRequester {
-    
-    
-    
-    /***
-     * Dad e alta  una entrada de blog
+
+    public boolean autenticar(String login, String password) {
+        AutenticarWebService_Service service = new AutenticarWebService_Service();
+        AutenticarWebService serv = service.getAutenticarWebServicePort();
+
+        String md5PassOK = DesEncrypter.MD5(password);
+        DesEncrypter enc = new DesEncrypter(md5PassOK);
+        String encriptedPass = enc.encrypt(md5PassOK);
+        
+        return serv.autenticar(login, encriptedPass);
+    }
+
+    /**
+     * *
+     * Dad e alta una entrada de blog
+     *
      * @param titulo
      * @param autor
      * @param fecha
      * @param texto
-     * @param tags 
+     * @param tags
      */
-         public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws ArquitecturaException_Exception{
-            ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-            ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+    public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws ArquitecturaException_Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-           try{
-                Long lon = serv.crearContenidoEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
-                
-            } catch (ArquitecturaException_Exception ex) {
-                Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
-                throw  ex;
-            }
-           return true;
+        try {
+            Long lon = serv.crearContenidoEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
+
+        } catch (ArquitecturaException_Exception ex) {
+            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
-    
-      /**
-       * da de alta una pagina web
-       * @param nombre
-       * @param fecha
-       * @param texto 
-       */
-        public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws ArquitecturaException_Exception{
-            ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-            ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        return true;
+    }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    /**
+     * da de alta una pagina web
+     *
+     * @param nombre
+     * @param fecha
+     * @param texto
+     */
+    public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws ArquitecturaException_Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
-            try {
-                Long lon = serv.crearContenidoPaginaWeb(nombre,sdf.format(fecha), texto.getBytes());
-            } catch (ArquitecturaException_Exception ex) {
-                Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
-                throw  ex;
-            }
-            return true;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        try {
+            Long lon = serv.crearContenidoPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
+        } catch (ArquitecturaException_Exception ex) {
+            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
+        return true;
+    }
 }

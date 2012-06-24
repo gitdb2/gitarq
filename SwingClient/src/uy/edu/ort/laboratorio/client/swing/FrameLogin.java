@@ -6,7 +6,9 @@ package uy.edu.ort.laboratorio.client.swing;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
+import uy.edu.ort.laboratorio.client.ws.WsRequester;
 
 /**
  *
@@ -113,10 +115,17 @@ public class FrameLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-       
+       WsRequester requester = new WsRequester();
         UsuarioManagerSingleton.getInstance().login(jTextFieldUser.getText(), new String(jPasswordFieldPass.getPassword()));
-        new FramePrincipal().setVisible(true);
-        this.dispose();
+        
+        if(requester.autenticar(UsuarioManagerSingleton.getInstance().getLogin(), UsuarioManagerSingleton.getInstance().getPass())){
+            new FramePrincipal().setVisible(true);
+            this.dispose();
+        }else{
+             JOptionPane.showMessageDialog(this,"Usuario o pass incorrecto", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+            
     }//GEN-LAST:event_jButtonLoginActionPerformed
 
     /**
