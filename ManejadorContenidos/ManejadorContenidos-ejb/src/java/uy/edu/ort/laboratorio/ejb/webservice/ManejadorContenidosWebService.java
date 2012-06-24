@@ -29,10 +29,6 @@ public class ManejadorContenidosWebService {
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
     
-    
-    
-    
-    
     /**
      * crea un Contenido del tipo entrada de blog.
      * @param titulo

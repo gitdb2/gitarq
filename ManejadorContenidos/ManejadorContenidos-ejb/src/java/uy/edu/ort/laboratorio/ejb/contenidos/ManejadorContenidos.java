@@ -6,12 +6,12 @@ package uy.edu.ort.laboratorio.ejb.contenidos;
 
 import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.persistencia.ManejadorPersistenciaLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
@@ -24,8 +24,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     /**
      * ejb encargado de la persistencia.
      */
-    @EJB
-    private ManejadorPersistenciaLocal manejadorPersistencia;
+    @PersistenceContext
+    private EntityManager manejadorPersistenciaDB;
     
     /**
      * crea y persiste una entrada de blog.
@@ -39,15 +39,12 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-	Logger.info(ManejadorContenidos.class, "Entra en crearContenidoEntradaBlog" );
+	Logger.info(ManejadorContenidos.class, nombreAutor );
         Logger.debug(ManejadorContenidos.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
         try {
-            return manejadorPersistencia.persistir(new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion));
-        } catch (ArquitecturaException ex) {
-            Logger.error(ManejadorContenidos.class,
-                    "No se pudo persistir crearContenidoEntradaBlog");
-            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
-            throw ex;
+            EntradaBlog nuevaEntradaBlog = new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion);
+            manejadorPersistenciaDB.persist(nuevaEntradaBlog);
+            return nuevaEntradaBlog.getId();
         }catch(Exception ex){
              Logger.error(ManejadorContenidos.class,
                     "No se pudo persistir crearContenidoEntradaBlog: Otra exception :->" + ex.getClass().getName());
@@ -70,12 +67,9 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         Logger.info(ManejadorContenidos.class, nombre);
         Logger.debug(ManejadorContenidos.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
         try {
-            return manejadorPersistencia.persistir(new PaginaWeb(nombre, html, fechaPublicacion));
-        } catch (ArquitecturaException ex) {
-            Logger.error(ManejadorContenidos.class,
-                    "No se pudo persistir crearContenidoPaginaWeb");
-            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
-            throw ex;
+            PaginaWeb nuevaPagina = new PaginaWeb(nombre, html, fechaPublicacion);
+            manejadorPersistenciaDB.persist(nuevaPagina);
+            return nuevaPagina.getId();
         }catch(Exception ex){
              Logger.error(ManejadorContenidos.class,
                     "No se pudo persistir crearContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());

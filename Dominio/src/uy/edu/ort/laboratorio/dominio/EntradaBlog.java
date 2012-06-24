@@ -4,10 +4,11 @@
  */
 package uy.edu.ort.laboratorio.dominio;
 
-import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
 
 /**
  * Clase que representa las entradas de blog.
@@ -15,26 +16,59 @@ import java.util.List;
  * poder persistirla.
  * @author tanquista
  */
-public class EntradaBlog extends Contenido {
+@Entity
+@Table(name="ENTRADA_BLOG")
+public class EntradaBlog implements Serializable {
     
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
+    
+    @Column(name="TITULO", length=100, unique=false, nullable=false)
     private String titulo;
+    
+    @Column(name="NOMBRE_AUTOR", length=50, unique=false, nullable=false)
     private String nombreAutor;
+    
+    @Column(name="TEXTO", unique=false, nullable=false)
     private String texto;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name="FECHA_PUBLICACION", unique=false, nullable=false)
+    private Date fechaPublicacion;
+    
+    @ElementCollection
+    @CollectionTable(
+        name="ENTRADA_BLOG_TAGS",
+        joinColumns=@JoinColumn(name="ENTRADA_BLOG_ID")
+    )
     private List<String> tags = new ArrayList<String>();
 
     public EntradaBlog() {
     }
     
-    public EntradaBlog(Date fechaPublicacion) {
-        super(fechaPublicacion);
-    }
-    
     public EntradaBlog(String titulo, String nombreAutor, String texto, List<String> tags, Date fechaPublicacion) {
-        super(fechaPublicacion);
         this.titulo = titulo;
         this.nombreAutor = nombreAutor;
         this.texto = texto;
+        this.fechaPublicacion = fechaPublicacion;
         this.tags = tags;
+    }
+
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNombreAutor() {
@@ -68,22 +102,5 @@ public class EntradaBlog extends Contenido {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
-    @Override
-    protected String obtenerNombreCarpeta() {
-        return "entrada_blog";
-    }
-
-    @Override
-    public String obtenerRutaArchivo() {
-        return obtenerNombreCarpeta() + File.separator + 
-               nombreAutor + File.separator + "blog";
-    }
-
-    @Override
-    public String toString() {
-        return super.getOid()+ "|"+ nombreAutor + "|"+super.getFechaPublicacionFormateada() + "|" + titulo + "|"  + texto + "|" + tags + "|";
-    }
-
     
 }

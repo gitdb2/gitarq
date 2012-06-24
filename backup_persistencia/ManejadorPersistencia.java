@@ -95,7 +95,7 @@ public class ManejadorPersistencia implements ManejadorPersistenciaLocal {
                     "Error, No se pudo guardar el acrchivo " + rutaXML);
         }
     }
-
+    
     /**
      * serializa en formato XML el contenido en la rutaAbsoluta.
      *
