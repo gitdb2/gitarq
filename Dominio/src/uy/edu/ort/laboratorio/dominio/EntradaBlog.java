@@ -18,6 +18,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="ENTRADA_BLOG")
+@NamedQueries({
+    @NamedQuery(name="EntradaBlog.findAll", query="SELECT e FROM EntradaBlog e")
+})
 public class EntradaBlog implements Serializable {
     
     @Id

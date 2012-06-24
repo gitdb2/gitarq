@@ -16,6 +16,8 @@ import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
+import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
+import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
 
 /**
  * Fachada de la aplicacion para exponer como webservice.
@@ -252,6 +254,38 @@ public class ManejadorContenidosWebService {
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException( "Ocurrio un error al eliminarPaginaWeb");
+       }
+    }
+    
+    /**
+     * lista todas las paginas web
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "listarPaginasWeb")
+    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
+       try{
+            return manejadorContenidos.listarPaginasWeb();
+       }catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al listarPaginasWeb");
+       }
+    }
+    
+    /**
+     * lista todas las entradas de blog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "listarEntradasDeBlog")
+    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException {
+       try{
+            return manejadorContenidos.listarEntradasDeBlog();
+       }catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al listarEntradasDeBlog");
        }
     }
 

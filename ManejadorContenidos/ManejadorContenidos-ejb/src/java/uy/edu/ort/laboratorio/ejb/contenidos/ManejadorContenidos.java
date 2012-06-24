@@ -4,6 +4,7 @@
  */
 package uy.edu.ort.laboratorio.ejb.contenidos;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -13,6 +14,8 @@ import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.logger.Logger;
+import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
+import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
 
 /**
  * bean encargado de recibir las peticiones de creacion de Contenidos.
@@ -171,5 +174,51 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             throw new ArquitecturaException(ex.getMessage());
         }
     }
+    
+    /**
+     * lista todas las paginas web
+     * @return 
+     */
+    @Override
+    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
+        Logger.debug(ManejadorContenidos.class, "No params");
+        try {
+            List<DataPaginaWeb> resultado = new ArrayList<DataPaginaWeb>();
+            List<PaginaWeb> todasLasPaginasWeb = manejadorPersistenciaDB.createNamedQuery("PaginaWeb.findAll", PaginaWeb.class).getResultList();
+            for (PaginaWeb p : todasLasPaginasWeb) {
+                resultado.add(new DataPaginaWeb(p.getId(), p.getNombre()));
+            }
+            return resultado;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "Error listando Paginas Web: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+    
+     /**
+     * lista todas las entradas de blog
+     * @return 
+     */
+    @Override
+    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException{
+        Logger.debug(ManejadorContenidos.class, "No params");
+        try {
+            List<DataEntradaDeBlog> resultado = new ArrayList<DataEntradaDeBlog>();
+            List<EntradaBlog> todasLasEntradasDeBlog = manejadorPersistenciaDB.createNamedQuery("EntradaBlog.findAll", EntradaBlog.class).getResultList();
+            for (EntradaBlog e : todasLasEntradasDeBlog) {
+                resultado.add(new DataEntradaDeBlog(e.getId(), e.getNombreAutor()));
+            }
+            return resultado;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "Error listando Entradas de Blog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+
+    }
+
 
 }

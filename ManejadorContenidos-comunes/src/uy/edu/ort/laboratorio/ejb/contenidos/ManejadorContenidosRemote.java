@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
+import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
+import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
 
 @Remote
 public interface ManejadorContenidosRemote {
@@ -70,5 +72,17 @@ public interface ManejadorContenidosRemote {
      * @throws ArquitecturaException 
      */
     public boolean eliminarPaginaWeb(long idPaginaWeb) throws ArquitecturaException;
+    
+    /**
+     * devuelve la lista de todas las paginas web
+     * @return 
+     */
+    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException;
+    
+     /**
+     * lista todas las entradas de blog
+     * @return 
+     */
+    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException;
     
 }

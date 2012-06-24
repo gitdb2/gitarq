@@ -16,6 +16,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="PAGINA_WEB")
+@NamedQueries({
+    @NamedQuery(name="PaginaWeb.findAll", query="SELECT p FROM PaginaWeb p")
+})
 public class PaginaWeb implements Serializable {
     
     @Id
