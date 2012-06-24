@@ -52,8 +52,16 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
         jButtonAddTag = new javax.swing.JButton();
         jButtonRemoveTag = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Entrada de Blog");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Título");
 
@@ -116,7 +124,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCancelar)
+                            .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(36, 36, 36)
                             .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -168,9 +176,9 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSend)
-                    .addComponent(jButtonCancelar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonCancelar)
+                    .addComponent(jButtonSend))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -192,8 +200,10 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                 items.add(item.toString());
             }
             
-            req.crearContenidoEntradaBlog(jTextTitulo.getText(), jTextFieldAutor.getText(),
-                    GregorianCalendar.getInstance().getTime(), jTextAreaTexto.getText(), items);
+           if(req.crearContenidoEntradaBlog(jTextTitulo.getText(), jTextFieldAutor.getText(),
+                    GregorianCalendar.getInstance().getTime(), jTextAreaTexto.getText(), items)){
+            this.dispose();   
+           }
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(EnviarEntradaBlog.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
@@ -233,6 +243,14 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
         }
         jListTags.setModel(model);
     }//GEN-LAST:event_jButtonRemoveTagActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+      this.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

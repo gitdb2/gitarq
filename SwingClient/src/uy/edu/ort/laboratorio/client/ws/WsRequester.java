@@ -29,7 +29,7 @@ public class WsRequester {
      * @param texto
      * @param tags 
      */
-         public void crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws ArquitecturaException_Exception{
+         public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws ArquitecturaException_Exception{
             ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
             ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
@@ -42,6 +42,7 @@ public class WsRequester {
                 Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
                 throw  ex;
             }
+           return true;
         }
     
       /**
@@ -50,7 +51,7 @@ public class WsRequester {
        * @param fecha
        * @param texto 
        */
-        public void crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws ArquitecturaException_Exception{
+        public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws ArquitecturaException_Exception{
             ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
             ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
@@ -62,5 +63,6 @@ public class WsRequester {
                 Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
                 throw  ex;
             }
+            return true;
         }
 }
