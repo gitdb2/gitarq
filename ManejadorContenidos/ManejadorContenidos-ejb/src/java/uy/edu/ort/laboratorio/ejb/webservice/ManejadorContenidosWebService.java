@@ -12,14 +12,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
-import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
-import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
+import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
+import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
+import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
  * Fachada de la aplicacion para exponer como webservice.
@@ -341,7 +341,8 @@ public class ManejadorContenidosWebService {
      */
     @WebMethod(operationName = "listarPaginasWebFiltrando")
     public List<DataPaginaWeb> listarPaginasWebFiltrando(@WebParam(name = "nombre") String nombre, 
-                                               @WebParam(name = "fechaPublicacion") Date fechaPublicacion) 
+                                               @WebParam(name = "fechaPublicacion") 
+                                               @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion) 
                                                throws ArquitecturaException {
        try{
             return manejadorContenidos.listarPaginasWebFiltrando(nombre, fechaPublicacion);

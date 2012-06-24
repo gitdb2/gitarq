@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
@@ -280,13 +281,17 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             CriteriaQuery<PaginaWeb> query = qb.createQuery(PaginaWeb.class);
             Root<PaginaWeb> paginaWeb = query.from(PaginaWeb.class);
             
-            if (!stringEsVacio(nombre))
-                query.where(qb.equal(paginaWeb.get("nombre"), nombre));
+            Predicate filtros = qb.conjunction();
             
-            if (fechaPublicacion != null)
-                query.where(qb.equal(paginaWeb.get("fechaPublicacion"), fechaPublicacion));
+            if (!stringEsVacio(nombre)) {
+                filtros = qb.and(filtros, qb.equal(paginaWeb.get("nombre"), nombre));
+            }
             
-            return query;
+            if (fechaPublicacion != null) {
+                filtros = qb.and(filtros, qb.equal(paginaWeb.get("fechaPublicacion"), fechaPublicacion));
+            }
+            
+            return query.where(filtros);
         }
     }
     
