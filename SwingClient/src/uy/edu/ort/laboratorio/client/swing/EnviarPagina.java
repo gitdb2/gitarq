@@ -134,7 +134,7 @@ public class EnviarPagina extends javax.swing.JFrame {
             if (req.crearContenidoPaginaWeb(jTextFieldNombre.getText(), GregorianCalendar.getInstance().getTime(), jTextAreaHTML.getText())) {
                 this.dispose();
             }
-        } catch (ArquitecturaException_Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);

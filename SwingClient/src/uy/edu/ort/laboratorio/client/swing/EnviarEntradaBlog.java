@@ -205,7 +205,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                     GregorianCalendar.getInstance().getTime(), jTextAreaTexto.getText(), items)){
             this.dispose();   
            }
-        } catch (ArquitecturaException_Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(EnviarEntradaBlog.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
                                         JOptionPane.ERROR_MESSAGE);

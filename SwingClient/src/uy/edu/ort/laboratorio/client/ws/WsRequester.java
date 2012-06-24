@@ -23,7 +23,7 @@ import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
  */
 public class WsRequester {
 
-    public boolean autenticar(String login, String password) {
+    public boolean autenticar(String login, String password)  throws Exception{
         AutenticarWebService_Service service = new AutenticarWebService_Service();
         AutenticarWebService serv = service.getAutenticarWebServicePort();
 
@@ -44,7 +44,7 @@ public class WsRequester {
      * @param texto
      * @param tags
      */
-    public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws ArquitecturaException_Exception {
+    public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
@@ -56,6 +56,8 @@ public class WsRequester {
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        }catch(Exception e){
+            throw e;
         }
         return true;
     }
@@ -67,7 +69,7 @@ public class WsRequester {
      * @param fecha
      * @param texto
      */
-    public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws ArquitecturaException_Exception {
+    public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
 
@@ -78,6 +80,8 @@ public class WsRequester {
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
+        }catch(Exception e){
+            throw e;
         }
         return true;
     }
