@@ -14,8 +14,8 @@ import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.logger.Logger;
-import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
-import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
+import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
+import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 
 /**
  * bean encargado de recibir las peticiones de creacion de Contenidos.
@@ -202,13 +202,13 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * @return 
      */
     @Override
-    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException{
+    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException{
         Logger.debug(ManejadorContenidos.class, "No params");
         try {
-            List<DataEntradaDeBlog> resultado = new ArrayList<DataEntradaDeBlog>();
+            List<DataEntradaBlog> resultado = new ArrayList<DataEntradaBlog>();
             List<EntradaBlog> todasLasEntradasDeBlog = manejadorPersistenciaDB.createNamedQuery("EntradaBlog.findAll", EntradaBlog.class).getResultList();
             for (EntradaBlog e : todasLasEntradasDeBlog) {
-                resultado.add(new DataEntradaDeBlog(e.getId(), e.getNombreAutor()));
+                resultado.add(new DataEntradaBlog(e.getId(), e.getNombreAutor()));
             }
             return resultado;
         }catch(Exception ex){
@@ -217,8 +217,34 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
-
     }
 
+    @Override
+    public EntradaBlog obtenerEntradasBlog(long idEntradaBlog) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, idEntradaBlog);
+        Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog);
+        try {
+            return manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
+        }catch(Exception ex){
+            Logger.error(ManejadorContenidos.class,
+                    "Error devolviendo la Entrada de Blog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public PaginaWeb obtenerPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, idPaginaWeb);
+        Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb);
+        try {
+            return manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
+        }catch(Exception ex){
+            Logger.error(ManejadorContenidos.class,
+                    "Error devolviendo la Pagina Web: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
 
 }

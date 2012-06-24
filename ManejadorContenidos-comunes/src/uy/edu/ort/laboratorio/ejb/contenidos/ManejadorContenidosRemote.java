@@ -3,9 +3,11 @@ package uy.edu.ort.laboratorio.ejb.contenidos;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
+import uy.edu.ort.laboratorio.dominio.EntradaBlog;
+import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
-import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
+import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
+import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 
 @Remote
 public interface ManejadorContenidosRemote {
@@ -83,6 +85,18 @@ public interface ManejadorContenidosRemote {
      * lista todas las entradas de blog
      * @return 
      */
-    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException;
+    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException;
+    
+     /**
+     * devuelve la entrada de blog asociada al identificador
+     * @return 
+     */
+    public EntradaBlog obtenerEntradasBlog(long id) throws ArquitecturaException;
+    
+     /**
+     * devuelve la entrada de blog asociada al identificador
+     * @return 
+     */
+    public PaginaWeb obtenerPaginaWeb(long id) throws ArquitecturaException;
     
 }

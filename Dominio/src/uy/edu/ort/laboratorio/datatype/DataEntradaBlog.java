@@ -2,22 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.ort.edu.laboratorio.ejb.datatype;
+package uy.edu.ort.laboratorio.datatype;
 
 /**
  *
  * @author tanquista
  */
-public class DataEntradaDeBlog {
+public class DataEntradaBlog {
     
     private long id;
     private String nombreAutor;
 
-    public DataEntradaDeBlog(){
+    public DataEntradaBlog(){
     
     }
     
-    public DataEntradaDeBlog(long id, String nombreAutor) {
+    public DataEntradaBlog(long id, String nombreAutor) {
         this.id = id;
         this.nombreAutor = nombreAutor;
     }

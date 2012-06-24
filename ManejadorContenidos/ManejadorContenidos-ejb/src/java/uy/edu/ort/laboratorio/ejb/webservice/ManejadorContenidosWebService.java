@@ -16,8 +16,10 @@ import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
-import uy.ort.edu.laboratorio.ejb.datatype.DataEntradaDeBlog;
-import uy.ort.edu.laboratorio.ejb.datatype.DataPaginaWeb;
+import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
+import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
+import uy.edu.ort.laboratorio.dominio.EntradaBlog;
+import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 
 /**
  * Fachada de la aplicacion para exponer como webservice.
@@ -238,7 +240,7 @@ public class ManejadorContenidosWebService {
     
     /**
      * elimina una pagina web
-     * @param idEntradaBlog
+     * @param idPaginaWeb
      * @return
      * @throws ArquitecturaException 
      */
@@ -279,13 +281,55 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException 
      */
     @WebMethod(operationName = "listarEntradasDeBlog")
-    public List<DataEntradaDeBlog> listarEntradasDeBlog() throws ArquitecturaException {
+    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException {
        try{
             return manejadorContenidos.listarEntradasDeBlog();
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException( "Ocurrio un error al listarEntradasDeBlog");
+       }
+    }
+    
+    /**
+     * devuelve la pagina web asociada al identificador
+     * @param idPaginaWeb
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "obtenerPaginaWeb")
+    public PaginaWeb obtenerPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
+       if (idPaginaWeb == 0)
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+       try{
+            return manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al obtenerPaginaWeb");
+       }
+    }
+    
+    /**
+     * devuelve la pagina web asociada al identificador
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "obtenerEntradaBlog")
+    public EntradaBlog obtenerEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+       if (idEntradaBlog == 0)
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+       try{
+            return manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al obtenerEntradaBlog");
        }
     }
 
