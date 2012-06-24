@@ -54,4 +54,13 @@ public interface ManejadorContenidosLocal {
      */
     public long modificarContenidoPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion,
                             byte[] html) throws ArquitecturaException;
+    
+    /**
+     * elimina una entrada de blog
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException;
+    
 }

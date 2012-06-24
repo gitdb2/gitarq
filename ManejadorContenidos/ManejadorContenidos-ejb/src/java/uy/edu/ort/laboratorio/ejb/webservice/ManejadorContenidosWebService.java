@@ -200,7 +200,7 @@ public class ManejadorContenidosWebService {
 
     private void checkParametosActualizarEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         if (idEntradaBlog == 0)
-            throw new ArquitecturaException("El nombre no puede ser nulo ni vacio");
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
         
         checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
         
@@ -208,10 +208,30 @@ public class ManejadorContenidosWebService {
     
     private void checkParametosActualizarPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
         if (idPaginaWeb == 0)
-            throw new ArquitecturaException("El nombre no puede ser nulo ni vacio");
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
         
         checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
-        
+    }
+    
+    /**
+     * elimina una entrada de blog
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "eliminarEntradaBlog")
+    public boolean eliminarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+        if (idEntradaBlog == 0)
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+        try{
+            return manejadorContenidos.eliminarEntradaBlog(idEntradaBlog);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al eliminarEntradaBlog");
+       }
     }
 
 }

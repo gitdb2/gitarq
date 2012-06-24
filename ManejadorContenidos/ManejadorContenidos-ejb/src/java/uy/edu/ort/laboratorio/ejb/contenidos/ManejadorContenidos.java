@@ -127,5 +127,24 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             throw new ArquitecturaException(ex.getMessage());
         }
     }
+    
+    /**
+     * elimina una entrada de blog
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException {
+        try {
+            EntradaBlog aBorrar = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
+            manejadorPersistenciaDB.remove(aBorrar);
+            return true;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo elminar eliminarEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
 
 }
