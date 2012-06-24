@@ -259,7 +259,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     public List<DataPaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException {
         try {
             List<DataPaginaWeb> resultado = new ArrayList<DataPaginaWeb>();
-            CriteriaQuery query = obtenerNamedQueryPaginaWeb(nombre, fechaPublicacion);
+            CriteriaQuery query = obtenerCriteriaQueryPaginaWeb(nombre, fechaPublicacion);
             List<PaginaWeb> queryResult = manejadorPersistenciaDB.createQuery(query).getResultList();
             for (PaginaWeb paginaWeb : queryResult) {
                 resultado.add(new DataPaginaWeb(paginaWeb.getId(), paginaWeb.getNombre()));
@@ -273,7 +273,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         }
     }
     
-    private CriteriaQuery obtenerNamedQueryPaginaWeb(String nombre, Date fechaPublicacion) throws ArquitecturaException{
+    private CriteriaQuery obtenerCriteriaQueryPaginaWeb(String nombre, Date fechaPublicacion) throws ArquitecturaException{
         if (stringEsVacio(nombre) && fechaPublicacion == null) {
             throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
         } else {
@@ -295,7 +295,64 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         }
     }
     
-    private boolean stringEsVacio(String parametro) {
+    /**
+     * lista todas las paginas web segun filtrando por nombre y/o fecha de publicacion
+     * @return 
+     */
+    @Override
+    public List<DataEntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion,
+                                                            String contenido, String autor) throws ArquitecturaException {
+        try {
+            List<DataEntradaBlog> resultado = new ArrayList<DataEntradaBlog>();
+            CriteriaQuery query = obtenerCriteriaQueryEntradaBlog(titulo, fechaPublicacion, contenido, autor);
+            List<EntradaBlog> queryResult = manejadorPersistenciaDB.createQuery(query).getResultList();
+            for (EntradaBlog entradaBlog : queryResult) {
+                resultado.add(new DataEntradaBlog(entradaBlog.getId(), entradaBlog.getNombreAutor()));
+            }
+            return resultado;
+        } catch (Exception ex) {
+            Logger.error(ManejadorContenidos.class,
+                    "Error listando Entradas de Blog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+
+    private CriteriaQuery obtenerCriteriaQueryEntradaBlog(String titulo, Date fechaPublicacion, 
+                                                          String contenido, String autor) throws ArquitecturaException {
+        if (stringEsVacio(titulo)
+            && fechaPublicacion == null 
+            && stringEsVacio(contenido)
+            && stringEsVacio(autor)) {
+            throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
+        } else {
+            CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
+            CriteriaQuery<EntradaBlog> query = qb.createQuery(EntradaBlog.class);
+            Root<EntradaBlog> entradaBlog = query.from(EntradaBlog.class);
+            
+            Predicate filtros = qb.conjunction();
+            
+            if (!stringEsVacio(titulo)) {
+                filtros = qb.and(filtros, qb.equal(entradaBlog.get("titulo"), titulo));
+            }
+            
+            if (fechaPublicacion != null) {
+                filtros = qb.and(filtros, qb.equal(entradaBlog.get("fechaPublicacion"), fechaPublicacion));
+            }
+            
+            if (!stringEsVacio(autor)) {
+                filtros = qb.and(filtros, qb.equal(entradaBlog.get("nombreAutor"), autor));
+            }
+            
+            if (!stringEsVacio(contenido)) {
+                filtros = qb.and(filtros, qb.like(entradaBlog.get("texto").as(String.class), "%" + contenido + "%"));
+            }
+            
+            return query.where(filtros);
+        }
+    }
+    
+     private boolean stringEsVacio(String parametro) {
         return parametro == null || parametro.trim().equals("");
     }
 

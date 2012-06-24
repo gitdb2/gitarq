@@ -332,6 +332,7 @@ public class ManejadorContenidosWebService {
            throw new ArquitecturaException( "Ocurrio un error al obtenerEntradaBlog");
        }
     }
+    
     /**
      * 
      * @param nombre
@@ -353,5 +354,24 @@ public class ManejadorContenidosWebService {
            throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
        }
     }
+    
+    @WebMethod(operationName = "listarEntradaBlogFiltrando")
+    public List<DataEntradaBlog> listarEntradaBlogFiltrando(
+                                          @WebParam(name = "titulo") String titulo, 
+                                          @WebParam(name = "nombreAutor") String nombreAutor, 
+                                          @WebParam(name = "fechaPublicacion") @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion, 
+                                          @WebParam(name = "texto") String texto, 
+                                          @WebParam(name = "tags") List<String> tags)
+                                               throws ArquitecturaException {
+       try{
+            return manejadorContenidos.listarEntradaBlogFiltrando(titulo, fechaPublicacion, texto, nombreAutor);
+       }catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
+       }
+    }
+
 
 }

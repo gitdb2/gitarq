@@ -100,9 +100,21 @@ public interface ManejadorContenidosRemote {
     public PaginaWeb obtenerPaginaWeb(long id) throws ArquitecturaException;
     
     /**
-     * lista todas las paginas web segun filtrando por nombre y/o fecha de publicacion
+     * lista todas las paginas web filtrando por alguno de los parametros
      * @return 
      */
     public List<DataPaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException;
+    
+    /**
+     * lista todas las entradas de blog filtrando por alguno de los parametros
+     * @param titulo
+     * @param fechaPublicacion
+     * @param contenido
+     * @param autor
+     * @return
+     * @throws ArquitecturaException 
+     */
+    public List<DataEntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion,
+                                                            String contenido, String autor) throws ArquitecturaException;
     
 }
