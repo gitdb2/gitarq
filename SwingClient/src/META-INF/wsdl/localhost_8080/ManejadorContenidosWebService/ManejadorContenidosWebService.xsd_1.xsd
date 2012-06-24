@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2-b13 (branches/2.2-6964; 2012-01-09T18:04:18+0000) JAXWS-RI/2.2.6-promoted-b20 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://webservice.ejb.laboratorio.ort.edu.uy/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://webservice.ejb.laboratorio.ort.edu.uy/">
+
+<xs:element name="ArquitecturaException" type="tns:ArquitecturaException"/>
+
+<xs:element name="actualizarContenidoEntradaBlog" type="tns:actualizarContenidoEntradaBlog"/>
+
+<xs:element name="actualizarContenidoEntradaBlogResponse" type="tns:actualizarContenidoEntradaBlogResponse"/>
+
+<xs:element name="crearContenidoEntradaBlog" type="tns:crearContenidoEntradaBlog"/>
+
+<xs:element name="crearContenidoEntradaBlogResponse" type="tns:crearContenidoEntradaBlogResponse"/>
+
+<xs:element name="crearContenidoPaginaWeb" type="tns:crearContenidoPaginaWeb"/>
+
+<xs:element name="crearContenidoPaginaWebResponse" type="tns:crearContenidoPaginaWebResponse"/>
+
+<xs:element name="modificarContenidoPaginaWeb" type="tns:modificarContenidoPaginaWeb"/>
+
+<xs:element name="modificarContenidoPaginaWebResponse" type="tns:modificarContenidoPaginaWebResponse"/>
+
+<xs:complexType name="actualizarContenidoEntradaBlog">
+<xs:sequence>
+<xs:element name="idEntradaBlog" type="xs:long"/>
+<xs:element name="titulo" type="xs:string" minOccurs="0"/>
+<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
+<xs:element name="texto" type="xs:string" minOccurs="0"/>
+<xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="actualizarContenidoEntradaBlogResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ArquitecturaException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearContenidoPaginaWeb">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
+<xs:element name="html" type="xs:base64Binary" nillable="true" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearContenidoPaginaWebResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="modificarContenidoPaginaWeb">
+<xs:sequence>
+<xs:element name="idPaginaWeb" type="xs:long"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
+<xs:element name="html" type="xs:base64Binary" nillable="true" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="modificarContenidoPaginaWebResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearContenidoEntradaBlog">
+<xs:sequence>
+<xs:element name="titulo" type="xs:string" minOccurs="0"/>
+<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
+<xs:element name="texto" type="xs:string" minOccurs="0"/>
+<xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearContenidoEntradaBlogResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
