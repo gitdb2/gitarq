@@ -4,8 +4,7 @@
  */
 package uy.edu.ort.laboratorio.client;
 
-import uy.edu.ort.laboratorio.client.swing.EnviarEntradaBlog;
-import uy.edu.ort.laboratorio.client.swing.FramePrincipal;
+import uy.edu.ort.laboratorio.client.swing.FrameLogin;
 
 /**
  *
@@ -23,7 +22,8 @@ public class SwingClient {
 
     private void run() {
         //new FramePrincipal().setVisible(true);
-        new FramePrincipal().setVisible(true);
+//        new FramePrincipal().setVisible(true);
+        new FrameLogin().setVisible(true);
     
     }
     

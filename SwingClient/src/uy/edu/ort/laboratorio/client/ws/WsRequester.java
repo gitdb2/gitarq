@@ -21,6 +21,7 @@ import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
 public class WsRequester {
     
     
+    
     /***
      * Dad e alta  una entrada de blog
      * @param titulo
