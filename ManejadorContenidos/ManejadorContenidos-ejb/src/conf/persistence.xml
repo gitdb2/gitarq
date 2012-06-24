@@ -6,6 +6,7 @@
     <class>uy.edu.ort.laboratorio.dominio.EntradaBlog</class>
     <class>uy.edu.ort.laboratorio.dominio.PaginaWeb</class>
     <class>uy.edu.ort.laboratorio.dominio.Usuario</class>
+    <class>uy.edu.ort.laboratorio.dominio.Rol</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.ddl-generation" value="create-tables"/>

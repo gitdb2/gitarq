@@ -71,5 +71,32 @@ public class Usuario implements Serializable {
     public void setPaginasWeb(List<PaginaWeb> paginasWeb) {
         this.paginasWeb = paginasWeb;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if ((this.login == null) ? (other.login != null) : !this.login.equals(other.login)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 11 * hash + (this.login != null ? this.login.hashCode() : 0);
+        hash = 11 * hash + (this.contrasena != null ? this.contrasena.hashCode() : 0);
+        return hash;
+    }
     
 }
