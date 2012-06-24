@@ -39,7 +39,7 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "crearContenidoEntradaBlog")
+    @WebMethod(operationName = "crearEntradaBlog")
     public long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") 
@@ -72,7 +72,7 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "actualizarContenidoEntradaBlog")
+    @WebMethod(operationName = "modificarEntradaBlog")
     public long modificarContenidoEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
                                           @WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
@@ -103,7 +103,7 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "crearContenidoPaginaWeb")
+    @WebMethod(operationName = "crearPaginaWeb")
     public long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
                                         @XmlJavaTypeAdapter(DateAdapter.class) 
@@ -131,7 +131,7 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "modificarContenidoPaginaWeb")
+    @WebMethod(operationName = "modificarPaginaWeb")
     public long modificarContenidoPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
                                         @WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
@@ -231,6 +231,27 @@ public class ManejadorContenidosWebService {
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException( "Ocurrio un error al eliminarEntradaBlog");
+       }
+    }
+    
+    /**
+     * elimina una pagina web
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "eliminarPaginaWeb")
+    public boolean eliminarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
+        if (idPaginaWeb == 0)
+            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+        try{
+            return manejadorContenidos.eliminarPaginaWeb(idPaginaWeb);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al eliminarPaginaWeb");
        }
     }
 

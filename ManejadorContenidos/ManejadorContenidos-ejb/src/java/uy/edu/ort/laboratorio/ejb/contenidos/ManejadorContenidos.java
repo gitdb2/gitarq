@@ -134,7 +134,10 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * @return
      * @throws ArquitecturaException 
      */
+    @Override
     public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, idEntradaBlog);
+        Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog);
         try {
             EntradaBlog aBorrar = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
             manejadorPersistenciaDB.remove(aBorrar);
@@ -142,6 +145,28 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         }catch(Exception ex){
              Logger.error(ManejadorContenidos.class,
                     "No se pudo elminar eliminarEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+    
+    /**
+     * elimina una pagina web
+     * @param idPaginaWeb
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @Override
+    public boolean eliminarPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, idPaginaWeb);
+        Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb);
+        try {
+            PaginaWeb aBorrar = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
+            manejadorPersistenciaDB.remove(aBorrar);
+            return true;
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo elminar eliminarPaginaWeb: Otra exception :->" + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }

@@ -63,4 +63,12 @@ public interface ManejadorContenidosLocal {
      */
     public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException;
     
+    /**
+     * elimina una pagina web
+     * @param idPaginaWeb
+     * @return
+     * @throws ArquitecturaException 
+     */
+    public boolean eliminarPaginaWeb(long idPaginaWeb) throws ArquitecturaException;
+    
 }
