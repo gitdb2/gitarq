@@ -40,7 +40,7 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearContenidoEntradaBlog")
-    public Long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
+    public long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") 
                                           @XmlJavaTypeAdapter(DateAdapter.class) 
@@ -48,7 +48,7 @@ public class ManejadorContenidosWebService {
                                           @WebParam(name = "texto") String texto, 
                                           @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
         
-        checkParamsBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
+        checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
         
         try {
             return manejadorContenidos.crearContenidoEntradaBlog
@@ -61,6 +61,40 @@ public class ManejadorContenidosWebService {
         }
         
     }
+    
+     /**
+     * actualiza el contenido de una entrada de blog
+     * @param titulo
+     * @param nombreAutor
+     * @param fechaPublicacion
+     * @param texto
+     * @param tags
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "actualizarContenidoEntradaBlog")
+    public long modificarContenidoEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
+                                          @WebParam(name = "titulo") String titulo, 
+                                          @WebParam(name = "nombreAutor") String nombreAutor, 
+                                          @WebParam(name = "fechaPublicacion") 
+                                          @XmlJavaTypeAdapter(DateAdapter.class) 
+                                          Date fechaPublicacion, 
+                                          @WebParam(name = "texto") String texto, 
+                                          @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
+        
+        checkParametosActualizarEntradaBlog(idEntradaBlog, titulo, nombreAutor, fechaPublicacion, texto, tags);
+        
+        try {
+            return manejadorContenidos.modificarContenidoEntradaBlog(idEntradaBlog, titulo, nombreAutor, fechaPublicacion, texto, tags);
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog+", "+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException("Ocurrio un error al modificarContenidoEntradaBlog");
+        }
+        
+    }
+    
     /**
      * crea un Contenido del tipo pagina web.
      * @param nombre
@@ -70,14 +104,14 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearContenidoPaginaWeb")
-    public Long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
+    public long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
                                         @XmlJavaTypeAdapter(DateAdapter.class) 
                                                 Date fechaPublicacion, 
                                         @WebParam(name = "html") byte[] html) 
             throws ArquitecturaException {
         
-       checkParamsPaginaWeb(nombre, fechaPublicacion, html);
+       checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
        try{
             return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
        }
@@ -86,6 +120,35 @@ public class ManejadorContenidosWebService {
            Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException( "Ocurrio un error al crearContenidoPaginaWeb");
+       }
+    }
+    
+    /**
+     * crea un Contenido del tipo pagina web.
+     * @param nombre
+     * @param fechaPublicacion
+     * @param html
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "modificarContenidoPaginaWeb")
+    public long modificarContenidoPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
+                                        @WebParam(name = "nombre") String nombre, 
+                                        @WebParam(name = "fechaPublicacion") 
+                                        @XmlJavaTypeAdapter(DateAdapter.class) 
+                                                Date fechaPublicacion, 
+                                        @WebParam(name = "html") byte[] html) 
+            throws ArquitecturaException {
+        
+       checkParametosActualizarPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+       try{
+            return manejadorContenidos.modificarContenidoPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+       }
+       catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb+", "+nombre+", "+fechaPublicacion+", "+html);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error al modificarContenidoPaginaWeb");
        }
     }
 
@@ -98,7 +161,7 @@ public class ManejadorContenidosWebService {
      * @param tags
      * @throws ArquitecturaException 
      */
-    private void checkParamsBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
+    private void checkParametrosCrearBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         
         if(fechaPublicacion == null){
             throw new ArquitecturaException("El formato de la fecha no es correcto o no se paso");
@@ -121,7 +184,7 @@ public class ManejadorContenidosWebService {
      * @param html
      * @throws ArquitecturaException 
      */
-    private void checkParamsPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
+    private void checkParametrosPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
         
         if(fechaPublicacion == null){
             throw new ArquitecturaException("El formato de la fecha no es correcto o no se paso");
@@ -134,5 +197,21 @@ public class ManejadorContenidosWebService {
             throw new ArquitecturaException("El payload de la pagina no puede ser nulo");
         }
      }
+
+    private void checkParametosActualizarEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
+        if (idEntradaBlog == 0)
+            throw new ArquitecturaException("El nombre no puede ser nulo ni vacio");
+        
+        checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
+        
+    }
+    
+    private void checkParametosActualizarPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
+        if (idPaginaWeb == 0)
+            throw new ArquitecturaException("El nombre no puede ser nulo ni vacio");
+        
+        checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
+        
+    }
 
 }

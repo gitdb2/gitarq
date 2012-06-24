@@ -18,7 +18,21 @@ public interface ManejadorContenidosLocal {
      * @return
      * @throws ArquitecturaException
      */
-    public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException;
+    public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException;
+    
+    /**
+     * actualiza el contenido de una entrada de blog.
+     * @param idPaginaWeb
+     * @param titulo
+     * @param nombreAutor
+     * @param fechaPublicacion
+     * @param texto
+     * @param tags
+     * @return
+     * @throws ArquitecturaException 
+     */
+    public long modificarContenidoEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException;
+    
      /**
      * crea y persiste una pagina web.
      * @param nombre
@@ -27,6 +41,17 @@ public interface ManejadorContenidosLocal {
      * @return
      * @throws ArquitecturaException
      */
-    public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException;
+    public long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException;
     
+    /**
+     * modifica el contenido de una pagina web.
+     * @param idPaginaWeb 
+     * @param nombre
+     * @param fechaPublicacion
+     * @param html
+     * @return
+     * @throws ArquitecturaException
+     */
+    public long modificarContenidoPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion,
+                            byte[] html) throws ArquitecturaException;
 }

@@ -38,7 +38,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * @throws ArquitecturaException
      */
     @Override
-    public Long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
+    public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
 	Logger.info(ManejadorContenidos.class, nombreAutor );
         Logger.debug(ManejadorContenidos.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
         try {
@@ -62,7 +62,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * @throws ArquitecturaException
      */
     @Override
-    public Long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion,
+    public long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion,
                             byte[] html) throws ArquitecturaException {
         Logger.info(ManejadorContenidos.class, nombre);
         Logger.debug(ManejadorContenidos.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
@@ -73,6 +73,56 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         }catch(Exception ex){
              Logger.error(ManejadorContenidos.class,
                     "No se pudo persistir crearContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public long modificarContenidoEntradaBlog(long idEntradaBlog, String titulo, 
+                    String nombreAutor, Date fechaPublicacion, String texto, 
+                    List<String> tags) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, nombreAutor);
+        Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog+","+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
+        try{
+            EntradaBlog entradaBlog = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
+            entradaBlog.setTitulo(titulo);
+            entradaBlog.setNombreAutor(nombreAutor);
+            entradaBlog.setTexto(texto);
+            entradaBlog.setTags(tags);
+            manejadorPersistenciaDB.merge(entradaBlog);
+            return entradaBlog.getId();
+        }catch(Exception ex){
+            Logger.error(ManejadorContenidos.class,
+                    "No se pudo modificar modificarContenidoEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+    
+     /**
+     * modifica una pagina web.
+     * @param nombre
+     * @param fechaPublicacion
+     * @param html
+     * @return
+     * @throws ArquitecturaException
+     */
+    @Override
+    public long modificarContenidoPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion,
+                            byte[] html) throws ArquitecturaException {
+        Logger.info(ManejadorContenidos.class, nombre);
+        Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb+","+nombre+", "+fechaPublicacion+", "+html);
+        try {
+            PaginaWeb paginaWeb = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
+            paginaWeb.setNombre(nombre);
+            paginaWeb.setFechaPublicacion(fechaPublicacion);
+            paginaWeb.setHtml(html);
+            manejadorPersistenciaDB.merge(paginaWeb);
+            return paginaWeb.getId();
+        }catch(Exception ex){
+             Logger.error(ManejadorContenidos.class,
+                    "No se pudo modificar modificarContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
