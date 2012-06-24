@@ -99,4 +99,10 @@ public interface ManejadorContenidosLocal {
      */
     public PaginaWeb obtenerPaginaWeb(long id) throws ArquitecturaException;
     
+    /**
+     * lista todas las paginas web segun filtrando por nombre y/o fecha de publicacion
+     * @return 
+     */
+    public List<DataPaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException;
+    
 }

@@ -10,12 +10,15 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
+import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.logger.Logger;
-import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
-import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 
 /**
  * bean encargado de recibir las peticiones de creacion de Contenidos.
@@ -245,6 +248,50 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
+    }
+    
+    /**
+     * lista todas las paginas web segun filtrando por nombre y/o fecha de publicacion
+     * @return 
+     */
+    @Override
+    public List<DataPaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException {
+        try {
+            List<DataPaginaWeb> resultado = new ArrayList<DataPaginaWeb>();
+            CriteriaQuery query = obtenerNamedQueryPaginaWeb(nombre, fechaPublicacion);
+            List<PaginaWeb> queryResult = manejadorPersistenciaDB.createQuery(query).getResultList();
+            for (PaginaWeb paginaWeb : queryResult) {
+                resultado.add(new DataPaginaWeb(paginaWeb.getId(), paginaWeb.getNombre()));
+            }
+            return resultado;
+        } catch (Exception ex) {
+            Logger.error(ManejadorContenidos.class,
+                    "Error listando Paginas Web: Otra exception :->" + ex.getClass().getName());
+            Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
+            throw new ArquitecturaException(ex.getMessage());
+        }
+    }
+    
+    private CriteriaQuery obtenerNamedQueryPaginaWeb(String nombre, Date fechaPublicacion) throws ArquitecturaException{
+        if (stringEsVacio(nombre) && fechaPublicacion == null) {
+            throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
+        } else {
+            CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
+            CriteriaQuery<PaginaWeb> query = qb.createQuery(PaginaWeb.class);
+            Root<PaginaWeb> paginaWeb = query.from(PaginaWeb.class);
+            
+            if (!stringEsVacio(nombre))
+                query.where(qb.equal(paginaWeb.get("nombre"), nombre));
+            
+            if (fechaPublicacion != null)
+                query.where(qb.equal(paginaWeb.get("fechaPublicacion"), fechaPublicacion));
+            
+            return query;
+        }
+    }
+    
+    private boolean stringEsVacio(String parametro) {
+        return parametro == null || parametro.trim().equals("");
     }
 
 }

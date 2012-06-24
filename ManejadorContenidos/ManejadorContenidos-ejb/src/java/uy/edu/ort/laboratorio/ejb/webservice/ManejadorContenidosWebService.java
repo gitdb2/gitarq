@@ -332,5 +332,25 @@ public class ManejadorContenidosWebService {
            throw new ArquitecturaException( "Ocurrio un error al obtenerEntradaBlog");
        }
     }
+    /**
+     * 
+     * @param nombre
+     * @param fechaPublicacion
+     * @return
+     * @throws ArquitecturaException 
+     */
+    @WebMethod(operationName = "listarPaginasWebFiltrando")
+    public List<DataPaginaWeb> listarPaginasWebFiltrando(@WebParam(name = "nombre") String nombre, 
+                                               @WebParam(name = "fechaPublicacion") Date fechaPublicacion) 
+                                               throws ArquitecturaException {
+       try{
+            return manejadorContenidos.listarPaginasWebFiltrando(nombre, fechaPublicacion);
+       }catch(Exception e){
+           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+","+fechaPublicacion);
+           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+           throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
+       }
+    }
 
 }
