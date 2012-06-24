@@ -301,10 +301,10 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public List<DataEntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion,
-                                                            String contenido, String autor) throws ArquitecturaException {
+                                                            String contenido, String autor, String tag) throws ArquitecturaException {
         try {
             List<DataEntradaBlog> resultado = new ArrayList<DataEntradaBlog>();
-            CriteriaQuery query = obtenerCriteriaQueryEntradaBlog(titulo, fechaPublicacion, contenido, autor);
+            CriteriaQuery query = obtenerCriteriaQueryEntradaBlog(titulo, fechaPublicacion, contenido, autor, tag);
             List<EntradaBlog> queryResult = manejadorPersistenciaDB.createQuery(query).getResultList();
             for (EntradaBlog entradaBlog : queryResult) {
                 resultado.add(new DataEntradaBlog(entradaBlog.getId(), entradaBlog.getNombreAutor()));
@@ -319,11 +319,12 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     }
 
     private CriteriaQuery obtenerCriteriaQueryEntradaBlog(String titulo, Date fechaPublicacion, 
-                                                          String contenido, String autor) throws ArquitecturaException {
+                                                          String contenido, String autor, String tag) throws ArquitecturaException {
         if (stringEsVacio(titulo)
             && fechaPublicacion == null 
             && stringEsVacio(contenido)
-            && stringEsVacio(autor)) {
+            && stringEsVacio(autor)
+            && stringEsVacio(tag)) {
             throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
         } else {
             CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
@@ -346,6 +347,10 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             
             if (!stringEsVacio(contenido)) {
                 filtros = qb.and(filtros, qb.like(entradaBlog.get("texto").as(String.class), "%" + contenido + "%"));
+            }
+            
+            if (!stringEsVacio(tag)) {
+                filtros = qb.and(filtros, qb.equal(entradaBlog.get("tags"), tag));
             }
             
             return query.where(filtros);

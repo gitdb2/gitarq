@@ -115,6 +115,6 @@ public interface ManejadorContenidosRemote {
      * @throws ArquitecturaException 
      */
     public List<DataEntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion,
-                                                            String contenido, String autor) throws ArquitecturaException;
+                                                            String contenido, String autor, String tag) throws ArquitecturaException;
     
 }

@@ -361,13 +361,13 @@ public class ManejadorContenidosWebService {
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion, 
                                           @WebParam(name = "texto") String texto, 
-                                          @WebParam(name = "tags") List<String> tags)
+                                          @WebParam(name = "tag") String tag)
                                                throws ArquitecturaException {
        try{
-            return manejadorContenidos.listarEntradaBlogFiltrando(titulo, fechaPublicacion, texto, nombreAutor);
+            return manejadorContenidos.listarEntradaBlogFiltrando(titulo, fechaPublicacion, texto, nombreAutor, tag);
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
+           Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tag);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
        }
