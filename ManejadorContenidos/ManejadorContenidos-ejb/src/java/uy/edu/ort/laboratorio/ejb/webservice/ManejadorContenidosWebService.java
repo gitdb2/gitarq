@@ -571,18 +571,7 @@ public class ManejadorContenidosWebService {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"), e);
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        return ret;
+          return ret;
     }
 
     /**
