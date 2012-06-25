@@ -484,18 +484,21 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.Dominio.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.ManejadorContenidos-logger-bundle.jar}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.ManejadorContenidos-config.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.Travellers.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${file.reference.ManejadorContenidos-comunes.jar}" property="manifest.file.reference.ManejadorContenidos-comunes.jar"/>
         <basename file="${file.reference.Dominio.jar}" property="manifest.file.reference.Dominio.jar"/>
         <basename file="${file.reference.ManejadorContenidos-logger-bundle.jar}" property="manifest.file.reference.ManejadorContenidos-logger-bundle.jar"/>
         <basename file="${file.reference.ManejadorContenidos-config.jar}" property="manifest.file.reference.ManejadorContenidos-config.jar"/>
+        <basename file="${file.reference.Travellers.jar}" property="manifest.file.reference.Travellers.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.file.reference.ManejadorContenidos-comunes.jar}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.Dominio.jar}"/>
             <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.ManejadorContenidos-logger-bundle.jar}"/>
             <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.ManejadorContenidos-config.jar}"/>
+            <attribute name="jar-5-Extension-Name" value="${manifest.file.reference.Travellers.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
@@ -503,6 +506,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${file.reference.Dominio.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.ManejadorContenidos-logger-bundle.jar}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.ManejadorContenidos-config.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${file.reference.Travellers.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

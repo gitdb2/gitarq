@@ -18,6 +18,7 @@ import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
+import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.logger.Logger;
 
@@ -46,15 +47,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-	Logger.info(ManejadorContenidos.class, nombreAutor );
         Logger.debug(ManejadorContenidos.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
         try {
             EntradaBlog nuevaEntradaBlog = new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion);
             manejadorPersistenciaDB.persist(nuevaEntradaBlog);
             return nuevaEntradaBlog.getId();
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "No se pudo persistir crearContenidoEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.crearContenidoEntradaBlog") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -71,15 +71,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion,
                             byte[] html) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, nombre);
         Logger.debug(ManejadorContenidos.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
         try {
             PaginaWeb nuevaPagina = new PaginaWeb(nombre, html, fechaPublicacion);
             manejadorPersistenciaDB.persist(nuevaPagina);
             return nuevaPagina.getId();
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "No se pudo persistir crearContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.crearContenidoPaginaWeb") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -89,7 +88,6 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     public long modificarContenidoEntradaBlog(long idEntradaBlog, String titulo, 
                     String nombreAutor, Date fechaPublicacion, String texto, 
                     List<String> tags) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, nombreAutor);
         Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog+","+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
         try{
             EntradaBlog entradaBlog = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
@@ -101,7 +99,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             return entradaBlog.getId();
         }catch(Exception ex){
             Logger.error(ManejadorContenidos.class,
-                    "No se pudo modificar modificarContenidoEntradaBlog: Otra exception :->" + ex.getClass().getName());
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.modificarContenidoEntradaBlog") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -118,7 +116,6 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public long modificarContenidoPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion,
                             byte[] html) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, nombre);
         Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb+","+nombre+", "+fechaPublicacion+", "+html);
         try {
             PaginaWeb paginaWeb = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
@@ -128,8 +125,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             manejadorPersistenciaDB.merge(paginaWeb);
             return paginaWeb.getId();
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "No se pudo modificar modificarContenidoPaginaWeb: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.modificarContenidoPaginaWeb") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -143,15 +140,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, idEntradaBlog);
         Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog);
         try {
             EntradaBlog aBorrar = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
             manejadorPersistenciaDB.remove(aBorrar);
             return true;
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "No se pudo elminar eliminarEntradaBlog: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.eliminarEntradaBlog") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -165,15 +161,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public boolean eliminarPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, idPaginaWeb);
         Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb);
         try {
             PaginaWeb aBorrar = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
             manejadorPersistenciaDB.remove(aBorrar);
             return true;
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "No se pudo elminar eliminarPaginaWeb: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.eliminarPaginaWeb") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -194,8 +189,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             }
             return resultado;
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "Error listando Paginas Web: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                     LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.listarPaginasWeb")+ ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -216,8 +211,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             }
             return resultado;
         }catch(Exception ex){
-             Logger.error(ManejadorContenidos.class,
-                    "Error listando Entradas de Blog: Otra exception :->" + ex.getClass().getName());
+            Logger.error(ManejadorContenidos.class,
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.listarEntradasDeBlog") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -225,13 +220,12 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
 
     @Override
     public EntradaBlog obtenerEntradasBlog(long idEntradaBlog) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, idEntradaBlog);
         Logger.debug(ManejadorContenidos.class, "params:"+idEntradaBlog);
         try {
             return manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
         }catch(Exception ex){
             Logger.error(ManejadorContenidos.class,
-                    "Error devolviendo la Entrada de Blog: Otra exception :->" + ex.getClass().getName());
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.obtenerEntradasBlog") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -239,13 +233,12 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
 
     @Override
     public PaginaWeb obtenerPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
-        Logger.info(ManejadorContenidos.class, idPaginaWeb);
         Logger.debug(ManejadorContenidos.class, "params:"+idPaginaWeb);
         try {
             return manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
         }catch(Exception ex){
             Logger.error(ManejadorContenidos.class,
-                    "Error devolviendo la Pagina Web: Otra exception :->" + ex.getClass().getName());
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.obtenerPaginaWeb") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -267,7 +260,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             return resultado;
         } catch (Exception ex) {
             Logger.error(ManejadorContenidos.class,
-                    "Error listando Paginas Web: Otra exception :->" + ex.getClass().getName());
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.listarPaginasWebFiltrando") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -275,7 +268,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     
     private CriteriaQuery obtenerCriteriaQueryPaginaWeb(String nombre, Date fechaPublicacion) throws ArquitecturaException{
         if (stringEsVacio(nombre) && fechaPublicacion == null) {
-            throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.obtenerCriteriaQueryPaginaWeb.sinFiltros"));
         } else {
             CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
             CriteriaQuery<PaginaWeb> query = qb.createQuery(PaginaWeb.class);
@@ -312,7 +305,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             return resultado;
         } catch (Exception ex) {
             Logger.error(ManejadorContenidos.class,
-                    "Error listando Entradas de Blog: Otra exception :->" + ex.getClass().getName());
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.listarEntradaBlogFiltrando") + ex.getClass().getName());
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
@@ -325,7 +318,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             && stringEsVacio(contenido)
             && stringEsVacio(autor)
             && stringEsVacio(tag)) {
-            throw new ArquitecturaException("Tiene que estar seteado al menos uno de los filtros.");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.obtenerCriteriaQueryPaginaWeb.sinFiltros"));
         } else {
             CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
             CriteriaQuery<EntradaBlog> query = qb.createQuery(EntradaBlog.class);

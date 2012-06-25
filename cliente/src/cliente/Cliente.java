@@ -37,11 +37,11 @@ public class Cliente {
 
 
                 
-           // Long lon = serv.crearContenidoPaginaWeb("pepe44","12-01-1999", "hola".getBytes());
-             List<String> tags = new ArrayList<String>();
-             tags.add("tag1");
-             tags.add("tag2");
-              Long lon = serv.crearContenidoEntradaBlog("titulos","El pepo", "01-12-2011", "hola", tags);
+            Long lon = serv.crearContenidoPaginaWeb("pepe44","12-01-1999", "hola".getBytes());
+//             List<String> tags = new ArrayList<String>();
+//             tags.add("tag1");
+//             tags.add("tag2");
+//              Long lon = serv.crearContenidoEntradaBlog("titulos","El pepo", "01-12-2011", "hola", tags);
              System.out.println(lon);
         } catch (ArquitecturaException_Exception ex) {
             System.out.println(ex.getMessage());

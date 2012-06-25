@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase que representa las entradas de blog.
@@ -21,6 +26,8 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name="EntradaBlog.findAll", query="SELECT e FROM EntradaBlog e")
 })
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class EntradaBlog implements Serializable {
     
     @Id
@@ -45,6 +52,8 @@ public class EntradaBlog implements Serializable {
         name="ENTRADA_BLOG_TAGS",
         joinColumns=@JoinColumn(name="ENTRADA_BLOG_ID")
     )
+    @XmlElementWrapper(name = "tagList")
+    @XmlElement(name = "tag")
     private List<String> tags = new ArrayList<String>();
 
     public EntradaBlog() {
