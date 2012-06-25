@@ -129,7 +129,6 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
         manejadorPersistenciaDB.persist(user);
 
     }
-
     public static void main(String[] args) {
 
         Properties props = new Properties();

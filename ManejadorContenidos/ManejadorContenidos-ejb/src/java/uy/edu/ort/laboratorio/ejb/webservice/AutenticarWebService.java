@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
 
@@ -22,14 +23,13 @@ import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
 @Stateless()
 public class AutenticarWebService {
     @EJB
-    private BeanSeguridadLocal ejbRef;// Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Web Service Operation")
+    private BeanSeguridadLocal ejbRef;
 
     @WebMethod(operationName = "autenticar")
     public Long autenticar(@WebParam(name = "login") String login, @WebParam(name = "passwordEncriptdo") String passwordEncriptdo) throws ArquitecturaException {
         Long ret = ejbRef.autenticar(login, passwordEncriptdo);;
         if(ret == null)
-            throw new ArquitecturaException("Usuario o password incorrectos");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
         return  ret;
     }
 

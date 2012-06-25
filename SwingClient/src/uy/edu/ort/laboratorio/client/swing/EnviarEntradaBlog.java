@@ -54,6 +54,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Entrada de Blog");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -136,17 +137,17 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                                     .addComponent(jLabel1)))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextTitulo)
-                                .addComponent(jTextFieldAutor)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 226, Short.MAX_VALUE)
+                                    .addGap(236, 236, 236)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jButtonAddTag, javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jButtonRemoveTag, javax.swing.GroupLayout.Alignment.TRAILING))
                                     .addGap(18, 18, 18)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
+                                .addComponent(jTextFieldAutor)
+                                .addComponent(jTextTitulo)
                                 .addComponent(jScrollPane1)))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,11 +180,11 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonCancelar)
                     .addComponent(jButtonSend))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-695)/2, (screenSize.height-501)/2, 695, 501);
+        setBounds((screenSize.width-711)/2, (screenSize.height-501)/2, 711, 501);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
