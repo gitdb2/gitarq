@@ -91,6 +91,7 @@ public class WsRequester {
     private void addUserAndPassToHeader(BindingProvider serv) {
         
         serv.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, UsuarioManagerSingleton.getInstance().getLogin());
-        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword()+"2");
+        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword());
+//        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "sss");//UsuarioManagerSingleton.getInstance().getPassword());
     }
 }
