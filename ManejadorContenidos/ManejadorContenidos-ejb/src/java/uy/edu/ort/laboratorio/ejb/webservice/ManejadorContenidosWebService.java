@@ -17,6 +17,7 @@ import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
+import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
@@ -63,7 +64,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearContenidoEntradaBlog"));
         }
         
     }
@@ -96,7 +97,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog+", "+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al modificarContenidoEntradaBlog");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarContenidoEntradaBlog"));
         }
         
     }
@@ -125,7 +126,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al crearContenidoPaginaWeb");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearContenidoPaginaWeb"));
        }
     }
     
@@ -141,12 +142,12 @@ public class ManejadorContenidosWebService {
     public long modificarContenidoPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
                                         @WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
-                                        @XmlJavaTypeAdapter(DateAdapter.class) 
-                                                Date fechaPublicacion, 
+                                        @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion, 
                                         @WebParam(name = "html") byte[] html) 
             throws ArquitecturaException {
         
        checkParametosActualizarPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+       
        try{
             return manejadorContenidos.modificarContenidoPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
        }
@@ -154,7 +155,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb+", "+nombre+", "+fechaPublicacion+", "+html);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al modificarContenidoPaginaWeb");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarContenidoPaginaWeb"));
        }
     }
 
@@ -170,16 +171,16 @@ public class ManejadorContenidosWebService {
     private void checkParametrosCrearBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         
         if(fechaPublicacion == null){
-            throw new ArquitecturaException("El formato de la fecha no es correcto o no se paso");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoFechaIncorrecto"));
         }
         if(nombreAutor == null  || nombreAutor.isEmpty()){
-            throw new ArquitecturaException("El autor no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoAutorIncorrecto"));
         }
          if(titulo == null  || titulo.isEmpty()){
-            throw new ArquitecturaException("El titulo no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoTituloIncorrecto"));
         }
         if(tags == null  ){
-            throw new ArquitecturaException("la lista de tags no puede ser nula");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoTagsIncorrecto"));
         }
      }
     
@@ -193,20 +194,21 @@ public class ManejadorContenidosWebService {
     private void checkParametrosPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
         
         if(fechaPublicacion == null){
-            throw new ArquitecturaException("El formato de la fecha no es correcto o no se paso");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoFechaIncorrecto"));
         }
+        
         if(nombre == null  || nombre.isEmpty()){
-            throw new ArquitecturaException("El nombre no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoNombreIncorrecto"));
         }
        
         if(html == null  ){
-            throw new ArquitecturaException("El payload de la pagina no puede ser nulo");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoHTMLIncorrecto"));
         }
      }
 
     private void checkParametosActualizarEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         if (idEntradaBlog == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
         
         checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
         
@@ -214,7 +216,7 @@ public class ManejadorContenidosWebService {
     
     private void checkParametosActualizarPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
         if (idPaginaWeb == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
         
         checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
     }
@@ -228,7 +230,7 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "eliminarEntradaBlog")
     public boolean eliminarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
         if (idEntradaBlog == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
         try{
             return manejadorContenidos.eliminarEntradaBlog(idEntradaBlog);
        }
@@ -236,7 +238,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al eliminarEntradaBlog");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarEntradaBlog"));
        }
     }
     
@@ -249,7 +251,7 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "eliminarPaginaWeb")
     public boolean eliminarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
         if (idPaginaWeb == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
         try{
             return manejadorContenidos.eliminarPaginaWeb(idPaginaWeb);
        }
@@ -257,7 +259,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al eliminarPaginaWeb");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarPaginaWeb"));
        }
     }
     
@@ -273,7 +275,7 @@ public class ManejadorContenidosWebService {
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al listarPaginasWeb");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"));
        }
     }
     
@@ -289,7 +291,7 @@ public class ManejadorContenidosWebService {
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al listarEntradasDeBlog");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
        }
     }
     
@@ -302,7 +304,7 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "obtenerPaginaWeb")
     public PaginaWeb obtenerPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
        if (idPaginaWeb == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
        try{
             return manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
        }
@@ -310,7 +312,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al obtenerPaginaWeb");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"));
        }
     }
     
@@ -323,7 +325,7 @@ public class ManejadorContenidosWebService {
     @WebMethod(operationName = "obtenerEntradaBlog")
     public EntradaBlog obtenerEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
        if (idEntradaBlog == 0)
-            throw new ArquitecturaException("El identificador no puede ser nulo ni vacio");
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
        try{
             return manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
        }
@@ -331,7 +333,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error al obtenerEntradaBlog");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"));
        }
     }
     
@@ -353,7 +355,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+","+fechaPublicacion);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoPaginaWeb"));
        }
     }
     
@@ -371,7 +373,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tag);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException( "Ocurrio un error en listarPaginasWebFiltrando");
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoEntradaBlog"));
        }
     }
 
