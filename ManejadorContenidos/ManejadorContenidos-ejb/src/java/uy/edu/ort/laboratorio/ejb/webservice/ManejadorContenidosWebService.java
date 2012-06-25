@@ -25,9 +25,7 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
-import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
+import uy.edu.ort.laboratorio.travellers.datatype.*;
 
 /**
  * Fachada de la aplicacion para exponer como webservice. Delega el
@@ -45,41 +43,13 @@ public class ManejadorContenidosWebService {
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
 
+   
     /**
      * crea un Contenido del tipo entrada de blog.
-     *
-     * @param titulo
-     * @param nombreAutor
-     * @param fechaPublicacion
-     * @param texto
-     * @param tags
+     * @param dataIn
      * @return
-     * @throws ArquitecturaException
+     * @throws ArquitecturaException 
      */
-    @Deprecated
-    @WebMethod(operationName = "crearEntradaBlog")
-
-    public long crearEntradaBlog(@WebParam(name = "titulo") String titulo, 
-                                          @WebParam(name = "nombreAutor") String nombreAutor, 
-                                          @WebParam(name = "fechaPublicacion") 
-                                          @XmlJavaTypeAdapter(DateAdapter.class) 
-                                          Date fechaPublicacion, 
-                                          @WebParam(name = "texto") String texto, 
-                                          @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
-        
-        checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
-
-        try {
-            return manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog", e);
-        }
-
-    }
-
     @WebMethod(operationName = "crearEntradaBlogEncripted")
     public String crearEntradaBlogEncripted(
             @WebParam(name = "data") String dataIn) throws ArquitecturaException {
@@ -127,14 +97,14 @@ public class ManejadorContenidosWebService {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
                 Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
                 Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-                throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog", e);
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
             }
 
         } catch (JAXBException e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
 
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
         }
 
         return ret;
@@ -180,34 +150,8 @@ public class ManejadorContenidosWebService {
     /**
      * crea un Contenido del tipo pagina web.
      *
-     * @param nombre
-     * @param fechaPublicacion
-     * @param html
-     * @return
-     * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "crearPaginaWeb")
-    public long crearPaginaWeb(@WebParam(name = "nombre") String nombre, 
-                                        @WebParam(name = "fechaPublicacion") 
-                                        @XmlJavaTypeAdapter(DateAdapter.class) 
-                                                Date fechaPublicacion, 
-                                        @WebParam(name = "html") byte[] html) 
-            throws ArquitecturaException {
-
-        checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
-        try {
-            return manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
-
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearPaginaWeb"));
-       }
-    }
-
-    @WebMethod(operationName = "crearPaginaWebEncripted")
+     @WebMethod(operationName = "crearPaginaWebEncripted")
     public String crearContenidoPaginaWebEncripted(@WebParam(name = "data") String dataIn)
             throws ArquitecturaException {
         String ret = null;
@@ -403,33 +347,101 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "listarPaginasWeb")
-    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
+//    @WebMethod(operationName = "listarPaginasWeb")
+//    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
+//        try {
+//            return manejadorContenidos.listarPaginasWeb();
+//       }catch(Exception e){
+//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"),e);
+//       }
+//    }
+
+    
+    @WebMethod(operationName = "listarPaginasWebEncripted")
+    public String listarPaginasWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+
         try {
-            return manejadorContenidos.listarPaginasWeb();
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+           
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+            
+            List<DataPaginaWeb> paginas =  manejadorContenidos.listarPaginasWeb();
+            
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataPaginaWeb pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombre()));
+            }
+            
+            String tmp = utilReturner.marshall(retObj);           
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+            
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"));
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"), e);
        }
+        
+       return ret;
     }
-
+    
     /**
      * lista todas las entradas de blog
      *
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "listarEntradasDeBlog")
-    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException {
+//    @Deprecated
+//    @WebMethod(operationName = "listarEntradasDeBlog")
+//    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException {
+//        try {
+//            return manejadorContenidos.listarEntradasDeBlog();
+//       }catch(Exception e){
+//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
+//       }
+//    }
+    
+     @WebMethod(operationName = "listarEntradasDeBlogEncripted")
+    public String listarEntradasDeBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+
         try {
-            return manejadorContenidos.listarEntradasDeBlog();
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+           
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+            
+            List<DataEntradaBlog> paginas =  manejadorContenidos.listarEntradasDeBlog();
+            
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataEntradaBlog pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombreAutor()));
+            }
+            
+            String tmp = utilReturner.marshall(retObj);           
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+            
        }catch(Exception e){
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
        }
+        
+       return ret;
     }
+    
+    
+    
+    
 
     /**
      * devuelve la pagina web asociada al identificador
