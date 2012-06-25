@@ -12,6 +12,10 @@
 
 <xs:element name="crearPaginaWeb" type="tns:crearPaginaWeb"/>
 
+<xs:element name="crearPaginaWebEncripted" type="tns:crearPaginaWebEncripted"/>
+
+<xs:element name="crearPaginaWebEncriptedResponse" type="tns:crearPaginaWebEncriptedResponse"/>
+
 <xs:element name="crearPaginaWebResponse" type="tns:crearPaginaWebResponse"/>
 
 <xs:element name="eliminarEntradaBlog" type="tns:eliminarEntradaBlog"/>
@@ -243,6 +247,18 @@
 <xs:complexType name="listarPaginasWebResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:dataPaginaWeb" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearPaginaWebEncripted">
+<xs:sequence>
+<xs:element name="data" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearPaginaWebEncriptedResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

@@ -25,6 +25,7 @@ import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
 import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 
 /**
@@ -37,7 +38,7 @@ import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 @Stateless()
 @HandlerChain(file = "autenticacion_handler.xml")
 public class ManejadorContenidosWebService {
-    
+
     @EJB
     BeanSeguridadLocal seguridad;
     @EJB
@@ -54,6 +55,7 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
+    @Deprecated
     @WebMethod(operationName = "crearEntradaBlog")
     public long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo,
             @WebParam(name = "nombreAutor") String nombreAutor,
@@ -61,7 +63,7 @@ public class ManejadorContenidosWebService {
             @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
             @WebParam(name = "texto") String texto,
             @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
-        
+
         checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
 
         try {
@@ -70,7 +72,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog");
+            throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog", e);
         }
 
     }
@@ -80,11 +82,11 @@ public class ManejadorContenidosWebService {
             @WebParam(name = "data") String dataIn) throws ArquitecturaException {
         String ret = null;
         try {
-            
+
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
-            
-            
+
+
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
 
@@ -100,20 +102,20 @@ public class ManejadorContenidosWebService {
             Date fechaPublicacion = payloadObject.getFechaPublicacion();
             String texto = payloadObject.getTexto();
             List<String> tags = payloadObject.getTags();
-            
+
 
             checkParametrosCrearBlog(payloadObject.getTitulo(),
-                                     payloadObject.getNombreAutor(),
-                                     payloadObject.getFechaPublicacion(),
-                                     payloadObject.getTexto(),
-                                     payloadObject.getTags());
+                    payloadObject.getNombreAutor(),
+                    payloadObject.getFechaPublicacion(),
+                    payloadObject.getTexto(),
+                    payloadObject.getTags());
 
             try {
                 Long idc = manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
 
 
                 inObject.setPayload(seguridad.encriptar(id, "" + idc));
-                
+
                 ret = utilTraveller.marshall(inObject);
 
 
@@ -134,7 +136,6 @@ public class ManejadorContenidosWebService {
         return ret;
 
     }
-
 
     /**
      * actualiza el contenido de una entrada de blog
@@ -164,7 +165,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog + ", " + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al modificarContenidoEntradaBlog");
+            throw new ArquitecturaException("Ocurrio un error al modificarContenidoEntradaBlog", e);
         }
 
     }
@@ -192,8 +193,57 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb");
+            throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb", e);
         }
+    }
+
+    @WebMethod(operationName = "crearPaginaWebEncripted")
+    public String crearContenidoPaginaWebEncripted(@WebParam(name = "data") String dataIn)
+            throws ArquitecturaException {
+        String ret = null;
+
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            PaginaWebTraveller payloadObject = utilPayload.unmarshall(PaginaWebTraveller.class, payload);
+
+
+      
+            String nombre = payloadObject.getNombre();
+            Date fechaPublicacion = payloadObject.getFechaPublicacion();
+            byte[] html =  payloadObject.getHtml(); 
+
+
+
+            checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
+            try {
+                 Long idc =  manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
+                 inObject.setPayload(seguridad.encriptar(id, "" + idc));
+
+                 ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
+                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+                throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb", e);
+            }
+        } catch (JAXBException e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb", e);
+        }
+
+        return ret;
     }
 
     /**
@@ -220,7 +270,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb + ", " + nombre + ", " + fechaPublicacion + ", " + html);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al modificarContenidoPaginaWeb");
+            throw new ArquitecturaException("Ocurrio un error al modificarContenidoPaginaWeb", e);
         }
     }
 
@@ -307,7 +357,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al eliminarEntradaBlog");
+            throw new ArquitecturaException("Ocurrio un error al eliminarEntradaBlog", e);
         }
     }
 
@@ -329,7 +379,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al eliminarPaginaWeb");
+            throw new ArquitecturaException("Ocurrio un error al eliminarPaginaWeb", e);
         }
     }
 
@@ -346,7 +396,7 @@ public class ManejadorContenidosWebService {
         } catch (Exception e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al listarPaginasWeb");
+            throw new ArquitecturaException("Ocurrio un error al listarPaginasWeb", e);
         }
     }
 
@@ -363,7 +413,7 @@ public class ManejadorContenidosWebService {
         } catch (Exception e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al listarEntradasDeBlog");
+            throw new ArquitecturaException("Ocurrio un error al listarEntradasDeBlog", e);
         }
     }
 
@@ -385,7 +435,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al obtenerPaginaWeb");
+            throw new ArquitecturaException("Ocurrio un error al obtenerPaginaWeb", e);
         }
     }
 
@@ -407,7 +457,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al obtenerEntradaBlog");
+            throw new ArquitecturaException("Ocurrio un error al obtenerEntradaBlog", e);
         }
     }
 
@@ -429,7 +479,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + "," + fechaPublicacion);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error en listarPaginasWebFiltrando");
+            throw new ArquitecturaException("Ocurrio un error en listarPaginasWebFiltrando", e);
         }
     }
 
@@ -447,7 +497,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tag);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error en listarPaginasWebFiltrando");
+            throw new ArquitecturaException("Ocurrio un error en listarPaginasWebFiltrando", e);
         }
     }
 }

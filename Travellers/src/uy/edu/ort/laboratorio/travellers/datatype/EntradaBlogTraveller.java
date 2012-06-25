@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.*;
  * Clase que representa las entradas de blog.
  * Se le agregaron contstructor por defecto, getters y setters para
  * poder persistirla.
- * @author tanquista
+ * @author Rodrigo
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
