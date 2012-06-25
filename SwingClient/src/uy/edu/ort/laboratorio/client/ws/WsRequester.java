@@ -95,17 +95,31 @@ public class WsRequester {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(nuevaEntradaBlog, out);
-            String aaa = out.toString();
+            String payloadXml = out.toString();
+            out.close();            
 
+            
+            
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
-            traveller.setPayload(aaa);
+            traveller.setPayload(payloadXml);
             
-            System.out.println(aaa);
-            //titulo, autor, sdf.format(fecha), texto, tags
-
-//            String lon = serv.crearEntradaBlogEncripted();
-          
+            
+            contextOut = JAXBContext.newInstance(Traveller.class);
+            m = contextOut.createMarshaller();
+            out = new ByteArrayOutputStream();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(traveller, out);
+            String message = out.toString();
+            out.close();    
+            
+            System.out.println(message);
+            String lon = serv.crearEntradaBlogEncripted(message);
+            
+            
+            
+            
+            System.out.println(lon);
 //        } catch (ArquitecturaException_Exception ex) {
 //            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
 //            throw ex;
