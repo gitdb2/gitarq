@@ -30,6 +30,7 @@ public class FrameLogin extends javax.swing.JFrame {
 //
 //        // center the jframe on screen
 //        this.setLocationRelativeTo(null);
+         getRootPane().setDefaultButton(jButtonLogin);
     }
 
     /**
