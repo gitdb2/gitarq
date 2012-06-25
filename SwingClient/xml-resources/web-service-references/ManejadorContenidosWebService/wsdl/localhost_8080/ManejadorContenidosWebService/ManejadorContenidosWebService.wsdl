@@ -4,26 +4,14 @@
 <xsd:import namespace="http://webservice.ejb.laboratorio.ort.edu.uy/" schemaLocation="http://localhost:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="crearPaginaWeb">
-<part name="parameters" element="tns:crearPaginaWeb"/>
-</message>
-<message name="crearPaginaWebResponse">
-<part name="parameters" element="tns:crearPaginaWebResponse"/>
-</message>
-<message name="ArquitecturaException">
-<part name="fault" element="tns:ArquitecturaException"/>
-</message>
 <message name="modificarEntradaBlog">
 <part name="parameters" element="tns:modificarEntradaBlog"/>
 </message>
 <message name="modificarEntradaBlogResponse">
 <part name="parameters" element="tns:modificarEntradaBlogResponse"/>
 </message>
-<message name="obtenerEntradaBlog">
-<part name="parameters" element="tns:obtenerEntradaBlog"/>
-</message>
-<message name="obtenerEntradaBlogResponse">
-<part name="parameters" element="tns:obtenerEntradaBlogResponse"/>
+<message name="ArquitecturaException">
+<part name="fault" element="tns:ArquitecturaException"/>
 </message>
 <message name="modificarPaginaWeb">
 <part name="parameters" element="tns:modificarPaginaWeb"/>
@@ -61,17 +49,23 @@
 <message name="obtenerPaginaWebResponse">
 <part name="parameters" element="tns:obtenerPaginaWebResponse"/>
 </message>
-<message name="listarPaginasWebFiltrando">
-<part name="parameters" element="tns:listarPaginasWebFiltrando"/>
-</message>
-<message name="listarPaginasWebFiltrandoResponse">
-<part name="parameters" element="tns:listarPaginasWebFiltrandoResponse"/>
-</message>
 <message name="crearEntradaBlog">
 <part name="parameters" element="tns:crearEntradaBlog"/>
 </message>
 <message name="crearEntradaBlogResponse">
 <part name="parameters" element="tns:crearEntradaBlogResponse"/>
+</message>
+<message name="obtenerEntradaBlog">
+<part name="parameters" element="tns:obtenerEntradaBlog"/>
+</message>
+<message name="obtenerEntradaBlogResponse">
+<part name="parameters" element="tns:obtenerEntradaBlogResponse"/>
+</message>
+<message name="listarPaginasWebFiltrando">
+<part name="parameters" element="tns:listarPaginasWebFiltrando"/>
+</message>
+<message name="listarPaginasWebFiltrandoResponse">
+<part name="parameters" element="tns:listarPaginasWebFiltrandoResponse"/>
 </message>
 <message name="listarEntradaBlogFiltrando">
 <part name="parameters" element="tns:listarEntradaBlogFiltrando"/>
@@ -79,21 +73,23 @@
 <message name="listarEntradaBlogFiltrandoResponse">
 <part name="parameters" element="tns:listarEntradaBlogFiltrandoResponse"/>
 </message>
+<message name="crearPaginaWeb">
+<part name="parameters" element="tns:crearPaginaWeb"/>
+</message>
+<message name="crearPaginaWebResponse">
+<part name="parameters" element="tns:crearPaginaWebResponse"/>
+</message>
+<message name="crearEntradaBlogEncripted">
+<part name="parameters" element="tns:crearEntradaBlogEncripted"/>
+</message>
+<message name="crearEntradaBlogEncriptedResponse">
+<part name="parameters" element="tns:crearEntradaBlogEncriptedResponse"/>
+</message>
 <portType name="ManejadorContenidosWebService">
-<operation name="crearPaginaWeb">
-<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWebRequest" message="tns:crearPaginaWeb"/>
-<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWebResponse" message="tns:crearPaginaWebResponse"/>
-<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWeb/Fault/ArquitecturaException"/>
-</operation>
 <operation name="modificarEntradaBlog">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/modificarEntradaBlogRequest" message="tns:modificarEntradaBlog"/>
 <output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/modificarEntradaBlogResponse" message="tns:modificarEntradaBlogResponse"/>
 <fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/modificarEntradaBlog/Fault/ArquitecturaException"/>
-</operation>
-<operation name="obtenerEntradaBlog">
-<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlogRequest" message="tns:obtenerEntradaBlog"/>
-<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlogResponse" message="tns:obtenerEntradaBlogResponse"/>
-<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlog/Fault/ArquitecturaException"/>
 </operation>
 <operation name="modificarPaginaWeb">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/modificarPaginaWebRequest" message="tns:modificarPaginaWeb"/>
@@ -125,49 +121,40 @@
 <output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerPaginaWebResponse" message="tns:obtenerPaginaWebResponse"/>
 <fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerPaginaWeb/Fault/ArquitecturaException"/>
 </operation>
-<operation name="listarPaginasWebFiltrando">
-<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrandoRequest" message="tns:listarPaginasWebFiltrando"/>
-<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrandoResponse" message="tns:listarPaginasWebFiltrandoResponse"/>
-<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrando/Fault/ArquitecturaException"/>
-</operation>
 <operation name="crearEntradaBlog">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlogRequest" message="tns:crearEntradaBlog"/>
 <output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlogResponse" message="tns:crearEntradaBlogResponse"/>
 <fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlog/Fault/ArquitecturaException"/>
+</operation>
+<operation name="obtenerEntradaBlog">
+<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlogRequest" message="tns:obtenerEntradaBlog"/>
+<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlogResponse" message="tns:obtenerEntradaBlogResponse"/>
+<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/obtenerEntradaBlog/Fault/ArquitecturaException"/>
+</operation>
+<operation name="listarPaginasWebFiltrando">
+<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrandoRequest" message="tns:listarPaginasWebFiltrando"/>
+<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrandoResponse" message="tns:listarPaginasWebFiltrandoResponse"/>
+<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarPaginasWebFiltrando/Fault/ArquitecturaException"/>
 </operation>
 <operation name="listarEntradaBlogFiltrando">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarEntradaBlogFiltrandoRequest" message="tns:listarEntradaBlogFiltrando"/>
 <output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarEntradaBlogFiltrandoResponse" message="tns:listarEntradaBlogFiltrandoResponse"/>
 <fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/listarEntradaBlogFiltrando/Fault/ArquitecturaException"/>
 </operation>
+<operation name="crearPaginaWeb">
+<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWebRequest" message="tns:crearPaginaWeb"/>
+<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWebResponse" message="tns:crearPaginaWebResponse"/>
+<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearPaginaWeb/Fault/ArquitecturaException"/>
+</operation>
+<operation name="crearEntradaBlogEncripted">
+<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlogEncriptedRequest" message="tns:crearEntradaBlogEncripted"/>
+<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlogEncriptedResponse" message="tns:crearEntradaBlogEncriptedResponse"/>
+<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/ManejadorContenidosWebService/crearEntradaBlogEncripted/Fault/ArquitecturaException"/>
+</operation>
 </portType>
 <binding name="ManejadorContenidosWebServicePortBinding" type="tns:ManejadorContenidosWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="crearPaginaWeb">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ArquitecturaException">
-<soap:fault name="ArquitecturaException" use="literal"/>
-</fault>
-</operation>
 <operation name="modificarEntradaBlog">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ArquitecturaException">
-<soap:fault name="ArquitecturaException" use="literal"/>
-</fault>
-</operation>
-<operation name="obtenerEntradaBlog">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -251,18 +238,6 @@
 <soap:fault name="ArquitecturaException" use="literal"/>
 </fault>
 </operation>
-<operation name="listarPaginasWebFiltrando">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="ArquitecturaException">
-<soap:fault name="ArquitecturaException" use="literal"/>
-</fault>
-</operation>
 <operation name="crearEntradaBlog">
 <soap:operation soapAction=""/>
 <input>
@@ -275,7 +250,55 @@
 <soap:fault name="ArquitecturaException" use="literal"/>
 </fault>
 </operation>
+<operation name="obtenerEntradaBlog">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ArquitecturaException">
+<soap:fault name="ArquitecturaException" use="literal"/>
+</fault>
+</operation>
+<operation name="listarPaginasWebFiltrando">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ArquitecturaException">
+<soap:fault name="ArquitecturaException" use="literal"/>
+</fault>
+</operation>
 <operation name="listarEntradaBlogFiltrando">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ArquitecturaException">
+<soap:fault name="ArquitecturaException" use="literal"/>
+</fault>
+</operation>
+<operation name="crearPaginaWeb">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ArquitecturaException">
+<soap:fault name="ArquitecturaException" use="literal"/>
+</fault>
+</operation>
+<operation name="crearEntradaBlogEncripted">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

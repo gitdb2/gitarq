@@ -95,8 +95,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="jPasswordFieldPass">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1234"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldUser">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="rodrigo"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>

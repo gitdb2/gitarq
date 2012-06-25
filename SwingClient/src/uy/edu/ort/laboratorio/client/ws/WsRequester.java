@@ -4,17 +4,23 @@
  */
 package uy.edu.ort.laboratorio.client.ws;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.SwingClient;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
+import uy.edu.ort.laboratorio.client.ws.autenticar.ArquitecturaException_Exception;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
+import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
+import uy.edu.ort.laboratorio.ws.EntradaBlog;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
 
@@ -29,7 +35,7 @@ public class WsRequester {
         AutenticarWebService serv = service.getAutenticarWebServicePort();
 
         return serv.autenticar(UsuarioManagerSingleton.getInstance().getLogin(),
-                                UsuarioManagerSingleton.getInstance().getPassword());
+                UsuarioManagerSingleton.getInstance().getPassword());
     }
 
     /**
@@ -42,21 +48,67 @@ public class WsRequester {
      * @param texto
      * @param tags
      */
+    public boolean crearContenidoEntradaBlogOrig(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
+
+        try {
+            Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
+
     public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-       System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
-        
-        try {
-            Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
+        System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
 
-        } catch (ArquitecturaException_Exception ex) {
-            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+        try {
+
+            
+            
+            
+            EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, autor, texto, tags, fecha);
+            
+//            {
+//                    JAXBContext context = JAXBContext.newInstance(EntradaBlogTraveller.class);
+//            Marshaller m = context.createMarshaller();
+//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//            m.marshal(nuevaEntradaBlog, System.out);
+//            }
+//            
+//            
+            JAXBContext contextOut = JAXBContext.newInstance(EntradaBlogTraveller.class);
+            Marshaller m = contextOut.createMarshaller();
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(nuevaEntradaBlog, out);
+            String aaa = out.toString();
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(aaa);
+            
+            System.out.println(aaa);
+            //titulo, autor, sdf.format(fecha), texto, tags
+
+//            String lon = serv.crearEntradaBlogEncripted();
+          
+//        } catch (ArquitecturaException_Exception ex) {
+//            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
+//            throw ex;
         } catch (Exception e) {
             throw e;
         }
@@ -79,9 +131,7 @@ public class WsRequester {
 
         try {
             Long lon = serv.crearPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
-        } catch (ArquitecturaException_Exception ex) {
-            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
-            throw ex;
+
         } catch (Exception e) {
             throw e;
         }
@@ -89,7 +139,7 @@ public class WsRequester {
     }
 
     private void addUserAndPassToHeader(BindingProvider serv) {
-        
+
         serv.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, UsuarioManagerSingleton.getInstance().getLogin());
         serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword());
 //        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "sss");//UsuarioManagerSingleton.getInstance().getPassword());

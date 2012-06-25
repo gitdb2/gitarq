@@ -71,6 +71,10 @@ public class FrameLogin extends javax.swing.JFrame {
             }
         });
 
+        jPasswordFieldPass.setText("1234");
+
+        jTextFieldUser.setText("rodrigo");
+
         jLabel2.setText("password");
 
         jLabel1.setText("login");

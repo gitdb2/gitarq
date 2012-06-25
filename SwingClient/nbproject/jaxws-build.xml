@@ -18,23 +18,6 @@
             <classpath path="${libs.jaxws21.classpath}"/>
         </taskdef>
     </target>
-    <target name="wsimport-client-ManejadorContenidosWebService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
-        <property name="wsdl-ManejadorContenidosWebService" location="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/localhost_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService" destdir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService" wsdl="${wsdl-ManejadorContenidosWebService}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?wsdl" xnocompile="true" xendorsed="true" package="uy.edu.ort.laboratorio.ws">
-            <depends file="${wsdl-ManejadorContenidosWebService}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-ManejadorContenidosWebService" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uy/edu/ort/laboratorio/ws"/>
-    </target>
     <target name="wsimport-client-AutenticarWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/AutenticarWebService"/>
         <property name="wsdl-AutenticarWebService" location="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.wsdl"/>
@@ -52,5 +35,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/AutenticarWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/uy/edu/ort/laboratorio/client/ws/autenticar"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-ManejadorContenidosWebService, wsimport-client-AutenticarWebService"/>
+    <target name="wsimport-client-ManejadorContenidosWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
+        <property name="wsdl-ManejadorContenidosWebService" location="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/localhost_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService" destdir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService" wsdl="${wsdl-ManejadorContenidosWebService}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?wsdl" xnocompile="true" xendorsed="true" package="uy.edu.ort.laboratorio.ws">
+            <depends file="${wsdl-ManejadorContenidosWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-ManejadorContenidosWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/uy/edu/ort/laboratorio/ws"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-AutenticarWebService, wsimport-client-ManejadorContenidosWebService"/>
 </project>

@@ -4,6 +4,10 @@
 
 <xs:element name="crearEntradaBlog" type="tns:crearEntradaBlog"/>
 
+<xs:element name="crearEntradaBlogEncripted" type="tns:crearEntradaBlogEncripted"/>
+
+<xs:element name="crearEntradaBlogEncriptedResponse" type="tns:crearEntradaBlogEncriptedResponse"/>
+
 <xs:element name="crearEntradaBlogResponse" type="tns:crearEntradaBlogResponse"/>
 
 <xs:element name="crearPaginaWeb" type="tns:crearPaginaWeb"/>
@@ -52,30 +56,33 @@
 
 <xs:element name="obtenerPaginaWebResponse" type="tns:obtenerPaginaWebResponse"/>
 
-<xs:complexType name="obtenerPaginaWeb">
+<xs:complexType name="eliminarEntradaBlog">
 <xs:sequence>
-<xs:element name="idPaginaWeb" type="xs:long"/>
+<xs:element name="idEntradaBlog" type="xs:long"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="obtenerPaginaWebResponse">
+<xs:complexType name="eliminarEntradaBlogResponse">
 <xs:sequence>
-<xs:element name="return" type="tns:paginaWeb" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="paginaWeb">
-<xs:sequence>
-<xs:element name="fechaPublicacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="html" type="xs:base64Binary" minOccurs="0"/>
-<xs:element name="id" type="xs:long"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="ArquitecturaException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPaginaWeb">
+<xs:sequence>
+<xs:element name="idPaginaWeb" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPaginaWebResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -96,30 +103,6 @@
 <xs:sequence>
 <xs:element name="id" type="xs:long"/>
 <xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarPaginaWeb">
-<xs:sequence>
-<xs:element name="idPaginaWeb" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarPaginaWebResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarEntradaBlog">
-<xs:sequence>
-<xs:element name="idEntradaBlog" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarEntradaBlogResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -151,35 +134,6 @@
 <xs:complexType name="crearPaginaWebResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="obtenerEntradaBlog">
-<xs:sequence>
-<xs:element name="idEntradaBlog" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="obtenerEntradaBlogResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:entradaBlog" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="entradaBlog">
-<xs:sequence>
-<xs:element name="id" type="xs:long"/>
-<xs:element name="titulo" type="xs:string" minOccurs="0"/>
-<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
-<xs:element name="texto" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaPublicacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="tagList" minOccurs="0">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="tag" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -216,6 +170,72 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="crearEntradaBlog">
+<xs:sequence>
+<xs:element name="titulo" type="xs:string" minOccurs="0"/>
+<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
+<xs:element name="texto" type="xs:string" minOccurs="0"/>
+<xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="crearEntradaBlogResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerPaginaWeb">
+<xs:sequence>
+<xs:element name="idPaginaWeb" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerPaginaWebResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:paginaWeb" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="paginaWeb">
+<xs:sequence>
+<xs:element name="fechaPublicacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="html" type="xs:base64Binary" minOccurs="0"/>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerEntradaBlog">
+<xs:sequence>
+<xs:element name="idEntradaBlog" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="obtenerEntradaBlogResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:entradaBlog" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="entradaBlog">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="titulo" type="xs:string" minOccurs="0"/>
+<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
+<xs:element name="texto" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaPublicacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="tagList" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="tag" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="listarPaginasWeb">
 <xs:sequence/>
 </xs:complexType>
@@ -241,19 +261,15 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="crearEntradaBlog">
+<xs:complexType name="crearEntradaBlogEncripted">
 <xs:sequence>
-<xs:element name="titulo" type="xs:string" minOccurs="0"/>
-<xs:element name="nombreAutor" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaPublicacion" type="xs:string" minOccurs="0"/>
-<xs:element name="texto" type="xs:string" minOccurs="0"/>
-<xs:element name="tags" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="data" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="crearEntradaBlogResponse">
+<xs:complexType name="crearEntradaBlogEncriptedResponse">
 <xs:sequence>
-<xs:element name="return" type="xs:long"/>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>

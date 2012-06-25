@@ -29,33 +29,33 @@ import uy.edu.ort.laboratorio.logger.Logger;
  */
 @Stateless
 @LocalBean
-public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
+public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
 
     @PersistenceContext
     private EntityManager manejadorPersistenciaDB;
 
     @Override
     public Long autenticar(String login, String passwordEncriptdo) {
-        
-        Usuario usuario = null;
-        Long ret= null;
-         try{
-                usuario = findUserByLogin(login);
-                DesEncrypter encriptador = new DesEncrypter(usuario.getContrasena());
-        
-                String desencriptado = encriptador.decrypt(passwordEncriptdo);
-        
-                if(usuario!= null && usuario.getContrasena()!= null && usuario.getContrasena().equals(desencriptado)){
-                    ret = usuario.getId();
-                }
 
-            }catch(javax.persistence.NoResultException e){
-                //el rol no fue dado de alta por lo que sugo
-                Logger.info(this.getClass(), "El login "+ login + "no fue dado de alta aun en la db");
+        Usuario usuario = null;
+        Long ret = null;
+        try {
+            usuario = findUserByLogin(login);
+            DesEncrypter encriptador = new DesEncrypter(usuario.getContrasena());
+
+            String desencriptado = encriptador.decrypt(passwordEncriptdo);
+
+            if (usuario != null && usuario.getContrasena() != null && usuario.getContrasena().equals(desencriptado)) {
+                ret = usuario.getId();
             }
-        
-        
-        
+
+        } catch (javax.persistence.NoResultException e) {
+            //el rol no fue dado de alta por lo que sugo
+            Logger.info(this.getClass(), "El login " + login + "no fue dado de alta aun en la db");
+        }
+
+
+
         return ret;
         //List<paginaWeb> result = manejadorPersistenciaDB.createQuery(query).getResultList();
     }
@@ -68,7 +68,7 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
         Usuario usuario = manejadorPersistenciaDB.createQuery(query).getSingleResult();
         return usuario;
     }
-    
+
     private Rol findRolByName(String rolName) {
         CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
         CriteriaQuery<Rol> query = qb.createQuery(Rol.class);
@@ -77,20 +77,20 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
         Rol rol = manejadorPersistenciaDB.createQuery(query).getSingleResult();
         return rol;
     }
-    
+
     @Override
-    public boolean tienePermiso(String login, String rolStr){
+    public boolean tienePermiso(String login, String rolStr) {
         Usuario usuario = findUserByLogin(login);
         boolean ret = false;
         Rol rol = null;
-        try{
-                rol = findRolByName(rolStr);
-            }catch(javax.persistence.NoResultException e){
-                //el rol no fue dado de alta por lo que sugo
-                Logger.info(this.getClass(), "El rol "+ rolStr + "no fue dado de alta aun en la db");
-            }
-        
-        if(rol!= null){
+        try {
+            rol = findRolByName(rolStr);
+        } catch (javax.persistence.NoResultException e) {
+            //el rol no fue dado de alta por lo que sugo
+            Logger.info(this.getClass(), "El rol " + rolStr + "no fue dado de alta aun en la db");
+        }
+
+        if (rol != null) {
 //        Query q = manejadorPersistenciaDB.createQuery(
 //                "select r from Rol r where r.nombre=:rol and :usuario in (r.usuario)");//.setString("rol", rol).uniqueResult();
 //        q.setParameter("rol", rol).setParameter("usuario", usuario);
@@ -99,68 +99,81 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
             List<Usuario> usuarios = rol.getUsuario();
             ret = usuarios != null && usuarios.contains(usuario);
         }
-        
+
         return ret;
     }
-    
-    
+
     @Override
-    public void altaUsuario(String login, String pass, List<String> roles ){
-        
+    public void altaUsuario(String login, String pass, List<String> roles) {
+
         Usuario user = new Usuario();
         user.setLogin(login);
         user.setContrasena(pass);
-        
+
         for (String rolStr : roles) {
             Rol rol = null;
-            try{
+            try {
                 rol = findRolByName(rolStr);
-            }catch(javax.persistence.NoResultException e){
+            } catch (javax.persistence.NoResultException e) {
                 //el rol no fue dado de alta por lo que sugo
-                Logger.info(this.getClass(), "El rol "+ rolStr + "no fue dado de alta aun en la db");
+                Logger.info(this.getClass(), "El rol " + rolStr + "no fue dado de alta aun en la db");
             }
-            
-            if(rol == null){
-               rol = new Rol();
-               rol.setNombre(rolStr);
+
+            if (rol == null) {
+                rol = new Rol();
+                rol.setNombre(rolStr);
             }
             rol.addUsuario(user);
             manejadorPersistenciaDB.persist(rol);
         }
         manejadorPersistenciaDB.persist(user);
-        
+
     }
-    
-    
-    
-     public static void main(String[] args){
-        
-       Properties props = new Properties();
-       props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-       props.put(Context.PROVIDER_URL, "jnp://localhost:3700");
-       try {
-           
-           InitialContext ctx = new InitialContext(props);
-           
-           BeanSeguridadRemote ejbRef = (BeanSeguridadRemote) ctx.lookup(
-                   "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
-       
-           try {
-               
-               
-               
+
+    public static void main(String[] args) {
+
+        Properties props = new Properties();
+        props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
+        props.put(Context.PROVIDER_URL, "jnp://localhost:3700");
+        try {
+
+            InitialContext ctx = new InitialContext(props);
+
+            BeanSeguridadRemote ejbRef = (BeanSeguridadRemote) ctx.lookup(
+                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
+
+            try {
 //               List<String> roles = new ArrayList<String>();
 //               roles.add("admin");
 //               ejbRef.altaUsuario("rodrigo2", DesEncrypter.MD5("1234"), roles);
-           } catch (Exception ex) {
-               ex.printStackTrace();
-           }
-           
-           System.out.print(ejbRef.tienePermiso("rodrigo2", "admin"));
-           
-       } catch (NamingException ex) {
-           ex.printStackTrace();
-       }
-     }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            System.out.print(ejbRef.tienePermiso("rodrigo2", "admin"));
+
+        } catch (NamingException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public String desencriptar(Long id, String payload) {
+
+        Usuario usuario = manejadorPersistenciaDB.find(Usuario.class, id);
+        //payload = desencriptar(usuario.getContrasena(), payload);
+
+        return payload;
+    }
+
+    private String desencriptar(String passphrase, String payload) {
+        DesEncrypter encriptador = new DesEncrypter(passphrase);
+        return encriptador.decrypt(payload);
+    }
     
+    private String encriptar(String passphrase, String payload) {
+        DesEncrypter encriptador = new DesEncrypter(passphrase);
+        return encriptador.encrypt(payload);
+    }
+
 }
