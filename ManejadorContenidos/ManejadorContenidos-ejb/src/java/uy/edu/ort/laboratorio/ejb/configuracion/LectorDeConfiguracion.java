@@ -10,7 +10,7 @@ import java.util.Properties;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
- * .
+ * 
  * Clase encargada de levantar la configuracion de la aplicacion y brindar
  * metodos para acceder a los datos de la configuracion.
  *
