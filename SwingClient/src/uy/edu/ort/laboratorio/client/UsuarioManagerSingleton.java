@@ -15,6 +15,7 @@ public class UsuarioManagerSingleton {
     private static UsuarioManagerSingleton instance = new UsuarioManagerSingleton();
     private String login;
     private String pass;
+    private Long idUser; 
 
     private UsuarioManagerSingleton() {
     }
@@ -32,6 +33,14 @@ public class UsuarioManagerSingleton {
         return login;
     }
 
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
     private String getPass() {
         return pass;
     }
@@ -44,4 +53,10 @@ public class UsuarioManagerSingleton {
         DesEncrypter enc = new DesEncrypter(getMD5Key());
         return enc.encrypt(getMD5Key());
     }
+
+    @Override
+    public String toString() {
+        return "UsuarioManagerSingleton{" + "login=" + login + ", pass=" + getPassword() + ", idUser=" + idUser + '}';
+    }
+    
 }

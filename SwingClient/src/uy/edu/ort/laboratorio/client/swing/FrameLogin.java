@@ -125,21 +125,26 @@ public class FrameLogin extends javax.swing.JFrame {
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
         try {
             WsRequester requester = new WsRequester();
-             UsuarioManagerSingleton.getInstance().login(jTextFieldUser.getText(), new String(jPasswordFieldPass.getPassword()));
-             
-             if(requester.autenticar()){
-                 new FramePrincipal().setVisible(true);
-                 this.dispose();
-             }else{
-                  JOptionPane.showMessageDialog(this,"Usuario o pass incorrecto", "Error",
-                         JOptionPane.ERROR_MESSAGE);
-             }
+
+            UsuarioManagerSingleton.getInstance().login(jTextFieldUser.getText(), new String(jPasswordFieldPass.getPassword()));
+            Long idUser = requester.autenticar();
+            UsuarioManagerSingleton.getInstance().setIdUser(idUser);
+            
+            System.out.println(UsuarioManagerSingleton.getInstance().toString());
+            
+            if (idUser != null) {
+                new FramePrincipal().setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o pass incorrecto", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         } catch (Exception ex) {
             Logger.getLogger(FrameLogin.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this,ex.getMessage(), "Error",
-                         JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
-            
+
     }//GEN-LAST:event_jButtonLoginActionPerformed
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped

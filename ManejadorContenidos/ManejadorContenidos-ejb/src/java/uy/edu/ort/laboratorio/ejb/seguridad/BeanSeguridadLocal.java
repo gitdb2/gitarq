@@ -13,7 +13,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface BeanSeguridadLocal {
-     public boolean autenticar(String login, String passwordEncriptdo);
+     public Long autenticar(String login, String passwordEncriptdo);
      public boolean tienePermiso(String login, String rol);
      public void altaUsuario(String login, String pass, List<String> roles );
 }

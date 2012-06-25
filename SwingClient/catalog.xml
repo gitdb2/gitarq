@@ -2,8 +2,8 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://ubuntu:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?wsdl" uri="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/ubuntu_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.wsdl"/>
     <system systemId="http://ubuntu:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?xsd=1" uri="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/ubuntu_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.xsd_1.xsd"/>
-    <system systemId="http://localhost:8080/AutenticarWebService/AutenticarWebService?wsdl" uri="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.wsdl"/>
-    <system systemId="http://localhost:8080/AutenticarWebService/AutenticarWebService?xsd=1" uri="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?wsdl" uri="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/localhost_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.wsdl"/>
     <system systemId="http://localhost:8080/ManejadorContenidosWebService/ManejadorContenidosWebService?xsd=1" uri="xml-resources/web-service-references/ManejadorContenidosWebService/wsdl/localhost_8080/ManejadorContenidosWebService/ManejadorContenidosWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/AutenticarWebService/AutenticarWebService?wsdl" uri="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.wsdl"/>
+    <system systemId="http://localhost:8080/AutenticarWebService/AutenticarWebService?xsd=1" uri="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.xsd_1.xsd"/>
 </catalog>

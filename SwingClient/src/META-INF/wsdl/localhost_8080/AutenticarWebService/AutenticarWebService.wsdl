@@ -4,29 +4,33 @@
 <xsd:import namespace="http://webservice.ejb.laboratorio.ort.edu.uy/" schemaLocation="http://localhost:8080/AutenticarWebService/AutenticarWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="autenticar">
-<part name="parameters" element="tns:autenticar"/>
-</message>
-<message name="autenticarResponse">
-<part name="parameters" element="tns:autenticarResponse"/>
-</message>
 <message name="tienePermiso">
 <part name="parameters" element="tns:tienePermiso"/>
 </message>
 <message name="tienePermisoResponse">
 <part name="parameters" element="tns:tienePermisoResponse"/>
 </message>
+<message name="autenticar">
+<part name="parameters" element="tns:autenticar"/>
+</message>
+<message name="autenticarResponse">
+<part name="parameters" element="tns:autenticarResponse"/>
+</message>
+<message name="ArquitecturaException">
+<part name="fault" element="tns:ArquitecturaException"/>
+</message>
 <message name="altaUsuario">
 <part name="parameters" element="tns:altaUsuario"/>
 </message>
 <portType name="AutenticarWebService">
-<operation name="autenticar">
-<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/autenticarRequest" message="tns:autenticar"/>
-<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/autenticarResponse" message="tns:autenticarResponse"/>
-</operation>
 <operation name="tienePermiso">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/tienePermisoRequest" message="tns:tienePermiso"/>
 <output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/tienePermisoResponse" message="tns:tienePermisoResponse"/>
+</operation>
+<operation name="autenticar">
+<input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/autenticarRequest" message="tns:autenticar"/>
+<output wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/autenticarResponse" message="tns:autenticarResponse"/>
+<fault message="tns:ArquitecturaException" name="ArquitecturaException" wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/autenticar/Fault/ArquitecturaException"/>
 </operation>
 <operation name="altaUsuario">
 <input wsam:Action="http://webservice.ejb.laboratorio.ort.edu.uy/AutenticarWebService/altaUsuario" message="tns:altaUsuario"/>
@@ -34,15 +38,6 @@
 </portType>
 <binding name="AutenticarWebServicePortBinding" type="tns:AutenticarWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="autenticar">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="tienePermiso">
 <soap:operation soapAction=""/>
 <input>
@@ -51,6 +46,18 @@
 <output>
 <soap:body use="literal"/>
 </output>
+</operation>
+<operation name="autenticar">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="ArquitecturaException">
+<soap:fault name="ArquitecturaException" use="literal"/>
+</fault>
 </operation>
 <operation name="altaUsuario">
 <soap:operation soapAction=""/>

@@ -89,10 +89,10 @@ public class SeguridadTest {
            DesEncrypter enc         = new DesEncrypter(md5PassOK);
            String encriptedPass     = enc.encrypt(md5PassOK);
    
-           assertTrue(ejbRef.autenticar("rodrigo2", encriptedPass));
+           assertNotNull(ejbRef.autenticar("rodrigo2", encriptedPass));
 
            
-           assertFalse(ejbRef.autenticar("rodrigo2", "pepe"));
+           assertNull(ejbRef.autenticar("rodrigo2", "pepe"));
            
        } catch (NamingException ex) {
            ex.printStackTrace();

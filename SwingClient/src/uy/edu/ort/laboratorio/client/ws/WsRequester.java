@@ -24,7 +24,7 @@ import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
  */
 public class WsRequester {
 
-    public boolean autenticar() throws Exception {
+    public Long autenticar() throws Exception {
         AutenticarWebService_Service service = new AutenticarWebService_Service();
         AutenticarWebService serv = service.getAutenticarWebServicePort();
 

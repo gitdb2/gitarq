@@ -35,17 +35,19 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
     private EntityManager manejadorPersistenciaDB;
 
     @Override
-    public boolean autenticar(String login, String passwordEncriptdo) {
+    public Long autenticar(String login, String passwordEncriptdo) {
         
         Usuario usuario = null;
-        boolean ret= false;
+        Long ret= null;
          try{
                 usuario = findUserByLogin(login);
                 DesEncrypter encriptador = new DesEncrypter(usuario.getContrasena());
         
                 String desencriptado = encriptador.decrypt(passwordEncriptdo);
         
-                ret = usuario!= null && usuario.getContrasena()!= null && usuario.getContrasena().equals(desencriptado);
+                if(usuario!= null && usuario.getContrasena()!= null && usuario.getContrasena().equals(desencriptado)){
+                    ret = usuario.getId();
+                }
 
             }catch(javax.persistence.NoResultException e){
                 //el rol no fue dado de alta por lo que sugo

@@ -68,9 +68,9 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
         String login = pass.split(":")[0];
         pass = pass.split(":")[1];
 
-        boolean autenticado = seguridad.autenticar(login, pass);
+        Long autenticado = seguridad.autenticar(login, pass);
         System.err.println("---" + autenticado);
-        if(!autenticado){
+        if(null != autenticado){
             generateSOAPErrMessage(msg, "Usuario o password incorrectos");
         }
         //                msg.getSOAPBody();
