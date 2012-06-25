@@ -9,10 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.SwingClient;
+import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
@@ -23,15 +24,12 @@ import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
  */
 public class WsRequester {
 
-    public boolean autenticar(String login, String password)  throws Exception{
+    public boolean autenticar() throws Exception {
         AutenticarWebService_Service service = new AutenticarWebService_Service();
         AutenticarWebService serv = service.getAutenticarWebServicePort();
 
-        String md5PassOK = DesEncrypter.MD5(password);
-        DesEncrypter enc = new DesEncrypter(md5PassOK);
-        String encriptedPass = enc.encrypt(md5PassOK);
-        
-        return serv.autenticar(login, encriptedPass);
+        return serv.autenticar(UsuarioManagerSingleton.getInstance().getLogin(),
+                                UsuarioManagerSingleton.getInstance().getPassword());
     }
 
     /**
@@ -47,16 +45,19 @@ public class WsRequester {
     public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
-
+        addUserAndPassToHeader((BindingProvider) serv);
+        
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
+       System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
+        
         try {
             Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
 
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
-        }catch(Exception e){
+        } catch (Exception e) {
             throw e;
         }
         return true;
@@ -72,6 +73,7 @@ public class WsRequester {
     public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -80,9 +82,15 @@ public class WsRequester {
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
-        }catch(Exception e){
+        } catch (Exception e) {
             throw e;
         }
         return true;
+    }
+
+    private void addUserAndPassToHeader(BindingProvider serv) {
+        
+        serv.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, UsuarioManagerSingleton.getInstance().getLogin());
+        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword()+"2");
     }
 }

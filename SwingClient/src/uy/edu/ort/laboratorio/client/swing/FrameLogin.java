@@ -49,7 +49,13 @@ public class FrameLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
         setLocationByPlatform(true);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +127,7 @@ public class FrameLogin extends javax.swing.JFrame {
             WsRequester requester = new WsRequester();
              UsuarioManagerSingleton.getInstance().login(jTextFieldUser.getText(), new String(jPasswordFieldPass.getPassword()));
              
-             if(requester.autenticar(UsuarioManagerSingleton.getInstance().getLogin(), UsuarioManagerSingleton.getInstance().getPass())){
+             if(requester.autenticar()){
                  new FramePrincipal().setVisible(true);
                  this.dispose();
              }else{
@@ -135,6 +141,10 @@ public class FrameLogin extends javax.swing.JFrame {
         }
             
     }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formKeyTyped
 
     /**
      * @param args the command line arguments

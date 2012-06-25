@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -28,6 +29,7 @@ import uy.edu.ort.laboratorio.logger.Logger;
  */
 @WebService(serviceName = "ManejadorContenidosWebService")
 @Stateless()
+@HandlerChain(file = "autenticacion_handler.xml") 
 public class ManejadorContenidosWebService {
     
     @EJB
