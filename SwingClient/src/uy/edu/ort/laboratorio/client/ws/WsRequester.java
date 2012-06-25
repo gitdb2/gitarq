@@ -23,6 +23,7 @@ import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
 import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
+import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
 import uy.edu.ort.laboratorio.ws.EntradaBlog;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
@@ -79,11 +80,12 @@ public class WsRequester {
 
         try {
 
-            
-            
-            
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+
+
             EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, autor, texto, tags, fecha);
-            
+
 //            {
 //                    JAXBContext context = JAXBContext.newInstance(EntradaBlogTraveller.class);
 //            Marshaller m = context.createMarshaller();
@@ -92,51 +94,56 @@ public class WsRequester {
 //            }
 //            
 //            
-            JAXBContext contextOut = JAXBContext.newInstance(EntradaBlogTraveller.class);
-            Marshaller m = contextOut.createMarshaller();
+//            JAXBContext contextOut = JAXBContext.newInstance(EntradaBlogTraveller.class);
+//            Marshaller m = contextOut.createMarshaller();
+//
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//            m.marshal(nuevaEntradaBlog, out);
+//            String payloadXml = out.toString();
+//            out.close();           
+            String payloadXml = utilPayload.marshall(nuevaEntradaBlog);
+            payloadXml = encriptar(payloadXml);
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(nuevaEntradaBlog, out);
-            String payloadXml = out.toString();
-            out.close();            
-            payloadXml =  encriptar(payloadXml);
-            
-            
+
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
             traveller.setPayload(payloadXml);
-            
-            
-            contextOut = JAXBContext.newInstance(Traveller.class);
-            m = contextOut.createMarshaller();
-            out = new ByteArrayOutputStream();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(traveller, out);
-            String message = out.toString();
-            out.close();    
-            
+
+
+
+
+
+//            contextOut = JAXBContext.newInstance(Traveller.class);
+//            m = contextOut.createMarshaller();
+//            out = new ByteArrayOutputStream();
+//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//            m.marshal(traveller, out);
+//            String message = out.toString();
+//            out.close();    
+            String message = utilTraveller.marshall(traveller);
             System.out.println(message);
             String lon = serv.crearEntradaBlogEncripted(message);
-            
-            
-            
-            
+
+
+
+
             System.out.println(lon);
-            
-            
-            JAXBContext contextIn = JAXBContext.newInstance(Traveller.class);
-            Unmarshaller u = contextIn.createUnmarshaller();
-            ByteArrayInputStream input = new ByteArrayInputStream(lon.getBytes());
-            Traveller inObject = (Traveller) u.unmarshal(input);
-            
-            System.out.println("ID = "+ inObject.getId());
-            
+
+
+//            JAXBContext contextIn = JAXBContext.newInstance(Traveller.class);
+//            Unmarshaller u = contextIn.createUnmarshaller();
+//            ByteArrayInputStream input = new ByteArrayInputStream(lon.getBytes());
+//            Traveller inObject = (Traveller) u.unmarshal(input);
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, lon);
+            System.out.println("ID = " + inObject.getId());
+
             lon = desencriptar(inObject.getPayload());
-            System.out.println("payload = "+ lon);
-            
-            
-            
+            System.out.println("payload = " + lon);
+
+
+
 //        } catch (ArquitecturaException_Exception ex) {
 //            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
 //            throw ex;
@@ -146,17 +153,16 @@ public class WsRequester {
         return true;
     }
 
-    
-     private String desencriptar(String payload) {
+    private String desencriptar(String payload) {
         DesEncrypter encriptador = new DesEncrypter(UsuarioManagerSingleton.getInstance().getMD5Key());
         return encriptador.decrypt(payload);
     }
-    
+
     private String encriptar(String payload) {
         DesEncrypter encriptador = new DesEncrypter(UsuarioManagerSingleton.getInstance().getMD5Key());
         return encriptador.encrypt(payload);
     }
-    
+
     /**
      * da de alta una pagina web
      *
