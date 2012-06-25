@@ -47,7 +47,7 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearEntradaBlog")
-    public long crearContenidoEntradaBlog(@WebParam(name = "titulo") String titulo, 
+    public long crearEntradaBlog(@WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") 
                                           @XmlJavaTypeAdapter(DateAdapter.class) 
@@ -64,7 +64,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearContenidoEntradaBlog"));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"));
         }
         
     }
@@ -80,7 +80,7 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "modificarEntradaBlog")
-    public long modificarContenidoEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
+    public long modificarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
                                           @WebParam(name = "titulo") String titulo, 
                                           @WebParam(name = "nombreAutor") String nombreAutor, 
                                           @WebParam(name = "fechaPublicacion") 
@@ -97,7 +97,7 @@ public class ManejadorContenidosWebService {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog+", "+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarContenidoEntradaBlog"));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarEntradaBlog"));
         }
         
     }
@@ -111,7 +111,7 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearPaginaWeb")
-    public long crearContenidoPaginaWeb(@WebParam(name = "nombre") String nombre, 
+    public long crearPaginaWeb(@WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
                                         @XmlJavaTypeAdapter(DateAdapter.class) 
                                                 Date fechaPublicacion, 
@@ -126,7 +126,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+", "+fechaPublicacion+", "+html);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearContenidoPaginaWeb"));
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearPaginaWeb"));
        }
     }
     
@@ -139,7 +139,7 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "modificarPaginaWeb")
-    public long modificarContenidoPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
+    public long modificarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
                                         @WebParam(name = "nombre") String nombre, 
                                         @WebParam(name = "fechaPublicacion") 
                                         @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion, 
@@ -155,7 +155,7 @@ public class ManejadorContenidosWebService {
            Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
            Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb+", "+nombre+", "+fechaPublicacion+", "+html);
            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarContenidoPaginaWeb"));
+           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"));
        }
     }
 
