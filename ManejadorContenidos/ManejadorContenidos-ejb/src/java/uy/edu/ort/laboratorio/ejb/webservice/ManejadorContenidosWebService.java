@@ -14,7 +14,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
@@ -23,7 +22,6 @@ import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
-import uy.edu.ort.laboratorio.ejb.webservice.adapters.DateAdapter;
 import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.travellers.datatype.*;
 
@@ -39,7 +37,7 @@ import uy.edu.ort.laboratorio.travellers.datatype.*;
 public class ManejadorContenidosWebService {
 
     @EJB
-    BeanSeguridadLocal seguridad;
+    private BeanSeguridadLocal seguridad;
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
 
@@ -76,7 +74,6 @@ public class ManejadorContenidosWebService {
             String texto = payloadObject.getTexto();
             List<String> tags = payloadObject.getTags();
 
-
             checkParametrosCrearBlog(payloadObject.getTitulo(),
                     payloadObject.getNombreAutor(),
                     payloadObject.getFechaPublicacion(),
@@ -90,8 +87,6 @@ public class ManejadorContenidosWebService {
                 inObject.setPayload(seguridad.encriptar(id, "" + idc));
 
                 ret = utilTraveller.marshall(inObject);
-
-
 
             } catch (Exception e) {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
@@ -114,35 +109,67 @@ public class ManejadorContenidosWebService {
     /**
      * actualiza el contenido de una entrada de blog
      *
-     * @param titulo
-     * @param nombreAutor
-     * @param fechaPublicacion
-     * @param texto
-     * @param tags
+     * @param dataIn
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "modificarEntradaBlog")
-    public long modificarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
-            @WebParam(name = "titulo") String titulo,
-            @WebParam(name = "nombreAutor") String nombreAutor,
-            @WebParam(name = "fechaPublicacion")
-            @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
-            @WebParam(name = "texto") String texto,
-            @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
-
-        checkParametosActualizarEntradaBlog(idEntradaBlog, titulo, nombreAutor, fechaPublicacion, texto, tags);
-
+    @WebMethod(operationName = "modificarEntradaBlogEncripted")
+    public String modificarEntradaBlogEncripted(
+            @WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
         try {
-            return manejadorContenidos.modificarContenidoEntradaBlog(idEntradaBlog, titulo, nombreAutor, fechaPublicacion, texto, tags);
-        } catch (Exception e) {
+
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            EntradaBlogTraveller payloadObject = utilPayload.unmarshall(EntradaBlogTraveller.class, payload);
+
+
+            String titulo = payloadObject.getTitulo();
+            String nombreAutor = payloadObject.getNombreAutor();
+            Date fechaPublicacion = payloadObject.getFechaPublicacion();
+            String texto = payloadObject.getTexto();
+            List<String> tags = payloadObject.getTags();
+
+            checkParametosActualizarEntradaBlog(
+                    payloadObject.getId(),
+                    payloadObject.getTitulo(),
+                    payloadObject.getNombreAutor(),
+                    payloadObject.getFechaPublicacion(),
+                    payloadObject.getTexto(),
+                    payloadObject.getTags());
+
+            try {
+                Long idc = manejadorContenidos.modificarContenidoEntradaBlog(payloadObject.getId(), titulo, nombreAutor, fechaPublicacion, texto, tags);
+
+
+                inObject.setPayload(seguridad.encriptar(id, "" + idc));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
+                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarEntradaBlog"), e);
+            }
+
+        } catch (JAXBException e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog + ", " + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
 
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarEntradaBlog"));
-
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarEntradaBlog"), e);
         }
+
+        return ret;
 
     }
 
@@ -208,27 +235,378 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "modificarPaginaWeb")
-    public long modificarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
-            @WebParam(name = "nombre") String nombre,
-            @WebParam(name = "fechaPublicacion")
-            @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
-            @WebParam(name = "html") byte[] html)
+    @WebMethod(operationName = "modificarPaginaWebEncripted")
+    public String modificarPaginaWebEncripted(@WebParam(name = "data") String dataIn)
             throws ArquitecturaException {
-
-        checkParametosActualizarPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+        String ret = null;
 
         try {
-            return manejadorContenidos.modificarContenidoPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            PaginaWebTraveller payloadObject = utilPayload.unmarshall(PaginaWebTraveller.class, payload);
+
+
+
+            String nombre = payloadObject.getNombre();
+            Date fechaPublicacion = payloadObject.getFechaPublicacion();
+            byte[] html = payloadObject.getHtml();
+
+
+            checkParametosActualizarPaginaWeb(payloadObject.getId(), nombre, fechaPublicacion, html);
+            checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
+            try {
+                Long idc = manejadorContenidos.modificarContenidoPaginaWeb(payloadObject.getId(), nombre, fechaPublicacion, html);
+                inObject.setPayload(seguridad.encriptar(id, "" + idc));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
+                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+                throw new ArquitecturaException("Ocurrio un error al modificarPaginaWeb", e);
+            }
+        } catch (JAXBException e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException("Ocurrio un error al modificarPaginaWeb", e);
+        }
+
+        return ret;
+
+    }
+
+   
+
+    /**
+     * elimina una entrada de blog
+     *
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "eliminarEntradaBlog")
+    public boolean eliminarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+        if (idEntradaBlog == 0) {
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+        }
+        try {
+            return manejadorContenidos.eliminarEntradaBlog(idEntradaBlog);
         } catch (Exception e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb + ", " + nombre + ", " + fechaPublicacion + ", " + html);
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarEntradaBlog"));
         }
     }
 
     /**
+     * elimina una pagina web
+     *
+     * @param idPaginaWeb
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "eliminarPaginaWeb")
+    public boolean eliminarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
+        if (idPaginaWeb == 0) {
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+        }
+        try {
+            return manejadorContenidos.eliminarPaginaWeb(idPaginaWeb);
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarPaginaWeb"));
+        }
+    }
+
+    /**
+     * lista todas las paginas web
+     *
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "listarPaginasWebEncripted")
+    public String listarPaginasWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWeb();
+
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataPaginaWeb pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombre()));
+            }
+
+            String tmp = utilReturner.marshall(retObj);
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"), e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * lista todas las entradas de blog
+     *
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "listarEntradasDeBlogEncripted")
+    public String listarEntradasDeBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            List<DataEntradaBlog> paginas = manejadorContenidos.listarEntradasDeBlog();
+
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataEntradaBlog pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombreAutor()));
+            }
+
+            String tmp = utilReturner.marshall(retObj);
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
+        }
+
+        return ret;
+    }
+
+    /**
+     * devuelve la pagina web asociada al identificador
+     *
+     * @param idPaginaWeb
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "obtenerPaginaWebEncripted")
+    public String obtenerPaginaWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            Long idPaginaWeb = null;
+            try {
+                idPaginaWeb = Long.valueOf(payload);
+                PaginaWeb pagina = manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
+
+                PaginaWebTraveller retorno = new PaginaWebTraveller(pagina.getNombre(), pagina.getHtml(), pagina.getFechaPublicacion());
+                retorno.setId(pagina.getId());
+
+                payload = utilPayload.marshall(retorno);
+                inObject.setPayload(seguridad.encriptar(id, payload));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+            }
+
+        } catch (ArquitecturaException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"), e);
+        }
+        return ret;
+    }
+
+    /**
+     * devuelve la pagina web asociada al identificador
+     *
+     * @param idEntradaBlog
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "obtenerEntradaBlogEncripted")
+    public String obtenerEntradaBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        //(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+        String ret = null;
+
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            Long idEntradaBlog = null;
+            try {
+                idEntradaBlog = Long.valueOf(payload);
+                EntradaBlog blog = manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
+
+                EntradaBlogTraveller retorno = new EntradaBlogTraveller(
+                        blog.getTitulo(),
+                        blog.getNombreAutor(),
+                        blog.getTexto(),
+                        blog.getTags(),
+                        blog.getFechaPublicacion());
+                retorno.setId(blog.getId());
+
+                payload = utilPayload.marshall(retorno);
+                inObject.setPayload(seguridad.encriptar(id, payload));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+            }
+
+        } catch (ArquitecturaException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"), e);
+        }
+
+        return ret;
+    }
+
+    /**
+     *
+     * @param nombre
+     * @param fechaPublicacion
+     * @return
+     * @throws ArquitecturaException
+     */
+    @WebMethod(operationName = "listarPaginasWebFiltrandoEncripted")
+    public String listarPaginasWebFiltrandoEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+
+        String ret = null;
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            FilterQueryTraveller filter = utilPayload.unmarshall(FilterQueryTraveller.class, payload);
+
+
+
+            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWebFiltrando(filter.getNombre(), filter.getFecha());
+
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataPaginaWeb pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombre()));
+            }
+
+            String tmp = utilReturner.marshall(retObj);
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoPaginaWeb"), e);
+        }
+        return ret;
+    }
+
+    @WebMethod(operationName = "listarEntradaBlogFiltrandoEncripted")
+    public String listarEntradaBlogFiltrandoEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+
+        String ret = null;
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            FilterQueryTraveller filter = utilPayload.unmarshall(FilterQueryTraveller.class, payload);
+
+            List<DataEntradaBlog> paginas = manejadorContenidos.listarEntradaBlogFiltrando(
+                    filter.getTitulo(),
+                    filter.getFecha(),
+                    filter.getTexto(),
+                    filter.getNombre(),
+                    filter.getTag());
+
+            ListWrapperTraveller retObj = new ListWrapperTraveller();
+            for (DataEntradaBlog pag : paginas) {
+                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombreAutor()));
+            }
+
+            String tmp = utilReturner.marshall(retObj);
+            inObject.setPayload(seguridad.encriptar(id, tmp));
+            ret = utilTraveller.marshall(inObject);
+
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoEntradaBlog"), e);
+        }
+        return ret;
+    }
+    
+    
+    
+    
+     /**
      * Chequea los parametros para dar de alta de un blog.
      *
      * @param titulo
@@ -295,322 +673,5 @@ public class ManejadorContenidosWebService {
         }
 
         checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
-    }
-
-    /**
-     * elimina una entrada de blog
-     *
-     * @param idEntradaBlog
-     * @return
-     * @throws ArquitecturaException
-     */
-    @WebMethod(operationName = "eliminarEntradaBlog")
-    public boolean eliminarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
-        if (idEntradaBlog == 0) {
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        }
-        try {
-            return manejadorContenidos.eliminarEntradaBlog(idEntradaBlog);
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarEntradaBlog"));
-        }
-    }
-
-    /**
-     * elimina una pagina web
-     *
-     * @param idPaginaWeb
-     * @return
-     * @throws ArquitecturaException
-     */
-    @WebMethod(operationName = "eliminarPaginaWeb")
-    public boolean eliminarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
-        if (idPaginaWeb == 0) {
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        }
-        try {
-            return manejadorContenidos.eliminarPaginaWeb(idPaginaWeb);
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarPaginaWeb"));
-        }
-    }
-
-    /**
-     * lista todas las paginas web
-     *
-     * @return
-     * @throws ArquitecturaException
-     */
-//    @WebMethod(operationName = "listarPaginasWeb")
-//    public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
-//        try {
-//            return manejadorContenidos.listarPaginasWeb();
-//       }catch(Exception e){
-//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"),e);
-//       }
-//    }
-    @WebMethod(operationName = "listarPaginasWebEncripted")
-    public String listarPaginasWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
-        String ret = null;
-
-        try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
-
-            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
-            Long id = inObject.getId();
-
-            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWeb();
-
-            ListWrapperTraveller retObj = new ListWrapperTraveller();
-            for (DataPaginaWeb pag : paginas) {
-                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombre()));
-            }
-
-            String tmp = utilReturner.marshall(retObj);
-            inObject.setPayload(seguridad.encriptar(id, tmp));
-            ret = utilTraveller.marshall(inObject);
-
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"), e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * lista todas las entradas de blog
-     *
-     * @return
-     * @throws ArquitecturaException
-     */
-//    @Deprecated
-//    @WebMethod(operationName = "listarEntradasDeBlog")
-//    public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException {
-//        try {
-//            return manejadorContenidos.listarEntradasDeBlog();
-//       }catch(Exception e){
-//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
-//       }
-//    }
-    @WebMethod(operationName = "listarEntradasDeBlogEncripted")
-    public String listarEntradasDeBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
-        String ret = null;
-
-        try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
-
-            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
-            Long id = inObject.getId();
-
-            List<DataEntradaBlog> paginas = manejadorContenidos.listarEntradasDeBlog();
-
-            ListWrapperTraveller retObj = new ListWrapperTraveller();
-            for (DataEntradaBlog pag : paginas) {
-                retObj.add(new ListItemTraveller(pag.getId(), pag.getNombreAutor()));
-            }
-
-            String tmp = utilReturner.marshall(retObj);
-            inObject.setPayload(seguridad.encriptar(id, tmp));
-            ret = utilTraveller.marshall(inObject);
-
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
-        }
-
-        return ret;
-    }
-
-    /**
-     * devuelve la pagina web asociada al identificador
-     *
-     * @param idPaginaWeb
-     * @return
-     * @throws ArquitecturaException
-     */
-//    @WebMethod(operationName = "obtenerPaginaWeb")
-//    public PaginaWeb obtenerPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
-//       if (idPaginaWeb == 0)
-//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-//       try{
-//            return manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
-//       }
-//       catch(Exception e){
-//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-//           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
-//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"));
-//       }
-//    }
-    @WebMethod(operationName = "obtenerPaginaWebEncripted")
-    public String obtenerPaginaWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
-        String ret = null;
-//             (@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
-        try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
-
-
-            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
-            Long id = inObject.getId();
-
-            String payload = inObject.getPayload();
-
-            payload = seguridad.desencriptar(id, payload);
-
-//            PaginaWebTraveller payloadObject = utilPayload.unmarshall(PaginaWebTraveller.class, payload);
-
-            Long idPaginaWeb = null;
-            try {
-                idPaginaWeb = Long.valueOf(payload);
-                PaginaWeb pagina = manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
-
-                PaginaWebTraveller retorno = new PaginaWebTraveller(pagina.getNombre(), pagina.getHtml(), pagina.getFechaPublicacion());
-                retorno.setId(pagina.getId());
-
-                payload = utilPayload.marshall(retorno);
-                inObject.setPayload(seguridad.encriptar(id, payload));
-
-                ret = utilTraveller.marshall(inObject);
-
-            } catch (Exception e) {
-                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-            }
-
-        } catch (ArquitecturaException e) {
-            throw e;
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-//            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"), e);
-        }
-        return ret;
-    }
-
-    /**
-     * devuelve la pagina web asociada al identificador
-     *
-     * @param idEntradaBlog
-     * @return
-     * @throws ArquitecturaException
-     */
-//    @WebMethod(operationName = "obtenerEntradaBlog")
-//    public EntradaBlog obtenerEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
-//        if (idEntradaBlog == 0) {
-//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-//        }
-//        try {
-//            return manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
-//        } catch (Exception e) {
-//            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-//            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
-//            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"));
-//        }
-//    }
-    @WebMethod(operationName = "obtenerEntradaBlogEncripted")
-    public String obtenerEntradaBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
-        //(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
-        String ret = null;
-
-         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
-
-
-            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
-            Long id = inObject.getId();
-
-            String payload = inObject.getPayload();
-
-            payload = seguridad.desencriptar(id, payload);
-
-            Long idEntradaBlog = null;
-            try {
-                idEntradaBlog = Long.valueOf(payload);
-                EntradaBlog blog = manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
-
-                EntradaBlogTraveller retorno = new EntradaBlogTraveller(
-                                                        blog.getTitulo(),
-                                                        blog.getNombreAutor(), 
-                                                        blog.getTexto(),
-                                                        blog.getTags(),
-                                                        blog.getFechaPublicacion());
-                retorno.setId(blog.getId());
-
-                payload = utilPayload.marshall(retorno);
-                inObject.setPayload(seguridad.encriptar(id, payload));
-
-                ret = utilTraveller.marshall(inObject);
-
-            } catch (Exception e) {
-                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-            }
-
-        } catch (ArquitecturaException e) {
-            throw e;
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"), e);
-        }
-        
-          return ret;
-    }
-
-    /**
-     *
-     * @param nombre
-     * @param fechaPublicacion
-     * @return
-     * @throws ArquitecturaException
-     */
-    @WebMethod(operationName = "listarPaginasWebFiltrando")
-    public List<DataPaginaWeb> listarPaginasWebFiltrando(@WebParam(name = "nombre") String nombre,
-            @WebParam(name = "fechaPublicacion")
-            @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion)
-            throws ArquitecturaException {
-        try {
-            return manejadorContenidos.listarPaginasWebFiltrando(nombre, fechaPublicacion);
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + "," + fechaPublicacion);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoPaginaWeb"));
-        }
-    }
-
-    @WebMethod(operationName = "listarEntradaBlogFiltrando")
-    public List<DataEntradaBlog> listarEntradaBlogFiltrando(
-            @WebParam(name = "titulo") String titulo,
-            @WebParam(name = "nombreAutor") String nombreAutor,
-            @WebParam(name = "fechaPublicacion") @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
-            @WebParam(name = "texto") String texto,
-            @WebParam(name = "tag") String tag)
-            throws ArquitecturaException {
-        try {
-            return manejadorContenidos.listarEntradaBlogFiltrando(titulo, fechaPublicacion, texto, nombreAutor, tag);
-        } catch (Exception e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-            Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tag);
-            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoEntradaBlog"));
-        }
     }
 }
