@@ -4,6 +4,12 @@
  */
 package uy.edu.ort.laboratorio.client.swing;
 
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import uy.edu.ort.laboratorio.client.ws.WsRequester;
+import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
+
 /**
  *
  * @author rodrigo
@@ -16,6 +22,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     public ABMLPaginasWeb() {
         initComponents();
         habilitarFiltros(chkBoxFiltrar.isSelected());
+        popularListado();
     }
 
     /**
@@ -29,7 +36,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
 
         jButtonCerrar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jListPaginaWeb = new javax.swing.JList();
+        ListPaginaWeb = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         chkBoxFiltrar = new javax.swing.JCheckBox();
@@ -44,7 +51,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
         btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Entrada de Blog");
+        setTitle("Paginas Web");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -62,8 +69,8 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
             }
         });
 
-        jListPaginaWeb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(jListPaginaWeb);
+        ListPaginaWeb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(ListPaginaWeb);
 
         jLabel4.setText("Elija un elemento de la lista");
 
@@ -157,23 +164,19 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnRefrescarListado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnAlta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jLabel4))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jLabel4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButtonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnRefrescarListado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAlta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,7 +202,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-635)/2, (screenSize.height-483)/2, 635, 483);
+        setBounds((screenSize.width-653)/2, (screenSize.height-483)/2, 653, 483);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
@@ -215,11 +218,23 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnRefrescarListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarListadoActionPerformed
-        // TODO add your handling code here:
+        popularListado();
     }//GEN-LAST:event_btnRefrescarListadoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        try {
+            
+            DefaultListModel model = (DefaultListModel) ListPaginaWeb.getModel();
+            int selectedIndex = ListPaginaWeb.getSelectedIndex();
+            if (selectedIndex != -1) {
+                WsRequester requester = new WsRequester();
+                ListItemTraveller aBorrar = (ListItemTraveller) model.getElementAt(selectedIndex);
+                requester.eliminarPaginaWeb(aBorrar.getId());
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
@@ -276,6 +291,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList ListPaginaWeb;
     private javax.swing.JButton btnAlta;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
@@ -286,7 +302,6 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList jListPaginaWeb;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField txtFechaPublicacion;
@@ -296,5 +311,22 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     private void habilitarFiltros(boolean estado) {
         txtFechaPublicacion.setEnabled(estado);
         txtTitulo.setEnabled(estado);
+    }
+
+    private void popularListado() {
+        try {
+            WsRequester requester = new WsRequester();
+            List<ListItemTraveller> todasLasPaginas = requester.todasLasPaginasWeb();
+            DefaultListModel model = new DefaultListModel();
+            int i = 0;
+            for (ListItemTraveller listItemTraveller : todasLasPaginas) {
+                model.add(i, listItemTraveller);
+                i++;
+            }
+            ListPaginaWeb.setModel(model);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

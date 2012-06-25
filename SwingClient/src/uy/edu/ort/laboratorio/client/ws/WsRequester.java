@@ -4,30 +4,22 @@
  */
 package uy.edu.ort.laboratorio.client.ws;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.BindingProvider;
-import uy.edu.ort.laboratorio.client.SwingClient;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
-import uy.edu.ort.laboratorio.client.ws.autenticar.ArquitecturaException_Exception;
-import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
-import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
 import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.ListWrapperTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
-import uy.edu.ort.laboratorio.ws.EntradaBlog;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
+import uy.edu.ort.laboratorio.ws.autenticar.AutenticarWebService;
+import uy.edu.ort.laboratorio.ws.autenticar.AutenticarWebService_Service;
 
 /**
  *
@@ -42,33 +34,10 @@ public class WsRequester {
         return serv.autenticar(UsuarioManagerSingleton.getInstance().getLogin(),
                 UsuarioManagerSingleton.getInstance().getPassword());
     }
-
-    /**
-     * *
-     * Dad e alta una entrada de blog
-     *
-     * @param titulo
-     * @param autor
-     * @param fecha
-     * @param texto
-     * @param tags
-     */
-    @Deprecated
-    public boolean crearContenidoEntradaBlogOrig(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
-        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
-        addUserAndPassToHeader((BindingProvider) serv);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
-        System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
-
-        try {
-            Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
-        } catch (Exception e) {
-            throw e;
-        }
-        return true;
+    
+    private void addUserAndPassToHeader(BindingProvider serv) {
+        serv.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, UsuarioManagerSingleton.getInstance().getLogin());
+        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword());
     }
 
     public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
@@ -85,12 +54,10 @@ public class WsRequester {
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
 
-
             EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, autor, texto, tags, fecha);
 
             String payloadXml = utilPayload.marshall(nuevaEntradaBlog);
             payloadXml = encriptar(payloadXml);
-
 
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
@@ -124,31 +91,6 @@ public class WsRequester {
         return encriptador.encrypt(payload);
     }
 
-    /**
-     * da de alta una pagina web
-     *
-     * @param nombre
-     * @param fecha
-     * @param texto
-     */
-    @Deprecated
-    public boolean crearContenidoPaginaWebOri(String nombre, Date fecha, String texto) throws Exception {
-        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
-        addUserAndPassToHeader((BindingProvider) serv);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
-        try {
-            Long lon = serv.crearPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
-
-        } catch (Exception e) {
-            throw e;
-        }
-        return true;
-    }
-
-    
     public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
@@ -199,11 +141,56 @@ public class WsRequester {
         return true;
     }
     
-    
-    private void addUserAndPassToHeader(BindingProvider serv) {
+    public List<ListItemTraveller> todasLasPaginasWeb() throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload("");
+            String message = utilTraveller.marshall(traveller);
+            
+            String travellerString = serv.listarPaginasWebEncripted(message);
+            
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            String payload = traveller.getPayload();
+            payload = desencriptar(payload);
+            
+            ListWrapperTraveller listadoWrapper = utilPayload.unmarshall(ListWrapperTraveller.class, payload);
+            return listadoWrapper.getItems();
+        } catch (Exception ex) {
+            throw ex;
+        }     
+    }
 
-        serv.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, UsuarioManagerSingleton.getInstance().getLogin());
-        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, UsuarioManagerSingleton.getInstance().getPassword());
-//        serv.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "sss");//UsuarioManagerSingleton.getInstance().getPassword());
+    public void eliminarPaginaWeb(long id) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+         try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload("");
+            String message = utilTraveller.marshall(traveller);
+            
+            String travellerString = "";
+            
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            String payload = traveller.getPayload();
+            payload = desencriptar(payload);
+            
+            ListWrapperTraveller listadoWrapper = utilPayload.unmarshall(ListWrapperTraveller.class, payload);
+        } catch (Exception ex) {
+            throw ex;
+        }     
     }
 }
