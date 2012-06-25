@@ -43,12 +43,12 @@ public class ManejadorContenidosWebService {
     @EJB
     private ManejadorContenidosLocal manejadorContenidos;
 
-   
     /**
      * crea un Contenido del tipo entrada de blog.
+     *
      * @param dataIn
      * @return
-     * @throws ArquitecturaException 
+     * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearEntradaBlogEncripted")
     public String crearEntradaBlogEncripted(
@@ -124,14 +124,13 @@ public class ManejadorContenidosWebService {
      */
     @WebMethod(operationName = "modificarEntradaBlog")
     public long modificarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog,
-                                          @WebParam(name = "titulo") String titulo, 
-                                          @WebParam(name = "nombreAutor") String nombreAutor, 
-                                          @WebParam(name = "fechaPublicacion") 
-                                          @XmlJavaTypeAdapter(DateAdapter.class) 
-                                          Date fechaPublicacion, 
-                                          @WebParam(name = "texto") String texto, 
-                                          @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
-        
+            @WebParam(name = "titulo") String titulo,
+            @WebParam(name = "nombreAutor") String nombreAutor,
+            @WebParam(name = "fechaPublicacion")
+            @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
+            @WebParam(name = "texto") String texto,
+            @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
+
         checkParametosActualizarEntradaBlog(idEntradaBlog, titulo, nombreAutor, fechaPublicacion, texto, tags);
 
         try {
@@ -151,7 +150,7 @@ public class ManejadorContenidosWebService {
      * crea un Contenido del tipo pagina web.
      *
      */
-     @WebMethod(operationName = "crearPaginaWebEncripted")
+    @WebMethod(operationName = "crearPaginaWebEncripted")
     public String crearContenidoPaginaWebEncripted(@WebParam(name = "data") String dataIn)
             throws ArquitecturaException {
         String ret = null;
@@ -171,19 +170,19 @@ public class ManejadorContenidosWebService {
             PaginaWebTraveller payloadObject = utilPayload.unmarshall(PaginaWebTraveller.class, payload);
 
 
-      
+
             String nombre = payloadObject.getNombre();
             Date fechaPublicacion = payloadObject.getFechaPublicacion();
-            byte[] html =  payloadObject.getHtml(); 
+            byte[] html = payloadObject.getHtml();
 
 
 
             checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
             try {
-                 Long idc =  manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
-                 inObject.setPayload(seguridad.encriptar(id, "" + idc));
+                Long idc = manejadorContenidos.crearContenidoPaginaWeb(nombre, fechaPublicacion, html);
+                inObject.setPayload(seguridad.encriptar(id, "" + idc));
 
-                 ret = utilTraveller.marshall(inObject);
+                ret = utilTraveller.marshall(inObject);
 
             } catch (Exception e) {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
@@ -211,23 +210,22 @@ public class ManejadorContenidosWebService {
      */
     @WebMethod(operationName = "modificarPaginaWeb")
     public long modificarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb,
-                                        @WebParam(name = "nombre") String nombre, 
-                                        @WebParam(name = "fechaPublicacion") 
-                                        @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion, 
-                                        @WebParam(name = "html") byte[] html) 
+            @WebParam(name = "nombre") String nombre,
+            @WebParam(name = "fechaPublicacion")
+            @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
+            @WebParam(name = "html") byte[] html)
             throws ArquitecturaException {
-        
-       checkParametosActualizarPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
-       
-       try{
+
+        checkParametosActualizarPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
+
+        try {
             return manejadorContenidos.modificarContenidoPaginaWeb(idPaginaWeb, nombre, fechaPublicacion, html);
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb+", "+nombre+", "+fechaPublicacion+", "+html);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"));
-       }
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb + ", " + nombre + ", " + fechaPublicacion + ", " + html);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"));
+        }
     }
 
     /**
@@ -241,23 +239,23 @@ public class ManejadorContenidosWebService {
      * @throws ArquitecturaException
      */
     private void checkParametrosCrearBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-        
-        if(fechaPublicacion == null){
+
+        if (fechaPublicacion == null) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoFechaIncorrecto"));
         }
-        if(nombreAutor == null  || nombreAutor.isEmpty()){
+        if (nombreAutor == null || nombreAutor.isEmpty()) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoAutorIncorrecto"));
         }
-         if(titulo == null  || titulo.isEmpty()){
+        if (titulo == null || titulo.isEmpty()) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoTituloIncorrecto"));
         }
-        if(tags == null  ){
+        if (tags == null) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoTagsIncorrecto"));
         }
-        
+
         //TODO chequear que texto no sea null ni vacio
-     }
-    
+    }
+
     /**
      * Chequea los parametros para dar de alta una pagina web.
      *
@@ -268,32 +266,34 @@ public class ManejadorContenidosWebService {
      */
     private void checkParametrosPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
 
-        if(fechaPublicacion == null){
+        if (fechaPublicacion == null) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoFechaIncorrecto"));
         }
-        
-        if(nombre == null  || nombre.isEmpty()){
+
+        if (nombre == null || nombre.isEmpty()) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoNombreIncorrecto"));
         }
-       
+
         //TODO chqeuar que no sea vacio
-        if(html == null){
+        if (html == null) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoHTMLIncorrecto"));
         }
     }
 
     private void checkParametosActualizarEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
-        if (idEntradaBlog == 0)
+        if (idEntradaBlog == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        
+        }
+
         checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
 
     }
 
     private void checkParametosActualizarPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
-        if (idPaginaWeb == 0)
+        if (idPaginaWeb == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        
+        }
+
         checkParametrosPaginaWeb(nombre, fechaPublicacion, html);
     }
 
@@ -306,17 +306,17 @@ public class ManejadorContenidosWebService {
      */
     @WebMethod(operationName = "eliminarEntradaBlog")
     public boolean eliminarEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
-        if (idEntradaBlog == 0)
+        if (idEntradaBlog == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        try{
+        }
+        try {
             return manejadorContenidos.eliminarEntradaBlog(idEntradaBlog);
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarEntradaBlog"));
-       }
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarEntradaBlog"));
+        }
     }
 
     /**
@@ -328,17 +328,17 @@ public class ManejadorContenidosWebService {
      */
     @WebMethod(operationName = "eliminarPaginaWeb")
     public boolean eliminarPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
-        if (idPaginaWeb == 0)
+        if (idPaginaWeb == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-        try{
+        }
+        try {
             return manejadorContenidos.eliminarPaginaWeb(idPaginaWeb);
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarPaginaWeb"));
-       }
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.eliminarPaginaWeb"));
+        }
     }
 
     /**
@@ -357,8 +357,6 @@ public class ManejadorContenidosWebService {
 //           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"),e);
 //       }
 //    }
-
-    
     @WebMethod(operationName = "listarPaginasWebEncripted")
     public String listarPaginasWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
         String ret = null;
@@ -366,30 +364,30 @@ public class ManejadorContenidosWebService {
         try {
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
-           
+
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
-            
-            List<DataPaginaWeb> paginas =  manejadorContenidos.listarPaginasWeb();
-            
+
+            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWeb();
+
             ListWrapperTraveller retObj = new ListWrapperTraveller();
             for (DataPaginaWeb pag : paginas) {
                 retObj.add(new ListItemTraveller(pag.getId(), pag.getNombre()));
             }
-            
-            String tmp = utilReturner.marshall(retObj);           
+
+            String tmp = utilReturner.marshall(retObj);
             inObject.setPayload(seguridad.encriptar(id, tmp));
             ret = utilTraveller.marshall(inObject);
-            
-       }catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"), e);
-       }
-        
-       return ret;
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarPaginaWeb"), e);
+        }
+
+        return ret;
     }
-    
+
     /**
      * lista todas las entradas de blog
      *
@@ -407,41 +405,36 @@ public class ManejadorContenidosWebService {
 //           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
 //       }
 //    }
-    
-     @WebMethod(operationName = "listarEntradasDeBlogEncripted")
+    @WebMethod(operationName = "listarEntradasDeBlogEncripted")
     public String listarEntradasDeBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
         String ret = null;
 
         try {
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
-           
+
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
-            
-            List<DataEntradaBlog> paginas =  manejadorContenidos.listarEntradasDeBlog();
-            
+
+            List<DataEntradaBlog> paginas = manejadorContenidos.listarEntradasDeBlog();
+
             ListWrapperTraveller retObj = new ListWrapperTraveller();
             for (DataEntradaBlog pag : paginas) {
                 retObj.add(new ListItemTraveller(pag.getId(), pag.getNombreAutor()));
             }
-            
-            String tmp = utilReturner.marshall(retObj);           
+
+            String tmp = utilReturner.marshall(retObj);
             inObject.setPayload(seguridad.encriptar(id, tmp));
             ret = utilTraveller.marshall(inObject);
-            
-       }catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
-       }
-        
-       return ret;
+
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarEntradaBlog"));
+        }
+
+        return ret;
     }
-    
-    
-    
-    
 
     /**
      * devuelve la pagina web asociada al identificador
@@ -450,19 +443,64 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "obtenerPaginaWeb")
-    public PaginaWeb obtenerPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
-       if (idPaginaWeb == 0)
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-       try{
-            return manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"));
-       }
+//    @WebMethod(operationName = "obtenerPaginaWeb")
+//    public PaginaWeb obtenerPaginaWeb(@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
+//       if (idPaginaWeb == 0)
+//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+//       try{
+//            return manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
+//       }
+//       catch(Exception e){
+//           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
+//           Logger.debug(ManejadorContenidosWebService.class, "params:"+idPaginaWeb);
+//           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+//           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"));
+//       }
+//    }
+    @WebMethod(operationName = "obtenerPaginaWebEncripted")
+    public String obtenerPaginaWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        String ret = null;
+//             (@WebParam(name = "idPaginaWeb") long idPaginaWeb) throws ArquitecturaException {
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+//            PaginaWebTraveller payloadObject = utilPayload.unmarshall(PaginaWebTraveller.class, payload);
+
+            Long idPaginaWeb = null;
+            try {
+                idPaginaWeb = Long.valueOf(payload);
+                PaginaWeb pagina = manejadorContenidos.obtenerPaginaWeb(idPaginaWeb);
+
+                PaginaWebTraveller retorno = new PaginaWebTraveller(pagina.getNombre(), pagina.getHtml(), pagina.getFechaPublicacion());
+                retorno.setId(pagina.getId());
+
+                payload = utilPayload.marshall(retorno);
+                inObject.setPayload(seguridad.encriptar(id, payload));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+            }
+
+        } catch (ArquitecturaException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+//            Logger.debug(ManejadorContenidosWebService.class, "params:" + idPaginaWeb);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerPaginaWeb"), e);
+        }
+        return ret;
     }
 
     /**
@@ -472,19 +510,79 @@ public class ManejadorContenidosWebService {
      * @return
      * @throws ArquitecturaException
      */
-    @WebMethod(operationName = "obtenerEntradaBlog")
-    public EntradaBlog obtenerEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
-       if (idEntradaBlog == 0)
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
-       try{
-            return manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
-       }
-       catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+idEntradaBlog);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"));
-       }
+//    @WebMethod(operationName = "obtenerEntradaBlog")
+//    public EntradaBlog obtenerEntradaBlog(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+//        if (idEntradaBlog == 0) {
+//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+//        }
+//        try {
+//            return manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
+//        } catch (Exception e) {
+//            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+//            Logger.debug(ManejadorContenidosWebService.class, "params:" + idEntradaBlog);
+//            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+//            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"));
+//        }
+//    }
+    @WebMethod(operationName = "obtenerEntradaBlogEncripted")
+    public String obtenerEntradaBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
+        //(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
+        String ret = null;
+
+         try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+
+
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
+            Long id = inObject.getId();
+
+            String payload = inObject.getPayload();
+
+            payload = seguridad.desencriptar(id, payload);
+
+            Long idEntradaBlog = null;
+            try {
+                idEntradaBlog = Long.valueOf(payload);
+                EntradaBlog blog = manejadorContenidos.obtenerEntradasBlog(idEntradaBlog);
+
+                EntradaBlogTraveller retorno = new EntradaBlogTraveller(
+                                                        blog.getTitulo(),
+                                                        blog.getNombreAutor(), 
+                                                        blog.getTexto(),
+                                                        blog.getTags(),
+                                                        blog.getFechaPublicacion());
+                retorno.setId(blog.getId());
+
+                payload = utilPayload.marshall(retorno);
+                inObject.setPayload(seguridad.encriptar(id, payload));
+
+                ret = utilTraveller.marshall(inObject);
+
+            } catch (Exception e) {
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+            }
+
+        } catch (ArquitecturaException e) {
+            throw e;
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.obtenerEntradaBlog"), e);
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        return ret;
     }
 
     /**
@@ -501,12 +599,12 @@ public class ManejadorContenidosWebService {
             throws ArquitecturaException {
         try {
             return manejadorContenidos.listarPaginasWebFiltrando(nombre, fechaPublicacion);
-       }catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class,  e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+nombre+","+fechaPublicacion);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoPaginaWeb"));
-       }
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + "," + fechaPublicacion);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoPaginaWeb"));
+        }
     }
 
     @WebMethod(operationName = "listarEntradaBlogFiltrando")
@@ -519,11 +617,11 @@ public class ManejadorContenidosWebService {
             throws ArquitecturaException {
         try {
             return manejadorContenidos.listarEntradaBlogFiltrando(titulo, fechaPublicacion, texto, nombreAutor, tag);
-       }catch(Exception e){
-           Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-           Logger.debug(ManejadorContenidosWebService.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tag);
-           Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-           throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoEntradaBlog"));
-       }
+        } catch (Exception e) {
+            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tag);
+            Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.listarFiltrandoEntradaBlog"));
+        }
     }
 }
