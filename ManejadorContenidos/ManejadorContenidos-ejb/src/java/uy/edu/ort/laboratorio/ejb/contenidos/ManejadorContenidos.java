@@ -46,6 +46,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * @throws ArquitecturaException
      */
     @Override
+    
     public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:"+titulo+", "+nombreAutor+", "+fechaPublicacion+", "+texto+", "+tags);
         try {
