@@ -182,6 +182,8 @@ public class ManejadorContenidosWebService {
         if(tags == null  ){
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoTagsIncorrecto"));
         }
+        
+        //TODO chequear que texto no sea null ni vacio
      }
     
     /**
@@ -201,7 +203,8 @@ public class ManejadorContenidosWebService {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoNombreIncorrecto"));
         }
        
-        if(html == null  ){
+        //TODO chqeuar que no sea vacio
+        if(html == null){
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoHTMLIncorrecto"));
         }
      }
