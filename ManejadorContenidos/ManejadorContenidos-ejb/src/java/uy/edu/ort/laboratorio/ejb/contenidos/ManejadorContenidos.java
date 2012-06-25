@@ -14,6 +14,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
@@ -51,6 +53,14 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
         try {
             EntradaBlog nuevaEntradaBlog = new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion);
             manejadorPersistenciaDB.persist(nuevaEntradaBlog);
+            
+            
+            JAXBContext context = JAXBContext.newInstance(EntradaBlog.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(nuevaEntradaBlog, System.out);
+            
+            
             return nuevaEntradaBlog.getId();
         }catch(Exception ex){
              Logger.error(ManejadorContenidos.class,
@@ -58,6 +68,10 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             Logger.debug(ManejadorContenidos.class, Logger.getStackTrace(ex));
             throw new ArquitecturaException(ex.getMessage());
         }
+        
+        
+        
+       
     }
 
     /**

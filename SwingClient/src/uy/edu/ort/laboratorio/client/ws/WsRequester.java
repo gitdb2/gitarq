@@ -51,7 +51,7 @@ public class WsRequester {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
         try {
-            Long lon = serv.crearContenidoEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
+            Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
 
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,7 +76,7 @@ public class WsRequester {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
         try {
-            Long lon = serv.crearContenidoPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
+            Long lon = serv.crearPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
         } catch (ArquitecturaException_Exception ex) {
             Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
