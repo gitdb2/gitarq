@@ -2,40 +2,37 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.datatype;
+package uy.edu.ort.laboratorio.travellers.datatype;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.*;
 
 /**
  *
- * @author tanquista
+ * @author Rodrigo
  */
-public class DataEntradaBlog {
-    
-    private long id;
-    private String nombreAutor;
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
+public class ListWrapperTraveller {
+   
+   @XmlElementWrapper(name = "itemList")
+   @XmlElement(name = "listItemTraveller")
+   private List<ListItemTraveller> items = new ArrayList<ListItemTraveller>();
 
-    public DataEntradaBlog(){
-    
-    }
-    
-    public DataEntradaBlog(long id, String nombreAutor) {
-        this.id = id;
-        this.nombreAutor = nombreAutor;
+    public List<ListItemTraveller> getItems() {
+        return items;
     }
 
-    public long getId() {
-        return id;
+    public void setItems(List<ListItemTraveller> items) {
+        this.items = items;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNombreAutor() {
-        return nombreAutor;
-    }
-
-    public void setNombreAutor(String nombreAutor) {
-        this.nombreAutor = nombreAutor;
-    }
+   public void add(ListItemTraveller item){
+       if(this.items == null){
+           this.items = new ArrayList<ListItemTraveller>();
+       }
+       this.items.add(item);
+   }
 
 }

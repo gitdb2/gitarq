@@ -2,22 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.datatype;
+package uy.edu.ort.laboratorio.travellers.datatype;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author tanquista
  */
-public class DataPaginaWeb {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
+public class ListItemTraveller {
     
     private long id;
     private String nombre;
 
-    public DataPaginaWeb(){
+    public ListItemTraveller(){
     
     }
     
-    public DataPaginaWeb(long id, String nombre) {
+    public ListItemTraveller(long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
