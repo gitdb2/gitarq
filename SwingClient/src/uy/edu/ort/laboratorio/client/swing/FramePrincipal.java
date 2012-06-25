@@ -36,6 +36,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         jButtonAltaBlog = new javax.swing.JButton();
         jButtonAltaPagina = new javax.swing.JButton();
         jButtonLogin = new javax.swing.JButton();
+        btnPaginasWeb = new javax.swing.JButton();
+        btnEntradasDeBlog = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -52,6 +54,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jButtonAltaBlog.setText("Alta Blog");
         jButtonAltaBlog.addActionListener(new java.awt.event.ActionListener() {
@@ -71,6 +74,20 @@ public class FramePrincipal extends javax.swing.JFrame {
         jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLoginActionPerformed(evt);
+            }
+        });
+
+        btnPaginasWeb.setText("Paginas Web");
+        btnPaginasWeb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPaginasWebActionPerformed(evt);
+            }
+        });
+
+        btnEntradasDeBlog.setText("Entradas de Blog");
+        btnEntradasDeBlog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntradasDeBlogActionPerformed(evt);
             }
         });
 
@@ -147,29 +164,33 @@ public class FramePrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonLogin)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonAltaBlog)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonAltaPagina)))
-                .addContainerGap(450, Short.MAX_VALUE))
+                    .addComponent(btnPaginasWeb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAltaPagina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonAltaBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEntradasDeBlog, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jButtonLogin)
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAltaBlog)
-                    .addComponent(jButtonAltaPagina))
-                .addContainerGap(344, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonAltaBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(13, 13, 13)
+                .addComponent(jButtonAltaPagina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnPaginasWeb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEntradasDeBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(37, 37, 37))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-680)/2, (screenSize.height-577)/2, 680, 577);
+        setBounds((screenSize.width-231)/2, (screenSize.height-257)/2, 231, 257);
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -192,6 +213,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void jButtonAltaBlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAltaBlogActionPerformed
        new EnviarEntradaBlog().setVisible(true);
     }//GEN-LAST:event_jButtonAltaBlogActionPerformed
+
+    private void btnPaginasWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaginasWebActionPerformed
+        new ListarPaginasWeb().setVisible(true);
+    }//GEN-LAST:event_btnPaginasWebActionPerformed
+
+    private void btnEntradasDeBlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasDeBlogActionPerformed
+        new ListarEntradasBlog().setVisible(true);
+    }//GEN-LAST:event_btnEntradasDeBlogActionPerformed
 
     /**
      * @param args the command line arguments
@@ -236,6 +265,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton btnEntradasDeBlog;
+    private javax.swing.JButton btnPaginasWeb;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
