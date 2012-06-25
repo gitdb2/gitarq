@@ -4,6 +4,7 @@
  */
 package uy.edu.ort.laboratorio.client.ws;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,12 +13,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.SwingClient;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
 import uy.edu.ort.laboratorio.client.ws.autenticar.ArquitecturaException_Exception;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
+import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 import uy.edu.ort.laboratorio.ws.EntradaBlog;
@@ -97,7 +100,7 @@ public class WsRequester {
             m.marshal(nuevaEntradaBlog, out);
             String payloadXml = out.toString();
             out.close();            
-
+            payloadXml =  encriptar(payloadXml);
             
             
             Traveller traveller = new Traveller();
@@ -120,6 +123,20 @@ public class WsRequester {
             
             
             System.out.println(lon);
+            
+            
+            JAXBContext contextIn = JAXBContext.newInstance(Traveller.class);
+            Unmarshaller u = contextIn.createUnmarshaller();
+            ByteArrayInputStream input = new ByteArrayInputStream(lon.getBytes());
+            Traveller inObject = (Traveller) u.unmarshal(input);
+            
+            System.out.println("ID = "+ inObject.getId());
+            
+            lon = desencriptar(inObject.getPayload());
+            System.out.println("payload = "+ lon);
+            
+            
+            
 //        } catch (ArquitecturaException_Exception ex) {
 //            Logger.getLogger(SwingClient.class.getName()).log(Level.SEVERE, null, ex);
 //            throw ex;
@@ -129,6 +146,17 @@ public class WsRequester {
         return true;
     }
 
+    
+     private String desencriptar(String payload) {
+        DesEncrypter encriptador = new DesEncrypter(UsuarioManagerSingleton.getInstance().getMD5Key());
+        return encriptador.decrypt(payload);
+    }
+    
+    private String encriptar(String payload) {
+        DesEncrypter encriptador = new DesEncrypter(UsuarioManagerSingleton.getInstance().getMD5Key());
+        return encriptador.encrypt(payload);
+    }
+    
     /**
      * da de alta una pagina web
      *

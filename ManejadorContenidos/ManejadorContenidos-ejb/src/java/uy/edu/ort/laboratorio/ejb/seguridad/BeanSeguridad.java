@@ -161,11 +161,18 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
     public String desencriptar(Long id, String payload) {
 
         Usuario usuario = manejadorPersistenciaDB.find(Usuario.class, id);
-        //payload = desencriptar(usuario.getContrasena(), payload);
+        payload = desencriptar(usuario.getContrasena(), payload);
 
         return payload;
     }
 
+     @Override
+    public String encriptar(Long id, String payload) {
+
+        Usuario usuario = manejadorPersistenciaDB.find(Usuario.class, id);
+        payload = encriptar(usuario.getContrasena(), payload);
+        return payload;
+    }
     private String desencriptar(String passphrase, String payload) {
         DesEncrypter encriptador = new DesEncrypter(passphrase);
         return encriptador.decrypt(payload);

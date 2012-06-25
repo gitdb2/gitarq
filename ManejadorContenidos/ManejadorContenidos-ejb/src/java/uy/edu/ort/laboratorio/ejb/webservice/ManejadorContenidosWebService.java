@@ -4,7 +4,7 @@
  */
 package uy.edu.ort.laboratorio.ejb.webservice;
 
-import java.io.ByteArrayInputStream;
+import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -13,9 +13,7 @@ import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
@@ -39,6 +37,7 @@ import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 @Stateless()
 @HandlerChain(file = "autenticacion_handler.xml")
 public class ManejadorContenidosWebService {
+    
     @EJB
     BeanSeguridadLocal seguridad;
     @EJB
@@ -62,7 +61,7 @@ public class ManejadorContenidosWebService {
             @XmlJavaTypeAdapter(DateAdapter.class) Date fechaPublicacion,
             @WebParam(name = "texto") String texto,
             @WebParam(name = "tags") List<String> tags) throws ArquitecturaException {
-
+        
         checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
 
         try {
@@ -81,46 +80,44 @@ public class ManejadorContenidosWebService {
             @WebParam(name = "data") String dataIn) throws ArquitecturaException {
         String ret = null;
         try {
-
-            JAXBContext contextIn = JAXBContext.newInstance(Traveller.class);
-            Unmarshaller u = contextIn.createUnmarshaller();
-            ByteArrayInputStream input = new ByteArrayInputStream(dataIn.getBytes());
-            Traveller inObject = (Traveller) u.unmarshal(input);
-
-
+            
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            
+            
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
 
             String payload = inObject.getPayload();
-            
+
             payload = seguridad.desencriptar(id, payload);
 
-            contextIn = JAXBContext.newInstance(EntradaBlogTraveller.class);
-            u = contextIn.createUnmarshaller();
-            input = new ByteArrayInputStream(payload.getBytes());
-            EntradaBlogTraveller payloadObject = (EntradaBlogTraveller) u.unmarshal(input);
+            EntradaBlogTraveller payloadObject = utilPayload.unmarshall(EntradaBlogTraveller.class, payload);
 
 
-
-//            JAXBContext contextOut = JAXBContext.newInstance(SimpleObjectOut.class);
-//            Marshaller m = contextOut.createMarshaller();
-//
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-//            m.marshal(nuevaEntradaBlog, System.out);
-
-            String titulo           = payloadObject.getTitulo();
-            String nombreAutor      = payloadObject.getNombreAutor();
-          
-             Date fechaPublicacion  = payloadObject.getFechaPublicacion();
-             String texto           = payloadObject.getTexto();
-             List<String> tags      = payloadObject.getTags();
+            String titulo = payloadObject.getTitulo();
+            String nombreAutor = payloadObject.getNombreAutor();
+            Date fechaPublicacion = payloadObject.getFechaPublicacion();
+            String texto = payloadObject.getTexto();
+            List<String> tags = payloadObject.getTags();
             
-            checkParametrosCrearBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
+
+            checkParametrosCrearBlog(payloadObject.getTitulo(),
+                                     payloadObject.getNombreAutor(),
+                                     payloadObject.getFechaPublicacion(),
+                                     payloadObject.getTexto(),
+                                     payloadObject.getTags());
 
             try {
-                 Long idc = manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
-                 
-                 ret = ""+idc;
+                Long idc = manejadorContenidos.crearContenidoEntradaBlog(titulo, nombreAutor, fechaPublicacion, texto, tags);
+
+
+                inObject.setPayload(seguridad.encriptar(id, "" + idc));
+                
+                ret = utilTraveller.marshall(inObject);
+
+
+
             } catch (Exception e) {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
                 Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
@@ -133,10 +130,11 @@ public class ManejadorContenidosWebService {
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
             throw new ArquitecturaException("Ocurrio un error al crearContenidoEntradaBlog", e);
         }
-        
+
         return ret;
 
     }
+
 
     /**
      * actualiza el contenido de una entrada de blog
