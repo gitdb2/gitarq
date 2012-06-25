@@ -44,7 +44,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButtonCancelar" min="-2" pref="149" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                          <Component id="jButtonSend" min="-2" pref="105" max="-2" attributes="0"/>
+                          <Component id="btnAceptar" min="-2" pref="105" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
@@ -114,7 +114,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jButtonCancelar" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButtonSend" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="31" max="32767" attributes="0"/>
           </Group>
@@ -161,12 +161,12 @@
         <Property name="text" type="java.lang.String" value="Tags"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButtonSend">
+    <Component class="javax.swing.JButton" name="btnAceptar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Enviar"/>
+        <Property name="text" type="java.lang.String" value="Aceptar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSendActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAceptarActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonCancelar">

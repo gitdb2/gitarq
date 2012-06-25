@@ -15,12 +15,12 @@ import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
  *
  * @author rodrigo
  */
-public class EnviarPagina extends javax.swing.JFrame {
+public class AltaPaginaWeb extends javax.swing.JFrame {
 
     /**
-     * Creates new form EnviarPagina
+     * Creates new form AltaPaginaWeb
      */
-    public EnviarPagina() {
+    public AltaPaginaWeb() {
         initComponents();
     }
 
@@ -38,7 +38,7 @@ public class EnviarPagina extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaHTML = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
-        jButtonEnviar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -67,10 +67,10 @@ public class EnviarPagina extends javax.swing.JFrame {
 
         jLabel2.setText("Html");
 
-        jButtonEnviar.setText("Enviar");
-        jButtonEnviar.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEnviarActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
             }
         });
 
@@ -91,7 +91,7 @@ public class EnviarPagina extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
@@ -115,7 +115,7 @@ public class EnviarPagina extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonEnviar)
+                            .addComponent(btnAceptar)
                             .addComponent(jButtonCancelar)))
                     .addComponent(jLabel2))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -129,18 +129,18 @@ public class EnviarPagina extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNombreActionPerformed
 
-    private void jButtonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         WsRequester req = new WsRequester();
         try {
             if (req.crearContenidoPaginaWeb(jTextFieldNombre.getText(), GregorianCalendar.getInstance().getTime(), jTextAreaHTML.getText())) {
                 this.dispose();
             }
         } catch (Exception ex) {
-            Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButtonEnviarActionPerformed
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         this.dispose();
@@ -175,13 +175,13 @@ public class EnviarPagina extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EnviarPagina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EnviarPagina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EnviarPagina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EnviarPagina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -191,13 +191,13 @@ public class EnviarPagina extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new EnviarPagina().setVisible(true);
+                new AltaPaginaWeb().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButtonCancelar;
-    private javax.swing.JButton jButtonEnviar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -4,23 +4,16 @@
  */
 package uy.edu.ort.laboratorio.client.swing;
 
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import uy.edu.ort.laboratorio.client.ws.WsRequester;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
-
 /**
  *
  * @author rodrigo
  */
-public class FramePrincipal extends javax.swing.JFrame {
+public class MenuPrincipal extends javax.swing.JFrame {
 
     /**
-     * Creates new form FramePrincipal
+     * Creates new form MenuPrincipal
      */
-    public FramePrincipal() {
+    public MenuPrincipal() {
         initComponents();
     }
 
@@ -33,9 +26,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonAltaBlog = new javax.swing.JButton();
-        jButtonAltaPagina = new javax.swing.JButton();
-        jButtonLogin = new javax.swing.JButton();
         btnPaginasWeb = new javax.swing.JButton();
         btnEntradasDeBlog = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
@@ -55,27 +45,6 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
-        jButtonAltaBlog.setText("Alta Blog");
-        jButtonAltaBlog.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAltaBlogActionPerformed(evt);
-            }
-        });
-
-        jButtonAltaPagina.setText("AltaPaginaWeb");
-        jButtonAltaPagina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAltaPaginaActionPerformed(evt);
-            }
-        });
-
-        jButtonLogin.setText("Login");
-        jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonLoginActionPerformed(evt);
-            }
-        });
 
         btnPaginasWeb.setText("Paginas Web");
         btnPaginasWeb.addActionListener(new java.awt.event.ActionListener() {
@@ -166,31 +135,22 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnPaginasWeb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAltaPagina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonAltaBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEntradasDeBlog, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                    .addComponent(btnPaginasWeb, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                    .addComponent(btnEntradasDeBlog, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jButtonLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonAltaBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(13, 13, 13)
-                .addComponent(jButtonAltaPagina, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(32, 32, 32)
                 .addComponent(btnPaginasWeb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(32, 32, 32)
                 .addComponent(btnEntradasDeBlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(37, 37, 37))
+                .addGap(41, 41, 41))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-231)/2, (screenSize.height-257)/2, 231, 257);
+        setBounds((screenSize.width-232)/2, (screenSize.height-192)/2, 232, 192);
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -201,25 +161,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_openMenuItemActionPerformed
 
-    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonLoginActionPerformed
-
-    private void jButtonAltaPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAltaPaginaActionPerformed
-         new EnviarPagina().setVisible(true);
-         
-    }//GEN-LAST:event_jButtonAltaPaginaActionPerformed
-
-    private void jButtonAltaBlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAltaBlogActionPerformed
-       new EnviarEntradaBlog().setVisible(true);
-    }//GEN-LAST:event_jButtonAltaBlogActionPerformed
-
     private void btnPaginasWebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPaginasWebActionPerformed
-        new ListarPaginasWeb().setVisible(true);
+        new ABMLPaginasWeb().setVisible(true);
     }//GEN-LAST:event_btnPaginasWebActionPerformed
 
     private void btnEntradasDeBlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradasDeBlogActionPerformed
-        new ListarEntradasBlog().setVisible(true);
+        new ABMLEntradaBlog().setVisible(true);
     }//GEN-LAST:event_btnEntradasDeBlogActionPerformed
 
     /**
@@ -243,13 +190,13 @@ public class FramePrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -259,7 +206,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new FramePrincipal().setVisible(true);
+                new MenuPrincipal().setVisible(true);
             }
         });
     }
@@ -275,9 +222,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JButton jButtonAltaBlog;
-    private javax.swing.JButton jButtonAltaPagina;
-    private javax.swing.JButton jButtonLogin;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;

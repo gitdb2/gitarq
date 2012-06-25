@@ -8,12 +8,12 @@ package uy.edu.ort.laboratorio.client.swing;
  *
  * @author rodrigo
  */
-public class ListarPaginasWeb extends javax.swing.JFrame {
+public class ABMLPaginasWeb extends javax.swing.JFrame {
 
     /**
      * Creates new form EnviarEntradaBlog
      */
-    public ListarPaginasWeb() {
+    public ABMLPaginasWeb() {
         initComponents();
         habilitarFiltros(chkBoxFiltrar.isSelected());
     }
@@ -223,17 +223,15 @@ public class ListarPaginasWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
-        new EnviarPagina().setVisible(true);
+        new AltaPaginaWeb().setVisible(true);
     }//GEN-LAST:event_btnAltaActionPerformed
 
     private void chkBoxFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBoxFiltrarActionPerformed
         habilitarFiltros(chkBoxFiltrar.isSelected());
     }//GEN-LAST:event_chkBoxFiltrarActionPerformed
 
-    
-    
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
+        new ModificarPaginaWeb().setVisible(true);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
@@ -257,13 +255,13 @@ public class ListarPaginasWeb extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListarPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListarPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListarPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListarPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -273,7 +271,7 @@ public class ListarPaginasWeb extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new ListarPaginasWeb().setVisible(true);
+                new ABMLPaginasWeb().setVisible(true);
             }
         });
     }

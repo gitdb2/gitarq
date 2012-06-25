@@ -18,12 +18,12 @@ import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
  *
  * @author rodrigo
  */
-public class EnviarEntradaBlog extends javax.swing.JFrame {
+public class AltaEntradaBlog extends javax.swing.JFrame {
 
     /**
-     * Creates new form EnviarEntradaBlog
+     * Creates new form AltaEntradaBlog
      */
-    public EnviarEntradaBlog() {
+    public AltaEntradaBlog() {
         initComponents();
     }
 
@@ -44,7 +44,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextFieldAutor = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButtonSend = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
         jTextFieldNewTag = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -76,10 +76,10 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
 
         jLabel4.setText("Tags");
 
-        jButtonSend.setText("Enviar");
-        jButtonSend.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSendActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
             }
         });
 
@@ -127,7 +127,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(36, 36, 36)
-                            .addComponent(jButtonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -179,7 +179,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonCancelar)
-                    .addComponent(jButtonSend))
+                    .addComponent(btnAceptar))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -191,7 +191,7 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
-    private void jButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSendActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         try {
             WsRequester req = new WsRequester();
 
@@ -207,11 +207,11 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
             this.dispose();   
            }
         } catch (Exception ex) {
-            Logger.getLogger(EnviarEntradaBlog.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AltaEntradaBlog.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
                                         JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButtonSendActionPerformed
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButtonAddTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTagActionPerformed
         
@@ -275,13 +275,13 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EnviarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EnviarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EnviarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EnviarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AltaEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -291,15 +291,15 @@ public class EnviarEntradaBlog extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new EnviarEntradaBlog().setVisible(true);
+                new AltaEntradaBlog().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButtonAddTag;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonRemoveTag;
-    private javax.swing.JButton jButtonSend;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
