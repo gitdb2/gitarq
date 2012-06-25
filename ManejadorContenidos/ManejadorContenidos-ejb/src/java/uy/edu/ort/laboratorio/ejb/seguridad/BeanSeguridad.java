@@ -146,12 +146,9 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote{
                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
        
            try {
-               
-               
-               
 //               List<String> roles = new ArrayList<String>();
 //               roles.add("admin");
-//               ejbRef.altaUsuario("rodrigo2", DesEncrypter.MD5("1234"), roles);
+//               ejbRef.altaUsuario("admin", DesEncrypter.MD5("admin"), roles);
            } catch (Exception ex) {
                ex.printStackTrace();
            }
