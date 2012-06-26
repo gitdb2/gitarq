@@ -26,26 +26,12 @@ public class Usuario implements Serializable {
     @Column(name="CONTRASENA", unique=false, nullable=false)
     private String contrasena;
     
-    @OneToMany(fetch=FetchType.LAZY)
-    private List<EntradaBlog> entradasDeBlog;
-    
-    @OneToMany(fetch=FetchType.LAZY)
-    private List<PaginaWeb> paginasWeb;
-
     public String getContrasena() {
         return contrasena;
     }
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
-    }
-
-    public List<EntradaBlog> getEntradasDeBlog() {
-        return entradasDeBlog;
-    }
-
-    public void setEntradasDeBlog(List<EntradaBlog> entradasDeBlog) {
-        this.entradasDeBlog = entradasDeBlog;
     }
 
     public long getId() {
@@ -62,14 +48,6 @@ public class Usuario implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public List<PaginaWeb> getPaginasWeb() {
-        return paginasWeb;
-    }
-
-    public void setPaginasWeb(List<PaginaWeb> paginasWeb) {
-        this.paginasWeb = paginasWeb;
     }
 
     @Override

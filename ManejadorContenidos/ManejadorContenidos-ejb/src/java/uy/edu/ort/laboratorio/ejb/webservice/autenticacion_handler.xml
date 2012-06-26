@@ -6,11 +6,4 @@
       <handler-class>uy.edu.ort.laboratorio.ejb.seguridad.AutenticacionHandler</handler-class>
     </handler>
   </handler-chain>
-<!--  <handler-chain>
-    <handler>
-      <handler-name>uy.edu.ort.laboratorio.ejb.seguridad.EncriptacionHandler</handler-name>
-      <handler-class>uy.edu.ort.laboratorio.ejb.seguridad.EncriptacionHandler</handler-class>
-    </handler>
-  </handler-chain>-->
-  
 </handler-chains>

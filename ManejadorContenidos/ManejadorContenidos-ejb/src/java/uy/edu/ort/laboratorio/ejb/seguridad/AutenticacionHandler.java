@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.ejb.seguridad;
 
 import com.sun.jersey.core.util.Base64;
@@ -35,11 +31,7 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
 
         Boolean outbound = (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
         System.err.println(messageContext.get(MessageContext.HTTP_REQUEST_HEADERS));
-        
-
-       
-
-
+    
         if (outbound.booleanValue()) {
             System.err.println("\nOutbound message:");
         } else {
@@ -52,7 +44,6 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
         }
 
         System.err.println(messageContext);
-//        SOAPMessage msg = messageContext.getMessage();
         log(messageContext);
 
         return true;
@@ -90,33 +81,27 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
         if(null == autenticado){
             generateSOAPErrMessage(msg, LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
         }
-        //                msg.getSOAPBody();
         return autenticado;
     }
 
     @Override
     public Set<QName> getHeaders() {
-
-//        System.err.println("---SET_HEADERS");
         return Collections.EMPTY_SET;
     }
 
     @Override
     public boolean handleFault(SOAPMessageContext messageContext) {
-//        System.err.println("---HANDLEFAULT");
         return true;
     }
 
     @Override
     public void close(MessageContext context) {
-//        System.err.println("---CLOSE");
-
     }
 
     private void log(SOAPMessageContext messageContext) {
-        SOAPMessage msg = messageContext.getMessage(); //Line 1
+        SOAPMessage msg = messageContext.getMessage(); 
         try {
-            msg.writeTo(System.out);  //Line 3
+            msg.writeTo(System.out);  
         } catch (SOAPException ex) {
             Logger.getLogger(AutenticacionHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -6,11 +6,11 @@ package uy.edu.ort.laboratorio.ejb.webservice;
 
 import java.util.List;
 import javax.ejb.EJB;
-import javax.jws.WebService;
 import javax.ejb.Stateless;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebService;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;

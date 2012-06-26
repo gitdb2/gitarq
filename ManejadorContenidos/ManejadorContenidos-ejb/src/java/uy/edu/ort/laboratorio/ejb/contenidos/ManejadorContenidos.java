@@ -16,7 +16,7 @@ import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaDBLocal;
+import uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
@@ -31,15 +31,15 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      * ejb encargado de la persistencia.
      */
     //  @EJB
-//    private PeristenciaDBLocal manejadorPersistenciaDB;
+//    private PeristenciaLocal manejadorPersistenciaDB;
 
-    private PeristenciaDBLocal getPersistencia() throws ArquitecturaException{
+    private PeristenciaLocal getPersistencia() throws ArquitecturaException{
 
-        String ejbName = LectorDeConfiguracion.getInstance().getMensaje("persistance.implementation.ejb.lookup.name", "java:global/ManejadorContenidos/ManejadorContenidos-ejb/PeristenciaDB!uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaDBLocal");
-        PeristenciaDBLocal manejadorPersistenciaDB = null;
+        String ejbName = LectorDeConfiguracion.getInstance().getMensaje("persistance.implementation.ejb.lookup.name", "java:global/ManejadorContenidos/ManejadorContenidos-ejb/PeristenciaDB!uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal");
+        PeristenciaLocal manejadorPersistenciaDB = null;
         try {
             InitialContext context = new InitialContext();
-            manejadorPersistenciaDB = (PeristenciaDBLocal) context.lookup(ejbName);
+            manejadorPersistenciaDB = (PeristenciaLocal) context.lookup(ejbName);
              Logger.info(this.getClass(), "getPersistencia: persistencia encontrada \""+ejbName+"\"");
         } catch (NamingException ex) {
             Logger.error(this.getClass(), ex);
@@ -63,7 +63,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             EntradaBlog nuevaEntradaBlog = new EntradaBlog(titulo, nombreAutor, texto, tags, fechaPublicacion);
             manejadorPersistenciaDB.persist(nuevaEntradaBlog);
@@ -89,7 +89,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     public long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion,
             byte[] html) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             PaginaWeb nuevaPagina = new PaginaWeb(nombre, html, fechaPublicacion);
             manejadorPersistenciaDB.persist(nuevaPagina);
@@ -107,7 +107,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             String nombreAutor, Date fechaPublicacion, String texto,
             List<String> tags) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idEntradaBlog + "," + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             EntradaBlog entradaBlog = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
             entradaBlog.setTitulo(titulo);
@@ -137,7 +137,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     public long modificarContenidoPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion,
             byte[] html) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idPaginaWeb + "," + nombre + ", " + fechaPublicacion + ", " + html);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             PaginaWeb paginaWeb = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
             paginaWeb.setNombre(nombre);
@@ -163,7 +163,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idEntradaBlog);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             EntradaBlog aBorrar = manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
             manejadorPersistenciaDB.remove(aBorrar);
@@ -186,7 +186,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public boolean eliminarPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idPaginaWeb);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             PaginaWeb aBorrar = manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
             manejadorPersistenciaDB.remove(aBorrar);
@@ -207,7 +207,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "No params");
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             List<DataPaginaWeb> resultado = new ArrayList<DataPaginaWeb>();
             List<PaginaWeb> todasLasPaginasWeb = manejadorPersistenciaDB.findAllPaginasWb();
@@ -231,7 +231,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public List<DataEntradaBlog> listarEntradasDeBlog() throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "No params");
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             List<DataEntradaBlog> resultado = new ArrayList<DataEntradaBlog>();
             List<EntradaBlog> todasLasEntradasDeBlog = manejadorPersistenciaDB.findAllBlogs();
@@ -250,7 +250,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public EntradaBlog obtenerEntradasBlog(long idEntradaBlog) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idEntradaBlog);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             return manejadorPersistenciaDB.find(EntradaBlog.class, idEntradaBlog);
         } catch (Exception ex) {
@@ -264,7 +264,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public PaginaWeb obtenerPaginaWeb(long idPaginaWeb) throws ArquitecturaException {
         Logger.debug(ManejadorContenidos.class, "params:" + idPaginaWeb);
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             return manejadorPersistenciaDB.find(PaginaWeb.class, idPaginaWeb);
         } catch (Exception ex) {
@@ -283,7 +283,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
      */
     @Override
     public List<DataPaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException {
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             List<DataPaginaWeb> resultado = new ArrayList<DataPaginaWeb>();
             List<PaginaWeb> queryResult = manejadorPersistenciaDB.listarPaginasWebFiltrando(nombre, fechaPublicacion);
@@ -308,7 +308,7 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
     @Override
     public List<DataEntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion,
             String contenido, String autor, String tag) throws ArquitecturaException {
-        PeristenciaDBLocal manejadorPersistenciaDB = getPersistencia();
+        PeristenciaLocal manejadorPersistenciaDB = getPersistencia();
         try {
             List<DataEntradaBlog> resultado = new ArrayList<DataEntradaBlog>();
             List<EntradaBlog> queryResult = manejadorPersistenciaDB.listarEntradaBlogFiltrando(titulo, fechaPublicacion,

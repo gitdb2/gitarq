@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -24,7 +23,7 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
  * @author rodrigo
  */
 @Stateless
-public class PeristenciaDB implements PeristenciaDBLocal {
+public class PeristenciaDB implements PeristenciaLocal {
 
     @PersistenceContext
     private EntityManager manejadorPersistenciaDB;

@@ -16,7 +16,7 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
  * @author rodrigo
  */
 @Local
-public interface PeristenciaDBLocal {
+public interface PeristenciaLocal {
    
     public void persist(Object entity);
 

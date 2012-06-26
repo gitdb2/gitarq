@@ -22,9 +22,9 @@ public class Rol implements Serializable {
     private long id;
     
     @OneToMany 
-    @JoinTable(name="ROLE_USER", 
+    @JoinTable(name="ROL_USUARIO", 
          joinColumns=@JoinColumn(name="ROL_ID"),
-          inverseJoinColumns=@JoinColumn(name="USER_ID"))
+          inverseJoinColumns=@JoinColumn(name="USUARIO_ID"))
     private List<Usuario> usuario;
 
     @Column(name="NOMBRE", unique=true, nullable=false)

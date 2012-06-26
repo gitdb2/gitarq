@@ -18,13 +18,7 @@ import javax.persistence.*;
 @Table(name="PAGINA_WEB")
 @NamedQueries({
     @NamedQuery(name="PaginaWeb.findAll", 
-        query="SELECT p FROM PaginaWeb p"),
-    @NamedQuery(name="PaginaWeb.findByName", 
-        query="SELECT p FROM PaginaWeb p WHERE p.nombre = :nombre"),
-    @NamedQuery(name="PaginaWeb.findByDate", 
-        query="SELECT p FROM PaginaWeb p WHERE p.fechaPublicacion = :fechaPublicacion"),
-    @NamedQuery(name="PaginaWeb.findByNameAndDate", 
-        query="SELECT p FROM PaginaWeb p WHERE p.nombre = :nombre AND p.fechaPublicacion = :fechaPublicacion")
+        query="SELECT p FROM PaginaWeb p")
 })
 public class PaginaWeb implements Serializable {
     
