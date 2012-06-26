@@ -117,7 +117,7 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
 
         jLabel5.setText("Fecha de publicacion");
 
-        jLabel2.setText("(Formato AA-MM-DDDD)");
+        jLabel2.setText("(Formato dd-MM-yyyy)");
 
         jLabel3.setText("Contenido");
 
@@ -268,7 +268,7 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-680)/2, (screenSize.height-559)/2, 680, 559);
+        setBounds((screenSize.width-664)/2, (screenSize.height-560)/2, 664, 560);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed

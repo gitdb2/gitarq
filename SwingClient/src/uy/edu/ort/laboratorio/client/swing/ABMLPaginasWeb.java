@@ -87,7 +87,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
 
         jLabel5.setText("Fecha de publicacion");
 
-        jLabel2.setText("(Formato AA-MM-DDDD)");
+        jLabel2.setText("(Formato dd-MM-yyyy)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,7 +202,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-680)/2, (screenSize.height-506)/2, 680, 506);
+        setBounds((screenSize.width-664)/2, (screenSize.height-507)/2, 664, 507);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed

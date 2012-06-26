@@ -198,7 +198,7 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
         WsRequester req = new WsRequester();
         try {
             
-            List<String> tags = new ArrayList<>();
+            List<String> tags = new ArrayList<String>();
             for (int i = 0; i < listTags.getModel().getSize(); i++) {
                 Object item = listTags.getModel().getElementAt(i);
                 tags.add(item.toString());

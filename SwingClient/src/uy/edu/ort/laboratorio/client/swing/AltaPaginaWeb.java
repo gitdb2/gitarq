@@ -99,7 +99,7 @@ public class AltaPaginaWeb extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                             .addComponent(jTextFieldNombre))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,11 +117,11 @@ public class AltaPaginaWeb extends javax.swing.JFrame {
                             .addComponent(btnAceptar)
                             .addComponent(jButtonCancelar)))
                     .addComponent(jLabel2))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-634)/2, (screenSize.height-533)/2, 634, 533);
+        setBounds((screenSize.width-700)/2, (screenSize.height-575)/2, 700, 575);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
