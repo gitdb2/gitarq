@@ -61,4 +61,11 @@ public class Rol implements Serializable {
             this.usuario = new ArrayList<Usuario>();
         this.usuario.add(usaurio);
     }
+
+    @Override
+    public String toString() {
+        return "Rol{" + "id=" + id + ", usuario=" + usuario + ", nombre=" + nombre + '}';
+    }
+    
+    
 }

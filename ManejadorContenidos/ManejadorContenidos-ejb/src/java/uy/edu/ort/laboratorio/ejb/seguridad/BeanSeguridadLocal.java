@@ -13,7 +13,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface BeanSeguridadLocal {
-
+    /**
+     * Retorna el id de usuario si se autentica sino retorna null
+     * @param login
+     * @param passwordEncriptdo
+     * @return 
+     */
     public Long autenticar(String login, String passwordEncriptdo);
 
     public boolean tienePermiso(String login, String rol);
@@ -23,4 +28,6 @@ public interface BeanSeguridadLocal {
     public String desencriptar(Long id, String payload);
 
     public String encriptar(Long id, String payload);
+
+    public boolean tienePermiso(Long idUser, List<String> roles);
 }

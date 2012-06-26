@@ -15,9 +15,7 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import uy.edu.ort.laboratorio.dominio.Rol;
 import uy.edu.ort.laboratorio.dominio.Usuario;
 import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
@@ -70,34 +68,79 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
     }
 
     private Rol findRolByName(String rolName) {
-        CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
-        CriteriaQuery<Rol> query = qb.createQuery(Rol.class);
-        Root<Rol> rolRoot = query.from(Rol.class);
-        query.where(qb.equal(rolRoot.get("nombre"), rolName));
-        Rol rol = manejadorPersistenciaDB.createQuery(query).getSingleResult();
+        
+
+        Query query = manejadorPersistenciaDB.createQuery("Select r from Rol r where upper(r.nombre) = upper(:rolName)");
+        query.setParameter("rolName", rolName);
+        Rol rol = (Rol) query.getSingleResult();;
+        
+        
+//        CriteriaBuilder qb = manejadorPersistenciaDB.getCriteriaBuilder();
+//        CriteriaQuery<Rol> query = qb.createQuery(Rol.class);
+//        Root from = query.from(Rol.class);
+//        
+//        Expression<String> literal = qb.upper(qb.literal((String) rolName));
+//        Predicate predicate = qb.equal(qb.upper(from.get("nombre")), literal);
+//        query.where(predicate);
+//        
+//        
+////        query.where(qb.equal(from.get("nombre"), rolName));
+//        Rol rol = manejadorPersistenciaDB.createQuery(query).getSingleResult();
         return rol;
+        
+        
+        
+//        String arg1 = "name";
+//        Query query = entityManager.createQuery("from SimpleBean s where upper(s.pstring) like upper(:arg1)");
+//        query.setParameter("arg1", arg1);
+//        List<SimpleBean> list = query.getResultList();
+//         
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery();
+//        Root from = criteriaQuery.from(SimpleBean.class);
+//        CriteriaQuery<Object> select = criteriaQuery.select(from);
+//         
+//        Expression<String> literal = criteriaBuilder.upper(criteriaBuilder.literal((String) arg1));
+//        Predicate predicate = criteriaBuilder.like(criteriaBuilder.upper(from.get("pstring")), literal);
+//         
+//        criteriaQuery.where(predicate);
+//         
+//        TypedQuery<Object> typedQuery = entityManager.createQuery(select);
+//        List<Object> resultList = typedQuery.getResultList();
+//        assertEqualsList(list, resultList);
+        
+        
+        
+        
+        
+        
+        
     }
 
     @Override
     public boolean tienePermiso(String login, String rolStr) {
         Usuario usuario = findUserByLogin(login);
+
+        return tienePermiso(rolStr, usuario);
+    }
+
+    private boolean tienePermiso(String rolStr, Usuario usuario) {
         boolean ret = false;
         Rol rol = null;
         try {
             rol = findRolByName(rolStr);
+            manejadorPersistenciaDB.refresh(rol);
+            Logger.info(this.getClass(), rol);
         } catch (javax.persistence.NoResultException e) {
             //el rol no fue dado de alta por lo que sugo
             Logger.info(this.getClass(), "El rol " + rolStr + "no fue dado de alta aun en la db");
         }
 
         if (rol != null) {
-//        Query q = manejadorPersistenciaDB.createQuery(
-//                "select r from Rol r where r.nombre=:rol and :usuario in (r.usuario)");//.setString("rol", rol).uniqueResult();
-//        q.setParameter("rol", rol).setParameter("usuario", usuario);
-            //        return roles!=null && roles.size() > 0;    
-
             List<Usuario> usuarios = rol.getUsuario();
+             Logger.info(this.getClass(),"usuarios "+usuarios);
             ret = usuarios != null && usuarios.contains(usuario);
+             Logger.info(this.getClass(),"usuarios.contains(usuario)= "+ usuarios.contains(usuario));
         }
 
         return ret;
@@ -155,6 +198,20 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
     private String encriptar(String passphrase, String payload) {
         DesEncrypter encriptador = new DesEncrypter(passphrase);
         return encriptador.encrypt(payload);
+    }
+
+    @Override
+    public boolean tienePermiso(Long idUser, List<String> roles) {
+        boolean ret = false;
+        Usuario  usuario = manejadorPersistenciaDB.find(Usuario.class, idUser);
+        if(usuario != null){
+            for (String rol : roles) {
+                ret = ret || tienePermiso(rol, usuario);
+                if(ret) break;
+            }
+        }
+        Logger.info(this.getClass(), "tiene permiso = "+ret + " ("+ usuario + " - " +roles +")");
+        return ret;
     }
 
 }

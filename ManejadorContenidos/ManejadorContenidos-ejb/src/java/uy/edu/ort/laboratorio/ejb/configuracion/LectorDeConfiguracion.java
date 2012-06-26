@@ -67,7 +67,8 @@ public final class LectorDeConfiguracion {
      * @return
      */
     public String getMensaje(String clave) {
-	return prop.getProperty(clave);
+        
+	return prop.getProperty(clave, clave);
     }
 
     /**

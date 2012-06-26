@@ -19,6 +19,7 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import javax.xml.ws.soap.SOAPFaultException;
+import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 
 /**
  *
@@ -34,19 +35,20 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
 
         Boolean outbound = (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
         System.err.println(messageContext.get(MessageContext.HTTP_REQUEST_HEADERS));
+        
+
+       
 
 
-        SOAPMessage msg = messageContext.getMessage();
-
-
-//        System.err.println("---------___>>"+seguridad.autenticar("rodrigo", "SjCRdR+deE4Js+zG72wWOuwulj5rgiFoYWPl5oo7tE+Wba7JWV3lLw=="));
         if (outbound.booleanValue()) {
             System.err.println("\nOutbound message:");
         } else {
-
+            SOAPMessage msg = messageContext.getMessage();
             System.err.println("\nInbound message:");
-            checkAutenticacion(messageContext, msg);
-
+            Long usuarioAutenticado = checkAutenticacion(messageContext, msg);
+            if(usuarioAutenticado != null){
+                checkRoles(messageContext, msg, usuarioAutenticado);
+            }
         }
 
         System.err.println(messageContext);
@@ -56,7 +58,22 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
         return true;
     }
 
-    private void checkAutenticacion(SOAPMessageContext messageContext, SOAPMessage msg) {
+    private boolean checkRoles(SOAPMessageContext messageContext, SOAPMessage msg, Long idUser) {
+        String operacion = ((QName)messageContext.get(MessageContext.WSDL_OPERATION)).getLocalPart();
+        String role = LectorDeConfiguracion.getInstance().getMensaje("permiso."+operacion, "NONE");
+        
+        List<String> roles = Arrays.asList(role.split("\\|"));
+        
+        
+        boolean verificado = seguridad.tienePermiso(idUser, roles);
+        
+         if(!verificado){
+             generateSOAPErrMessage(msg, LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.permiso") + " "+operacion);
+        }
+        return verificado;
+    }
+
+    private Long checkAutenticacion(SOAPMessageContext messageContext, SOAPMessage msg) {
         // now we can access the header, body, attachments etc ..
         Map<String, Object> header = (Map<String, Object>) messageContext.get(MessageContext.HTTP_REQUEST_HEADERS);
         System.err.println("---" + header);
@@ -71,27 +88,28 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
         Long autenticado = seguridad.autenticar(login, pass);
         System.err.println("---" + autenticado);
         if(null == autenticado){
-            generateSOAPErrMessage(msg, "Usuario o password incorrectos");
+            generateSOAPErrMessage(msg, LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
         }
         //                msg.getSOAPBody();
+        return autenticado;
     }
 
     @Override
     public Set<QName> getHeaders() {
 
-        System.err.println("---SET_HEADERS");
+//        System.err.println("---SET_HEADERS");
         return Collections.EMPTY_SET;
     }
 
     @Override
     public boolean handleFault(SOAPMessageContext messageContext) {
-        System.err.println("---HANDLEFAULT");
+//        System.err.println("---HANDLEFAULT");
         return true;
     }
 
     @Override
     public void close(MessageContext context) {
-        System.err.println("---CLOSE");
+//        System.err.println("---CLOSE");
 
     }
 

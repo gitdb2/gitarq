@@ -98,5 +98,10 @@ public class Usuario implements Serializable {
         hash = 11 * hash + (this.contrasena != null ? this.contrasena.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "id=" + id + ", login=" + login + ", contrasena=" + contrasena + '}';
+    }
     
 }
