@@ -4,14 +4,9 @@
  */
 package uy.edu.ort.laboratorio.ejb.seguridad;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
