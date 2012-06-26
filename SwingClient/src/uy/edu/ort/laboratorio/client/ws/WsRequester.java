@@ -168,27 +168,26 @@ public class WsRequester {
         }     
     }
 
-    public void eliminarPaginaWeb(long id) throws Exception {
+    public boolean eliminarPaginaWeb(long id) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
          try {
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            
+            String payloadXml = encriptar(""+id);
             
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
-            traveller.setPayload("");
+            traveller.setPayload(payloadXml);
             String message = utilTraveller.marshall(traveller);
             
-            String travellerString = "";
+            String travellerString = serv.eliminarPaginaWebEncripted(message);
             
             traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
             
             String payload = traveller.getPayload();
-            payload = desencriptar(payload);
-            
-            ListWrapperTraveller listadoWrapper = utilPayload.unmarshall(ListWrapperTraveller.class, payload);
+            return Boolean.parseBoolean(desencriptar(payload));
         } catch (Exception ex) {
             throw ex;
         }     

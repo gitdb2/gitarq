@@ -229,7 +229,13 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
             if (selectedIndex != -1) {
                 WsRequester requester = new WsRequester();
                 ListItemTraveller aBorrar = (ListItemTraveller) model.getElementAt(selectedIndex);
-                requester.eliminarPaginaWeb(aBorrar.getId());
+                boolean eliminado = requester.eliminarPaginaWeb(aBorrar.getId());
+                
+                if (!eliminado) {
+                    throw new Exception ("No se elimino la Pagina Web de id " + aBorrar.getId());
+                } else {
+                    popularListado();
+                }
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
