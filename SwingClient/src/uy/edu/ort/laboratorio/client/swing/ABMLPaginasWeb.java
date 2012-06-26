@@ -229,9 +229,8 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
                 WsRequester requester = new WsRequester();
                 ListItemTraveller aBorrar = (ListItemTraveller) model.getElementAt(selectedIndex);
                 boolean eliminado = requester.eliminarPaginaWeb(aBorrar.getId());
-                if (!eliminado) {
-                    throw new Exception ("No se elimino la Pagina Web de id " + aBorrar.getId());
-                } else {
+                
+                if (eliminado) {
                     popularListado();
                 }
             }
@@ -251,7 +250,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_chkBoxFiltrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        try {
+       try {
             DefaultListModel model = (DefaultListModel) ListPaginaWeb.getModel();
             int selectedIndex = ListPaginaWeb.getSelectedIndex();
             if (selectedIndex != -1) {

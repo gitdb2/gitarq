@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.ws.WsRequester;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
 
 /**
  *
@@ -214,7 +213,6 @@ public class AltaEntradaBlog extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButtonAddTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTagActionPerformed
-        
         if(!jTextFieldNewTag.getText().trim().isEmpty()){
             DefaultListModel model = new DefaultListModel();
             for (int i = 0; i < jListTags.getModel().getSize(); i++) {
