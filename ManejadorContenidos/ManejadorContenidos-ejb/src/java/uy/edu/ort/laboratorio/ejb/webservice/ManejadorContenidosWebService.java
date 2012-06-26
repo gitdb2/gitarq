@@ -20,7 +20,7 @@ import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.contenidos.ManejadorContenidosLocal;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
+import uy.edu.ort.laboratorio.seguridad.BeanSeguridadLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.travellers.datatype.*;
 import uy.edu.ort.laboratorio.travellers.utiles.MarshallUnmarshallUtil;

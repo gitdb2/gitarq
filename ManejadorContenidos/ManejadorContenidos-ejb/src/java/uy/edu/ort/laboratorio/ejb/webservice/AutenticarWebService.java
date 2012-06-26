@@ -13,7 +13,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
+import uy.edu.ort.laboratorio.seguridad.BeanSeguridadLocal;
 
 /**
  *

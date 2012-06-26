@@ -1,4 +1,4 @@
-package uy.edu.ort.laboratorio.ejb.seguridad;
+package uy.edu.ort.laboratorio.seguridad;
 
 import com.sun.jersey.core.util.Base64;
 import java.io.IOException;

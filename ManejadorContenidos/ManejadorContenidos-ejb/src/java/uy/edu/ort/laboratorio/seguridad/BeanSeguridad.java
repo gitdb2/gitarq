@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.ejb.seguridad;
+package uy.edu.ort.laboratorio.seguridad;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import uy.edu.ort.laboratorio.dominio.Rol;
 import uy.edu.ort.laboratorio.dominio.Usuario;
+import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote;
 import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.logger.Logger;
 
