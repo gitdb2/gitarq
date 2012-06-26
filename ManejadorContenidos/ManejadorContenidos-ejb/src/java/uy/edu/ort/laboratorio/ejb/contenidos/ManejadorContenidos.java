@@ -16,7 +16,7 @@ import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal;
+import uy.edu.ort.laboratorio.persistencia.PeristenciaLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
@@ -35,7 +35,9 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
 
     private PeristenciaLocal getPersistencia() throws ArquitecturaException{
 
-        String ejbName = LectorDeConfiguracion.getInstance().getMensaje("persistance.implementation.ejb.lookup.name", "java:global/ManejadorContenidos/ManejadorContenidos-ejb/PeristenciaDB!uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal");
+        String ejbName = LectorDeConfiguracion.getInstance()
+                            .getMensaje("persistance.implementation.ejb.lookup.name", 
+                            "java:global/ManejadorContenidos/ManejadorContenidos-ejb/PeristenciaDB!uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal");
         PeristenciaLocal manejadorPersistenciaDB = null;
         try {
             InitialContext context = new InitialContext();
