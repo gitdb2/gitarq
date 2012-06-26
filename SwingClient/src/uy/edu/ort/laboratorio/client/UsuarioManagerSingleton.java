@@ -4,7 +4,7 @@
  */
 package uy.edu.ort.laboratorio.client;
 
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
+import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 
 /**
  *

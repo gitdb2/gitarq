@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
+import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote;
 
 /**

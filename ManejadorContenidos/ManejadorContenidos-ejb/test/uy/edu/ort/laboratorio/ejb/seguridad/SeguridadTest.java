@@ -10,7 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.junit.*;
 import static org.junit.Assert.*;
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
+import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 
 /**
  *

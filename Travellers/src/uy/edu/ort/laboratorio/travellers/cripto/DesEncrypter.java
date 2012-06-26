@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.ejb.cripto;
+package uy.edu.ort.laboratorio.travellers.cripto;
 
 import java.io.UnsupportedEncodingException;
 import java.security.spec.AlgorithmParameterSpec;

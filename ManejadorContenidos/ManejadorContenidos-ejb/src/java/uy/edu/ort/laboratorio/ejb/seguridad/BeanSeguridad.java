@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import uy.edu.ort.laboratorio.dominio.Rol;
 import uy.edu.ort.laboratorio.dominio.Usuario;
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
+import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**

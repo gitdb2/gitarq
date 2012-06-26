@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
-import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
+import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.travellers.datatype.*;
 import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
