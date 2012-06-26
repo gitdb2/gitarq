@@ -12,7 +12,7 @@ import javax.ejb.Remote;
  * @author rodrigo
  */
 @Remote
-interface BeanSeguridadRemote {
+public interface BeanSeguridadRemote {
       Long autenticar(String login, String passwordEncriptdo);
       boolean tienePermiso(String login, String rol);
       void altaUsuario(String login, String pass, List<String> roles );

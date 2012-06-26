@@ -4,20 +4,11 @@
  */
 package uy.edu.ort.laboratorio.client.ws;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.BindingProvider;
-import uy.edu.ort.laboratorio.client.SwingClient;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
-import uy.edu.ort.laboratorio.client.ws.autenticar.ArquitecturaException_Exception;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService;
 import uy.edu.ort.laboratorio.client.ws.autenticar.AutenticarWebService_Service;
 import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
@@ -25,7 +16,6 @@ import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
 import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
-import uy.edu.ort.laboratorio.ws.EntradaBlog;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
 
@@ -53,25 +43,7 @@ public class WsRequester {
      * @param texto
      * @param tags
      */
-    @Deprecated
-    public boolean crearContenidoEntradaBlogOrig(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
-        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
-        addUserAndPassToHeader((BindingProvider) serv);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
-        System.out.println(UsuarioManagerSingleton.getInstance().getPassword());
-
-        try {
-            Long lon = serv.crearEntradaBlog(titulo, autor, sdf.format(fecha), texto, tags);
-        } catch (Exception e) {
-            throw e;
-        }
-        return true;
-    }
-
-    public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
+     public boolean crearContenidoEntradaBlog(String titulo, String autor, Date fecha, String texto, List<String> tags) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
@@ -131,24 +103,6 @@ public class WsRequester {
      * @param fecha
      * @param texto
      */
-    @Deprecated
-    public boolean crearContenidoPaginaWebOri(String nombre, Date fecha, String texto) throws Exception {
-        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
-        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
-        addUserAndPassToHeader((BindingProvider) serv);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
-        try {
-            Long lon = serv.crearPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
-
-        } catch (Exception e) {
-            throw e;
-        }
-        return true;
-    }
-
-    
     public boolean crearContenidoPaginaWeb(String nombre, Date fecha, String texto) throws Exception {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();

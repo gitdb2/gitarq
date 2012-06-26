@@ -129,32 +129,7 @@ public class BeanSeguridad implements BeanSeguridadLocal, BeanSeguridadRemote {
         manejadorPersistenciaDB.persist(user);
 
     }
-    public static void main(String[] args) {
-
-        Properties props = new Properties();
-        props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.enterprise.naming.SerialInitContextFactory");
-        props.put(Context.PROVIDER_URL, "jnp://localhost:3700");
-        try {
-
-            InitialContext ctx = new InitialContext(props);
-
-            BeanSeguridadRemote ejbRef = (BeanSeguridadRemote) ctx.lookup(
-                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
-
-            try {
-//               List<String> roles = new ArrayList<String>();
-//               roles.add("admin");
-//               ejbRef.altaUsuario("rodrigo2", DesEncrypter.MD5("1234"), roles);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            System.out.print(ejbRef.tienePermiso("rodrigo2", "admin"));
-
-        } catch (NamingException ex) {
-            ex.printStackTrace();
-        }
-    }
+  
 
     @Override
     public String desencriptar(Long id, String payload) {
