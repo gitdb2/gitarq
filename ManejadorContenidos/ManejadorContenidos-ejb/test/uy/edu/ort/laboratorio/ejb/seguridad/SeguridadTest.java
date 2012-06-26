@@ -4,6 +4,7 @@
  */
 package uy.edu.ort.laboratorio.ejb.seguridad;
 
+import uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote;
 import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;

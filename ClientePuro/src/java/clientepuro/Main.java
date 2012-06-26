@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Properties;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote;
 import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
-import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote;
 
 /**
  *
@@ -38,7 +38,7 @@ public class Main {
             InitialContext ctx = new InitialContext(props);
 
             BeanSeguridadRemote  ejbRef = (BeanSeguridadRemote) ctx.lookup(
-                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
+                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote");
 //                  "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
 
             try {

@@ -1,16 +1,16 @@
-package uy.edu.ort.laboratorio.ejb.contenidos;
+package uy.edu.ort.laboratorio.ejb.negocio.contenidos;
 
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.datatype.DataEntradaBlog;
 import uy.edu.ort.laboratorio.datatype.DataPaginaWeb;
 
-@Remote
-public interface ManejadorContenidosRemote {
+@Local
+public interface ManejadorContenidosLocal {
 
      /**
      * crea y persiste una entrada de blog.
@@ -23,10 +23,10 @@ public interface ManejadorContenidosRemote {
      * @throws ArquitecturaException
      */
     public long crearContenidoEntradaBlog(String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException;
-     
+    
     /**
      * actualiza el contenido de una entrada de blog.
-     * @param idEntradaBlog
+     * @param idPaginaWeb
      * @param titulo
      * @param nombreAutor
      * @param fechaPublicacion
@@ -37,7 +37,7 @@ public interface ManejadorContenidosRemote {
      */
     public long modificarContenidoEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException;
     
-    /**
+     /**
      * crea y persiste una pagina web.
      * @param nombre
      * @param fechaPublicacion
@@ -47,7 +47,7 @@ public interface ManejadorContenidosRemote {
      */
     public long crearContenidoPaginaWeb(String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException;
     
-      /**
+    /**
      * modifica el contenido de una pagina web.
      * @param idPaginaWeb 
      * @param nombre
@@ -67,7 +67,7 @@ public interface ManejadorContenidosRemote {
      */
     public boolean eliminarEntradaBlog(long idEntradaBlog) throws ArquitecturaException;
     
-        /**
+    /**
      * elimina una pagina web
      * @param idPaginaWeb
      * @return
@@ -81,7 +81,7 @@ public interface ManejadorContenidosRemote {
      */
     public List<DataPaginaWeb> listarPaginasWeb() throws ArquitecturaException;
     
-     /**
+    /**
      * lista todas las entradas de blog
      * @return 
      */

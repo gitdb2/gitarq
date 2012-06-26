@@ -1,5 +1,6 @@
-package uy.edu.ort.laboratorio.seguridad;
+package uy.edu.ort.laboratorio.ejb.seguridad;
 
+import uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadLocal;
 import com.sun.jersey.core.util.Base64;
 import java.io.IOException;
 import java.util.*;

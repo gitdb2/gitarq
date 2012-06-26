@@ -2,8 +2,8 @@
 <handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
   <handler-chain>
     <handler>
-      <handler-name>uy.edu.ort.laboratorio.seguridad.AutenticacionHandler</handler-name>
-      <handler-class>uy.edu.ort.laboratorio.seguridad.AutenticacionHandler</handler-class>
+      <handler-name>uy.edu.ort.laboratorio.ejb.seguridad.AutenticacionHandler</handler-name>
+      <handler-class>uy.edu.ort.laboratorio.ejb.seguridad.AutenticacionHandler</handler-class>
     </handler>
   </handler-chain>
 </handler-chains>

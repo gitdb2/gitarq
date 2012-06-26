@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uy.edu.ort.laboratorio.ejb.contenidos;
+package uy.edu.ort.laboratorio.ejb.negocio.contenidos;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,7 @@ import uy.edu.ort.laboratorio.dominio.EntradaBlog;
 import uy.edu.ort.laboratorio.dominio.PaginaWeb;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
-import uy.edu.ort.laboratorio.persistencia.PeristenciaLocal;
+import uy.edu.ort.laboratorio.ejb.persistencia.PeristenciaLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
