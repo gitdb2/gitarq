@@ -330,5 +330,65 @@ public class WsRequester {
         }     
     }
 
-    
+    public EntradaBlogTraveller obtenerEntradaDeBlog(long id) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+
+            String payloadXml = encriptar("" + id);
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+            String message = utilTraveller.marshall(traveller);
+
+            String travellerString = serv.obtenerEntradaBlogEncripted(message);
+
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            payloadXml = desencriptar(traveller.getPayload());
+            
+            MarsharUnmarshallUtil<EntradaBlogTraveller> returnTraveller = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            
+            return returnTraveller.unmarshall(EntradaBlogTraveller.class, payloadXml);
+            
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public boolean modificarPaginaWeb(long id, String nombreAutor, 
+            String titulo, String contenido, Date fechaPublicacion, 
+            List<String> tags) throws Exception {
+        
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+
+            EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, nombreAutor, contenido, tags, fechaPublicacion);
+            nuevaEntradaBlog.setId(id);
+
+            String payloadXml = utilPayload.marshall(nuevaEntradaBlog);
+            payloadXml = encriptar(payloadXml);
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+
+            String message = utilTraveller.marshall(traveller);
+            String respuesta = serv.modificarEntradaBlogEncripted(message);
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, respuesta);
+            respuesta = desencriptar(inObject.getPayload());
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
+    }
+
 }

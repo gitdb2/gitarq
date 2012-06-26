@@ -7,12 +7,11 @@ package uy.edu.ort.laboratorio.client.swing;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.ws.WsRequester;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
+import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
 
 /**
  *
@@ -20,11 +19,15 @@ import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
  */
 public class ModificarEntradaBlog extends javax.swing.JFrame {
 
+    private ListItemTraveller aModificar;
+    
     /**
      * Creates new form EnviarEntradaBlog
      */
-    public ModificarEntradaBlog() {
+    public ModificarEntradaBlog(ListItemTraveller aModificar) {
         initComponents();
+        this.aModificar = aModificar;
+        cargarCampos();
     }
 
     /**
@@ -37,18 +40,18 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextTitulo = new javax.swing.JTextField();
+        txtTitulo = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaTexto = new javax.swing.JTextArea();
+        txtContenido = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldAutor = new javax.swing.JTextField();
+        txtNombreAutor = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
-        jTextFieldNewTag = new javax.swing.JTextField();
+        txtAgregarTag = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jListTags = new javax.swing.JList();
+        listTags = new javax.swing.JList();
         jButtonAddTag = new javax.swing.JButton();
         jButtonRemoveTag = new javax.swing.JButton();
 
@@ -66,9 +69,9 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
 
         jLabel1.setText("Título");
 
-        jTextAreaTexto.setColumns(20);
-        jTextAreaTexto.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaTexto);
+        txtContenido.setColumns(20);
+        txtContenido.setRows(5);
+        jScrollPane1.setViewportView(txtContenido);
 
         jLabel2.setText("Cuerpo");
 
@@ -90,12 +93,12 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
             }
         });
 
-        jListTags.setModel(new javax.swing.AbstractListModel() {
+        listTags.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jListTags);
+        jScrollPane2.setViewportView(listTags);
 
         jButtonAddTag.setText(">");
         jButtonAddTag.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +124,7 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextFieldNewTag, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtAgregarTag, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -144,8 +147,8 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
                                         .addComponent(jButtonRemoveTag, javax.swing.GroupLayout.Alignment.TRAILING))
                                     .addGap(18, 18, 18)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
-                                .addComponent(jTextFieldAutor)
-                                .addComponent(jTextTitulo)
+                                .addComponent(txtNombreAutor)
+                                .addComponent(txtTitulo)
                                 .addComponent(jScrollPane1)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -155,11 +158,11 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextFieldAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombreAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -169,7 +172,7 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextFieldNewTag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAgregarTag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonAddTag))
                         .addGap(4, 4, 4)
                         .addComponent(jButtonRemoveTag))
@@ -192,58 +195,56 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        WsRequester req = new WsRequester();
         try {
-            WsRequester req = new WsRequester();
-
-            List<String> items = new ArrayList<String>();
             
-            for (int i = 0; i < jListTags.getModel().getSize(); i++) {
-                Object item = jListTags.getModel().getElementAt(i);
-                items.add(item.toString());
+            List<String> tags = new ArrayList<>();
+            for (int i = 0; i < listTags.getModel().getSize(); i++) {
+                Object item = listTags.getModel().getElementAt(i);
+                tags.add(item.toString());
             }
             
-           if(req.crearContenidoEntradaBlog(jTextTitulo.getText(), jTextFieldAutor.getText(),
-                    GregorianCalendar.getInstance().getTime(), jTextAreaTexto.getText(), items)){
-            this.dispose();   
-           }
+            if (req.modificarPaginaWeb(aModificar.getId(), 
+                    txtNombreAutor.getText(),
+                    txtTitulo.getText(),
+                    txtContenido.getText(),
+                    GregorianCalendar.getInstance().getTime(), tags )) {
+                this.dispose();
+            }
         } catch (Exception ex) {
-            Logger.getLogger(ModificarEntradaBlog.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
-                                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButtonAddTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTagActionPerformed
-        
-        if(!jTextFieldNewTag.getText().trim().isEmpty()){
+        if(!txtAgregarTag.getText().trim().isEmpty()){
             DefaultListModel model = new DefaultListModel();
-
-
-            for (int i = 0; i < jListTags.getModel().getSize(); i++) {
-                    Object item = jListTags.getModel().getElementAt(i);
+            for (int i = 0; i < listTags.getModel().getSize(); i++) {
+                    Object item = listTags.getModel().getElementAt(i);
                     model.add(i, item);
             }
-            model.add(model.getSize(), jTextFieldNewTag.getText());
-            jListTags.setModel(model);
-            jTextFieldNewTag.requestFocus();
+            model.add(model.getSize(), txtAgregarTag.getText());
+            listTags.setModel(model);
+            txtAgregarTag.requestFocus();
         }
     }//GEN-LAST:event_jButtonAddTagActionPerformed
 
     private void jButtonRemoveTagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveTagActionPerformed
         DefaultListModel model = new DefaultListModel();
 
-        int selectedIndex = jListTags.getSelectedIndex();
+        int selectedIndex = listTags.getSelectedIndex();
         if(selectedIndex <0 ){
             selectedIndex = 0;
         }
         int cont = 0;
-        for (int i = 0; i < jListTags.getModel().getSize(); i++) {
-                Object item = jListTags.getModel().getElementAt(i);
+        for (int i = 0; i < listTags.getModel().getSize(); i++) {
+                Object item = listTags.getModel().getElementAt(i);
                 if(i != selectedIndex){
                     model.add(cont++, item);
                 }
         }
-        jListTags.setModel(model);
+        listTags.setModel(model);
     }//GEN-LAST:event_jButtonRemoveTagActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -253,48 +254,28 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
        this.dispose();
     }//GEN-LAST:event_formWindowClosing
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+   
+    private void cargarCampos() {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            WsRequester requester = new WsRequester();
+            EntradaBlogTraveller entradaSeleccionada = requester.obtenerEntradaDeBlog(aModificar.getId());
+            txtNombreAutor.setText(entradaSeleccionada.getNombreAutor());
+            txtTitulo.setText(entradaSeleccionada.getTitulo());
+            txtContenido.setText(entradaSeleccionada.getTexto());
+
+            DefaultListModel model = new DefaultListModel();
+            int i = 0;
+            for (String tag : entradaSeleccionada.getTags()) {
+                model.add(i, tag);
+                i++;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarEntradaBlog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            listTags.setModel(model);
+        
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ModificarEntradaBlog().setVisible(true);
-            }
-        });
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButtonAddTag;
@@ -304,12 +285,12 @@ public class ModificarEntradaBlog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jListTags;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextAreaTexto;
-    private javax.swing.JTextField jTextFieldAutor;
-    private javax.swing.JTextField jTextFieldNewTag;
-    private javax.swing.JTextField jTextTitulo;
+    private javax.swing.JList listTags;
+    private javax.swing.JTextField txtAgregarTag;
+    private javax.swing.JTextArea txtContenido;
+    private javax.swing.JTextField txtNombreAutor;
+    private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }

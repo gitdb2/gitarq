@@ -251,7 +251,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_chkBoxFiltrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        try {
+       try {
             DefaultListModel model = (DefaultListModel) ListPaginaWeb.getModel();
             int selectedIndex = ListPaginaWeb.getSelectedIndex();
             if (selectedIndex != -1) {
