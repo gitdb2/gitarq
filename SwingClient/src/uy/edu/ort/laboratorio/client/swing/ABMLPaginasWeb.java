@@ -223,14 +223,12 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
-            
             DefaultListModel model = (DefaultListModel) ListPaginaWeb.getModel();
             int selectedIndex = ListPaginaWeb.getSelectedIndex();
             if (selectedIndex != -1) {
                 WsRequester requester = new WsRequester();
                 ListItemTraveller aBorrar = (ListItemTraveller) model.getElementAt(selectedIndex);
                 boolean eliminado = requester.eliminarPaginaWeb(aBorrar.getId());
-                
                 if (!eliminado) {
                     throw new Exception ("No se elimino la Pagina Web de id " + aBorrar.getId());
                 } else {
@@ -252,50 +250,19 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     }//GEN-LAST:event_chkBoxFiltrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        new ModificarPaginaWeb().setVisible(true);
+        try {
+            DefaultListModel model = (DefaultListModel) ListPaginaWeb.getModel();
+            int selectedIndex = ListPaginaWeb.getSelectedIndex();
+            if (selectedIndex != -1) {
+                ListItemTraveller aModificar = (ListItemTraveller) model.getElementAt(selectedIndex);
+                new ModificarPaginaWeb(aModificar).setVisible(true);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ABMLPaginasWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ABMLPaginasWeb().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList ListPaginaWeb;
     private javax.swing.JButton btnAlta;

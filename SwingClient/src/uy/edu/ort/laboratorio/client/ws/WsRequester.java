@@ -92,21 +92,10 @@ public class WsRequester {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-//
-//        try {
-//            Long lon = serv.crearPaginaWeb(nombre, sdf.format(fecha), texto.getBytes());
-//
-//        } catch (Exception e) {
-//            throw e;
-//        }
-        
-          try {
+        try {
 
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
-
 
             PaginaWebTraveller nuevaEntradaBlog = new PaginaWebTraveller(nombre, texto.getBytes(), fecha);
 
@@ -120,7 +109,7 @@ public class WsRequester {
 
             String message = utilTraveller.marshall(traveller);
             System.out.println(message);
-            
+
             String respuesta = serv.crearPaginaWebEncripted(message);
 
             System.out.println(respuesta);
@@ -134,7 +123,6 @@ public class WsRequester {
         } catch (Exception e) {
             throw e;
         }
-       
         return true;
     }
     
@@ -169,25 +157,25 @@ public class WsRequester {
         ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
-         try {
+        try {
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            
-            String payloadXml = encriptar(""+id);
-            
+
+            String payloadXml = encriptar("" + id);
+
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
             traveller.setPayload(payloadXml);
             String message = utilTraveller.marshall(traveller);
-            
+
             String travellerString = serv.eliminarPaginaWebEncripted(message);
-            
+
             traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
-            
+
             String payload = traveller.getPayload();
             return Boolean.parseBoolean(desencriptar(payload));
         } catch (Exception ex) {
             throw ex;
-        }     
+        }
     }
 
     public List<ListItemTraveller> paginasWebFiltrando(String titulo, String fechaPublicacion) throws Exception {
@@ -222,8 +210,37 @@ public class WsRequester {
             throw ex;
         }
     }
+
+    public PaginaWebTraveller obtenerPaginaWeb(long id) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+
+            String payloadXml = encriptar("" + id);
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+            String message = utilTraveller.marshall(traveller);
+
+            String travellerString = serv.obtenerPaginaWebEncripted(message);
+
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            payloadXml = desencriptar(traveller.getPayload());
+            
+            MarsharUnmarshallUtil<PaginaWebTraveller> returnTraveller = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            
+            return returnTraveller.unmarshall(PaginaWebTraveller.class, payloadXml);
+            
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
     
-    private Date parsearFecha(String fecha) throws ParseException {
+     private Date parsearFecha(String fecha) throws ParseException {
         if (fecha == null || fecha.trim().isEmpty()) {
             return null;
         } else {
