@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.ws.WsRequester;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
 
 /**
  *

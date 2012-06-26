@@ -5,7 +5,7 @@
     <client name="AutenticarWebService">
       <wsdl-url>http://localhost:8080/AutenticarWebService/AutenticarWebService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/AutenticarWebService/AutenticarWebService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">uy.edu.ort.laboratorio.client.ws.autenticar</package-name>
+      <package-name forceReplace="true">uy.edu.ort.laboratorio.ws.autenticar</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -30,7 +30,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>uy.edu.ort.laboratorio.client.ws.autenticar</wsimport-option-value>
+          <wsimport-option-value>uy.edu.ort.laboratorio.ws.autenticar</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

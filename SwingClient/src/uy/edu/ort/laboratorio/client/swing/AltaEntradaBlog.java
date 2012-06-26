@@ -217,8 +217,6 @@ public class AltaEntradaBlog extends javax.swing.JFrame {
         
         if(!jTextFieldNewTag.getText().trim().isEmpty()){
             DefaultListModel model = new DefaultListModel();
-
-
             for (int i = 0; i < jListTags.getModel().getSize(); i++) {
                     Object item = jListTags.getModel().getElementAt(i);
                     model.add(i, item);

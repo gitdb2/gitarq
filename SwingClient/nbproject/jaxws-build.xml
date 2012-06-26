@@ -21,7 +21,7 @@
     <target name="wsimport-client-AutenticarWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/AutenticarWebService"/>
         <property name="wsdl-AutenticarWebService" location="xml-resources/web-service-references/AutenticarWebService/wsdl/localhost_8080/AutenticarWebService/AutenticarWebService.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AutenticarWebService" destdir="${build.generated.dir}/jax-wsCache/AutenticarWebService" wsdl="${wsdl-AutenticarWebService}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/AutenticarWebService/AutenticarWebService?wsdl" xnocompile="true" xendorsed="true" package="uy.edu.ort.laboratorio.client.ws.autenticar">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AutenticarWebService" destdir="${build.generated.dir}/jax-wsCache/AutenticarWebService" wsdl="${wsdl-AutenticarWebService}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8080/AutenticarWebService/AutenticarWebService?wsdl" xnocompile="true" xendorsed="true" package="uy.edu.ort.laboratorio.ws.autenticar">
             <depends file="${wsdl-AutenticarWebService}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/AutenticarWebService"/>
         </wsimport>
@@ -33,7 +33,7 @@
     </target>
     <target name="wsimport-client-clean-AutenticarWebService" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/AutenticarWebService"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/uy/edu/ort/laboratorio/client/ws/autenticar"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/uy/edu/ort/laboratorio/ws/autenticar"/>
     </target>
     <target name="wsimport-client-ManejadorContenidosWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/ManejadorContenidosWebService"/>

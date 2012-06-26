@@ -5,11 +5,10 @@
 package uy.edu.ort.laboratorio.client.swing;
 
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.ws.WsRequester;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
+import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
+import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
 
 /**
  *
@@ -17,11 +16,15 @@ import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
  */
 public class ModificarPaginaWeb extends javax.swing.JFrame {
 
+    private ListItemTraveller aModificar;
+    
     /**
      * Creates new form AltaPaginaWeb
      */
-    public ModificarPaginaWeb() {
+    public ModificarPaginaWeb(ListItemTraveller aModificar) {
         initComponents();
+        this.aModificar = aModificar;
+        cargarCampos();
     }
 
     /**
@@ -34,9 +37,9 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldNombre = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaHTML = new javax.swing.JTextArea();
+        txtHTML = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
@@ -55,15 +58,15 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
 
         jLabel1.setText("Nombre");
 
-        jTextFieldNombre.addActionListener(new java.awt.event.ActionListener() {
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldNombreActionPerformed(evt);
+                txtNombreActionPerformed(evt);
             }
         });
 
-        jTextAreaHTML.setColumns(20);
-        jTextAreaHTML.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaHTML);
+        txtHTML.setColumns(20);
+        txtHTML.setRows(5);
+        jScrollPane1.setViewportView(txtHTML);
 
         jLabel2.setText("Html");
 
@@ -99,7 +102,7 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
-                            .addComponent(jTextFieldNombre))))
+                            .addComponent(txtNombre))))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -107,7 +110,7 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,18 +128,17 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
         setBounds((screenSize.width-634)/2, (screenSize.height-533)/2, 634, 533);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
+    }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         WsRequester req = new WsRequester();
         try {
-            if (req.crearContenidoPaginaWeb(jTextFieldNombre.getText(), GregorianCalendar.getInstance().getTime(), jTextAreaHTML.getText())) {
+            if (req.modificarPaginaWeb(aModificar.getId(), txtNombre.getText(), GregorianCalendar.getInstance().getTime(), txtHTML.getText())) {
                 this.dispose();
             }
         } catch (Exception ex) {
-            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -154,54 +156,25 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
        this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarPaginaWeb.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new ModificarPaginaWeb().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextAreaHTML;
-    private javax.swing.JTextField jTextFieldNombre;
+    private javax.swing.JTextArea txtHTML;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarCampos() {
+        try {
+            WsRequester requester = new WsRequester();
+            PaginaWebTraveller paginaSeleccionada = requester.obtenerPaginaWeb(aModificar.getId());
+            txtNombre.setText(paginaSeleccionada.getNombre());
+            txtHTML.setText(new String(paginaSeleccionada.getHtml()));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 }
