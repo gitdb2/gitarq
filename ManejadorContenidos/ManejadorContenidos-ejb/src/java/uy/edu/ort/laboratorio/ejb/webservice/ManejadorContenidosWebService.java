@@ -588,9 +588,7 @@ public class ManejadorContenidosWebService {
 
             FilterQueryTraveller filter = utilPayload.unmarshall(FilterQueryTraveller.class, payload);
 
-
-
-            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWebFiltrando(filter.getNombre(), filter.getFecha());
+            List<DataPaginaWeb> paginas = manejadorContenidos.listarPaginasWebFiltrando(filter.getTitulo(), filter.getFecha());
 
             ListWrapperTraveller retObj = new ListWrapperTraveller();
             for (DataPaginaWeb pag : paginas) {

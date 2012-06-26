@@ -4,17 +4,14 @@
  */
 package uy.edu.ort.laboratorio.client.ws;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
 import uy.edu.ort.laboratorio.ejb.cripto.DesEncrypter;
-import uy.edu.ort.laboratorio.travellers.datatype.EntradaBlogTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.ListWrapperTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
-import uy.edu.ort.laboratorio.travellers.datatype.Traveller;
+import uy.edu.ort.laboratorio.travellers.datatype.*;
 import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
@@ -191,5 +188,47 @@ public class WsRequester {
         } catch (Exception ex) {
             throw ex;
         }     
+    }
+
+    public List<ListItemTraveller> paginasWebFiltrando(String titulo, String fechaPublicacion) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            
+            FilterQueryTraveller queryTraveller = new FilterQueryTraveller();
+            queryTraveller.setTitulo(titulo);
+            queryTraveller.setFecha(parsearFecha(fechaPublicacion));
+
+            String payloadXml = utilPayload.marshall(queryTraveller);
+            payloadXml = encriptar(payloadXml);
+            
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+            
+            String message = utilTraveller.marshall(traveller);
+            String travellerString = serv.listarPaginasWebFiltrandoEncripted(message);
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            String payload = traveller.getPayload();
+            payload = desencriptar(payload);
+            MarsharUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            ListWrapperTraveller listadoWrapper = resultUtilPaload.unmarshall(ListWrapperTraveller.class, payload);
+            return listadoWrapper.getItems();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+    
+    private Date parsearFecha(String fecha) throws ParseException {
+        if (fecha == null || fecha.trim().isEmpty()) {
+            return null;
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            return sdf.parse(fecha);
+        }
     }
 }

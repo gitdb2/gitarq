@@ -315,6 +315,8 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void habilitarFiltros(boolean estado) {
+        txtFechaPublicacion.setText(null);
+        txtTitulo.setText(null);
         txtFechaPublicacion.setEnabled(estado);
         txtTitulo.setEnabled(estado);
     }
@@ -322,10 +324,15 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
     private void popularListado() {
         try {
             WsRequester requester = new WsRequester();
-            List<ListItemTraveller> todasLasPaginas = requester.todasLasPaginasWeb();
+            List<ListItemTraveller> paginas = null;
+            if (chkBoxFiltrar.isSelected()) {
+                paginas = requester.paginasWebFiltrando(txtTitulo.getText(), txtFechaPublicacion.getText());
+            } else {
+                paginas = requester.todasLasPaginasWeb();
+            }
             DefaultListModel model = new DefaultListModel();
             int i = 0;
-            for (ListItemTraveller listItemTraveller : todasLasPaginas) {
+            for (ListItemTraveller listItemTraveller : paginas) {
                 model.add(i, listItemTraveller);
                 i++;
             }
