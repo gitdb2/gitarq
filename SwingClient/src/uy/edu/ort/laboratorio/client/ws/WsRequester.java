@@ -12,7 +12,7 @@ import javax.xml.ws.BindingProvider;
 import uy.edu.ort.laboratorio.client.UsuarioManagerSingleton;
 import uy.edu.ort.laboratorio.travellers.cripto.DesEncrypter;
 import uy.edu.ort.laboratorio.travellers.datatype.*;
-import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
+import uy.edu.ort.laboratorio.travellers.utiles.MarshallUnmarshallUtil;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService;
 import uy.edu.ort.laboratorio.ws.ManejadorContenidosWebService_Service;
 import uy.edu.ort.laboratorio.ws.autenticar.AutenticarWebService;
@@ -48,8 +48,8 @@ public class WsRequester {
 
         try {
 
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
 
             EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, autor, texto, tags, fecha);
 
@@ -93,8 +93,8 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarshallUnmarshallUtil<PaginaWebTraveller>();
 
             PaginaWebTraveller nuevaEntradaBlog = new PaginaWebTraveller(nombre, texto.getBytes(), fecha);
 
@@ -118,8 +118,8 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarshallUnmarshallUtil<ListWrapperTraveller>();
             
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
@@ -145,7 +145,7 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
 
             String payloadXml = encriptar("" + id);
 
@@ -170,8 +170,8 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarshallUnmarshallUtil<FilterQueryTraveller>();
             
             FilterQueryTraveller queryTraveller = new FilterQueryTraveller();
             queryTraveller.setTitulo(titulo);
@@ -190,7 +190,7 @@ public class WsRequester {
             
             String payload = traveller.getPayload();
             payload = desencriptar(payload);
-            MarsharUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarshallUnmarshallUtil<ListWrapperTraveller>();
             ListWrapperTraveller listadoWrapper = resultUtilPaload.unmarshall(ListWrapperTraveller.class, payload);
             return listadoWrapper.getItems();
         } catch (Exception ex) {
@@ -203,7 +203,7 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
 
             String payloadXml = encriptar("" + id);
 
@@ -218,7 +218,7 @@ public class WsRequester {
             
             payloadXml = desencriptar(traveller.getPayload());
             
-            MarsharUnmarshallUtil<PaginaWebTraveller> returnTraveller = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> returnTraveller = new MarshallUnmarshallUtil<PaginaWebTraveller>();
             
             return returnTraveller.unmarshall(PaginaWebTraveller.class, payloadXml);
             
@@ -242,8 +242,8 @@ public class WsRequester {
         addUserAndPassToHeader((BindingProvider) serv);
         try {
 
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarshallUnmarshallUtil<PaginaWebTraveller>();
 
             PaginaWebTraveller nuevaPaginaWeb = new PaginaWebTraveller(titulo, html.getBytes(), fecha);
             nuevaPaginaWeb.setId(id);
@@ -272,8 +272,8 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarshallUnmarshallUtil<FilterQueryTraveller>();
             
             FilterQueryTraveller queryTraveller = new FilterQueryTraveller();
             queryTraveller.setTitulo(titulo);
@@ -295,7 +295,7 @@ public class WsRequester {
             
             String payload = traveller.getPayload();
             payload = desencriptar(payload);
-            MarsharUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarshallUnmarshallUtil<ListWrapperTraveller>();
             ListWrapperTraveller listadoWrapper = resultUtilPaload.unmarshall(ListWrapperTraveller.class, payload);
             return listadoWrapper.getItems();
         } catch (Exception ex) {
@@ -308,8 +308,8 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarshallUnmarshallUtil<ListWrapperTraveller>();
             
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
@@ -335,7 +335,7 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
 
             String payloadXml = encriptar("" + id);
 
@@ -350,7 +350,7 @@ public class WsRequester {
             
             payloadXml = desencriptar(traveller.getPayload());
             
-            MarsharUnmarshallUtil<EntradaBlogTraveller> returnTraveller = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> returnTraveller = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
             
             return returnTraveller.unmarshall(EntradaBlogTraveller.class, payloadXml);
             
@@ -368,8 +368,8 @@ public class WsRequester {
         addUserAndPassToHeader((BindingProvider) serv);
         
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
 
             EntradaBlogTraveller nuevaEntradaBlog = new EntradaBlogTraveller(titulo, nombreAutor, contenido, tags, fechaPublicacion);
             nuevaEntradaBlog.setId(id);
@@ -396,7 +396,7 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
 
             String payloadXml = encriptar("" + id);
 

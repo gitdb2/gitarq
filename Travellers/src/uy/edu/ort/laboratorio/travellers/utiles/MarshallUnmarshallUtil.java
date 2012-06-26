@@ -17,7 +17,7 @@ import uy.edu.ort.laboratorio.logger.Logger;
  *
  * @author rodrigo
  */
-public class MarsharUnmarshallUtil<T> {
+public class MarshallUnmarshallUtil<T> {
 
     /**
      * a partir de un XML genera un objeto del tipo classname

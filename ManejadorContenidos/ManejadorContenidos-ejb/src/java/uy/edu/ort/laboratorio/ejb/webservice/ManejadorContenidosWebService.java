@@ -23,7 +23,7 @@ import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadLocal;
 import uy.edu.ort.laboratorio.logger.Logger;
 import uy.edu.ort.laboratorio.travellers.datatype.*;
-import uy.edu.ort.laboratorio.travellers.utiles.MarsharUnmarshallUtil;
+import uy.edu.ort.laboratorio.travellers.utiles.MarshallUnmarshallUtil;
 
 /**
  * Fachada de la aplicacion para exponer como webservice. Delega el
@@ -54,8 +54,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
         try {
 
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -119,8 +119,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
         try {
 
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -183,8 +183,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarshallUnmarshallUtil<PaginaWebTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -241,8 +241,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarshallUnmarshallUtil<PaginaWebTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -298,8 +298,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -346,8 +346,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -393,8 +393,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -430,8 +430,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -467,8 +467,8 @@ public class ManejadorContenidosWebService {
     public String obtenerPaginaWebEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
         String ret = null;
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarshallUnmarshallUtil<PaginaWebTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -518,8 +518,8 @@ public class ManejadorContenidosWebService {
         String ret = null;
 
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarsharUnmarshallUtil<EntradaBlogTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<EntradaBlogTraveller> utilPayload = new MarshallUnmarshallUtil<EntradaBlogTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -574,9 +574,9 @@ public class ManejadorContenidosWebService {
 
         String ret = null;
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarshallUnmarshallUtil<FilterQueryTraveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
@@ -613,9 +613,9 @@ public class ManejadorContenidosWebService {
 
         String ret = null;
         try {
-            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
-            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
-            MarsharUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
+            MarshallUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarshallUnmarshallUtil<FilterQueryTraveller>();
+            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
