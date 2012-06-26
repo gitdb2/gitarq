@@ -93,7 +93,6 @@ public class WsRequester {
         ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
         addUserAndPassToHeader((BindingProvider) serv);
         try {
-
             MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
             MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
 
@@ -101,25 +100,13 @@ public class WsRequester {
 
             String payloadXml = utilPayload.marshall(nuevaEntradaBlog);
             payloadXml = encriptar(payloadXml);
-
-
+            
             Traveller traveller = new Traveller();
             traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
             traveller.setPayload(payloadXml);
-
+            
             String message = utilTraveller.marshall(traveller);
-            System.out.println(message);
-
             String respuesta = serv.crearPaginaWebEncripted(message);
-
-            System.out.println(respuesta);
-
-            Traveller inObject = utilTraveller.unmarshall(Traveller.class, respuesta);
-            System.out.println("ID = " + inObject.getId());
-
-            respuesta = desencriptar(inObject.getPayload());
-            System.out.println("payload = " + respuesta);
-
         } catch (Exception e) {
             throw e;
         }
@@ -247,5 +234,34 @@ public class WsRequester {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             return sdf.parse(fecha);
         }
+    }
+
+    public boolean modificarPaginaWeb(long id, String titulo, Date fecha, String html) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<PaginaWebTraveller> utilPayload = new MarsharUnmarshallUtil<PaginaWebTraveller>();
+
+            PaginaWebTraveller nuevaPaginaWeb = new PaginaWebTraveller(titulo, html.getBytes(), fecha);
+            nuevaPaginaWeb.setId(id);
+
+            String payloadXml = utilPayload.marshall(nuevaPaginaWeb);
+            payloadXml = encriptar(payloadXml);
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+
+            String message = utilTraveller.marshall(traveller);
+            String respuesta = serv.modificarPaginaWebEncripted(message);
+            Traveller inObject = utilTraveller.unmarshall(Traveller.class, respuesta);
+            respuesta = desencriptar(inObject.getPayload());
+        } catch (Exception e) {
+            throw e;
+        }
+        return true;
     }
 }

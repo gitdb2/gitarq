@@ -243,6 +243,7 @@ public class ABMLPaginasWeb extends javax.swing.JFrame {
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
         new AltaPaginaWeb().setVisible(true);
+        popularListado();
     }//GEN-LAST:event_btnAltaActionPerformed
 
     private void chkBoxFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBoxFiltrarActionPerformed

@@ -5,13 +5,10 @@
 package uy.edu.ort.laboratorio.client.swing;
 
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import uy.edu.ort.laboratorio.client.ws.WsRequester;
 import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
 import uy.edu.ort.laboratorio.travellers.datatype.PaginaWebTraveller;
-import uy.edu.ort.laboratorio.ws.ArquitecturaException_Exception;
 
 /**
  *
@@ -138,7 +135,7 @@ public class ModificarPaginaWeb extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         WsRequester req = new WsRequester();
         try {
-            if (req.crearContenidoPaginaWeb(txtNombre.getText(), GregorianCalendar.getInstance().getTime(), txtHTML.getText())) {
+            if (req.modificarPaginaWeb(aModificar.getId(), txtNombre.getText(), GregorianCalendar.getInstance().getTime(), txtHTML.getText())) {
                 this.dispose();
             }
         } catch (Exception ex) {
