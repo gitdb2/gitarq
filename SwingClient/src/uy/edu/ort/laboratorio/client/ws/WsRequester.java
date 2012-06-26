@@ -391,4 +391,29 @@ public class WsRequester {
         return true;
     }
 
+    public boolean eliminarEntradaBlog(long id) throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+
+            String payloadXml = encriptar("" + id);
+
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+            String message = utilTraveller.marshall(traveller);
+
+            String travellerString = serv.eliminarEntradaBlogEncripted(message);
+
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+
+            String payload = traveller.getPayload();
+            return Boolean.parseBoolean(desencriptar(payload));
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
 }

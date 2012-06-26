@@ -288,7 +288,22 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefrescarListadoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+           try {
+            DefaultListModel model = (DefaultListModel) ListEntradaBlog.getModel();
+            int selectedIndex = ListEntradaBlog.getSelectedIndex();
+            if (selectedIndex != -1) {
+                WsRequester requester = new WsRequester();
+                ListItemTraveller aBorrar = (ListItemTraveller) model.getElementAt(selectedIndex);
+                boolean eliminado = requester.eliminarEntradaBlog(aBorrar.getId());
+
+                if (eliminado) {
+                    popularListado();
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
