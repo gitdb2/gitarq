@@ -227,7 +227,7 @@ public class WsRequester {
         }
     }
     
-     private Date parsearFecha(String fecha) throws ParseException {
+    private Date parsearFecha(String fecha) throws ParseException {
         if (fecha == null || fecha.trim().isEmpty()) {
             return null;
         } else {
@@ -264,4 +264,71 @@ public class WsRequester {
         }
         return true;
     }
+
+    public List<ListItemTraveller> entradasDeBlogFiltrando(String titulo, String fechaPublicacion, 
+            String contenido, String autor, String tags) throws Exception {
+
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<FilterQueryTraveller> utilPayload = new MarsharUnmarshallUtil<FilterQueryTraveller>();
+            
+            FilterQueryTraveller queryTraveller = new FilterQueryTraveller();
+            queryTraveller.setTitulo(titulo);
+            queryTraveller.setFecha(parsearFecha(fechaPublicacion));
+            queryTraveller.setTag(tags);
+            queryTraveller.setNombre(autor);
+            queryTraveller.setTexto(contenido);
+
+            String payloadXml = utilPayload.marshall(queryTraveller);
+            payloadXml = encriptar(payloadXml);
+            
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload(payloadXml);
+            
+            String message = utilTraveller.marshall(traveller);
+            String travellerString = serv.listarEntradaBlogFiltrandoEncripted(message);
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            String payload = traveller.getPayload();
+            payload = desencriptar(payload);
+            MarsharUnmarshallUtil<ListWrapperTraveller> resultUtilPaload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            ListWrapperTraveller listadoWrapper = resultUtilPaload.unmarshall(ListWrapperTraveller.class, payload);
+            return listadoWrapper.getItems();
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    public List<ListItemTraveller> todasLasEntradasDeBlog() throws Exception {
+        ManejadorContenidosWebService_Service service = new ManejadorContenidosWebService_Service();
+        ManejadorContenidosWebService serv = service.getManejadorContenidosWebServicePort();
+        addUserAndPassToHeader((BindingProvider) serv);
+        try {
+            MarsharUnmarshallUtil<Traveller> utilTraveller = new MarsharUnmarshallUtil<Traveller>();
+            MarsharUnmarshallUtil<ListWrapperTraveller> utilPayload = new MarsharUnmarshallUtil<ListWrapperTraveller>();
+            
+            Traveller traveller = new Traveller();
+            traveller.setId(UsuarioManagerSingleton.getInstance().getIdUser());
+            traveller.setPayload("");
+            String message = utilTraveller.marshall(traveller);
+            
+            String travellerString = serv.listarEntradasDeBlogEncripted(message);
+            
+            traveller = utilTraveller.unmarshall(Traveller.class, travellerString);
+            
+            String payload = traveller.getPayload();
+            payload = desencriptar(payload);
+            
+            ListWrapperTraveller listadoWrapper = utilPayload.unmarshall(ListWrapperTraveller.class, payload);
+            return listadoWrapper.getItems();
+        } catch (Exception ex) {
+            throw ex;
+        }     
+    }
+
+    
 }

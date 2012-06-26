@@ -4,6 +4,12 @@
  */
 package uy.edu.ort.laboratorio.client.swing;
 
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import uy.edu.ort.laboratorio.client.ws.WsRequester;
+import uy.edu.ort.laboratorio.travellers.datatype.ListItemTraveller;
+
 /**
  *
  * @author rodrigo
@@ -16,6 +22,31 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
     public ABMLEntradaBlog() {
         initComponents();
         habilitarFiltros(chkBoxFiltrar.isSelected());
+        popularListado();
+    }
+    
+    private void popularListado() {
+        try {
+            WsRequester requester = new WsRequester();
+            List<ListItemTraveller> entradasDeBlog = null;
+            if (chkBoxFiltrar.isSelected()) {
+                entradasDeBlog = requester.entradasDeBlogFiltrando(txtTitulo.getText(), 
+                        txtFechaPublicacion.getText(), txtContenido.getText(),
+                        txtAutor.getText(), txtTags.getText());
+            } else {
+                entradasDeBlog = requester.todasLasEntradasDeBlog();
+            }
+            DefaultListModel model = new DefaultListModel();
+            int i = 0;
+            for (ListItemTraveller listItemTraveller : entradasDeBlog) {
+                model.add(i, listItemTraveller);
+                i++;
+            }
+            ListEntradaBlog.setModel(model);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -29,7 +60,7 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
 
         jButtonCerrar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jListPaginaWeb = new javax.swing.JList();
+        ListEntradaBlog = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         chkBoxFiltrar = new javax.swing.JCheckBox();
@@ -68,8 +99,8 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
             }
         });
 
-        jListPaginaWeb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(jListPaginaWeb);
+        ListEntradaBlog.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(ListEntradaBlog);
 
         jLabel4.setText("Elija un elemento de la lista");
 
@@ -253,7 +284,7 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnRefrescarListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarListadoActionPerformed
-        // TODO add your handling code here:
+        popularListado();
     }//GEN-LAST:event_btnRefrescarListadoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -314,6 +345,7 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList ListEntradaBlog;
     private javax.swing.JButton btnAlta;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
@@ -327,7 +359,6 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList jListPaginaWeb;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField txtAutor;
@@ -338,6 +369,12 @@ public class ABMLEntradaBlog extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void habilitarFiltros(boolean estado) {
+        txtFechaPublicacion.setText(null);
+        txtTitulo.setText(null);
+        txtAutor.setText(null);
+        txtContenido.setText(null);
+        txtTags.setText(null);
+        
         txtFechaPublicacion.setEnabled(estado);
         txtTitulo.setEnabled(estado);
         txtAutor.setEnabled(estado);
