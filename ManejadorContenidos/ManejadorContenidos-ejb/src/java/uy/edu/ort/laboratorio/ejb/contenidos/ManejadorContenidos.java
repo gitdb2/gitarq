@@ -278,7 +278,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             Predicate filtros = qb.conjunction();
             
             if (!stringEsVacio(nombre)) {
-                filtros = qb.and(filtros, qb.equal(paginaWeb.get("nombre"), nombre));
+                filtros = qb.and(filtros, qb.like(paginaWeb.get("nombre").as(String.class), "%" + nombre.replaceAll("%", "") + "%"));
+                    //qb.equal(paginaWeb.get("nombre"), nombre));
             }
             
             if (fechaPublicacion != null) {
@@ -328,7 +329,8 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             Predicate filtros = qb.conjunction();
             
             if (!stringEsVacio(titulo)) {
-                filtros = qb.and(filtros, qb.equal(entradaBlog.get("titulo"), titulo));
+                filtros = qb.and(filtros, qb.like(entradaBlog.get("titulo").as(String.class), "%" + titulo.replaceAll("%", "") + "%"));
+                                    //qb.equal(entradaBlog.get("titulo"), titulo));
             }
             
             if (fechaPublicacion != null) {
@@ -336,15 +338,17 @@ public class ManejadorContenidos implements ManejadorContenidosRemote, Manejador
             }
             
             if (!stringEsVacio(autor)) {
-                filtros = qb.and(filtros, qb.equal(entradaBlog.get("nombreAutor"), autor));
+                filtros = qb.and(filtros, qb.like(entradaBlog.get("nombreAutor").as(String.class), "%" + autor.replaceAll("%", "") + "%"));
+//                                          qb.equal(entradaBlog.get("nombreAutor"), autor));
             }
             
             if (!stringEsVacio(contenido)) {
-                filtros = qb.and(filtros, qb.like(entradaBlog.get("texto").as(String.class), "%" + contenido + "%"));
+                filtros = qb.and(filtros, qb.like(entradaBlog.get("texto").as(String.class), "%" + contenido.replaceAll("%", "") + "%"));
             }
             
             if (!stringEsVacio(tag)) {
-                filtros = qb.and(filtros, qb.equal(entradaBlog.get("tags"), tag));
+                filtros = qb.and(filtros, qb.like(entradaBlog.get("tags").as(String.class), "%" + tag.replaceAll("%", "") + "%"));
+                                    //qb.equal(entradaBlog.get("tags"), tag));
             }
             
             return query.where(filtros);

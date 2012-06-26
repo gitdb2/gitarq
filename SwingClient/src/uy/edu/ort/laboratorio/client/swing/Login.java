@@ -119,7 +119,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-226)/2, (screenSize.height-159)/2, 226, 159);
+        setBounds((screenSize.width-234)/2, (screenSize.height-176)/2, 234, 176);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
