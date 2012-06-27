@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.travellers.cripto;
 
 import java.io.UnsupportedEncodingException;
@@ -15,8 +11,9 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 /**
- *
- *http://www.exampledepot.com/egs/javax.crypto/desstring.html
+ * Clase utilidad para generar el md5 de un string, Encriptar y desencriptar 
+ * un string con una passphrase usando el algoritmo DES de encriptacion
+ * Codigo obtenido de: http://www.exampledepot.com/egs/javax.crypto/desstring.html
  */
 public class DesEncrypter {
 
@@ -30,6 +27,10 @@ public class DesEncrypter {
     // Iteration count
     int iterationCount = 19;
 
+    /**
+     * Constructor que recibe la passphrase
+     * @param passPhrase 
+     */
     public DesEncrypter(String passPhrase) {
         try {
             // Create the key
@@ -53,6 +54,12 @@ public class DesEncrypter {
         }
     }
 
+    /**
+     * Utilizando la passphrase pasada el momento de crear la instancia del 
+     * objeto, encripta el string recibido por parametro y lo retorna
+     * @param str
+     * @return 
+     */
     public String encrypt(String str) {
         try {
             // Encode the string into bytes using utf-8
@@ -71,6 +78,12 @@ public class DesEncrypter {
         return null;
     }
 
+    /**
+     * Desdencripta el string recibido por parametro usando la passphrase 
+     * con que fue creado.
+     * @param str
+     * @return 
+     */
     public String decrypt(String str) {
         try {
             // Decode base64 to get bytes
@@ -89,6 +102,11 @@ public class DesEncrypter {
         return null;
     }
 
+    /**
+     * Retorna el MD5 del string psadao por parametro
+     * @param text
+     * @return 
+     */
     public static String MD5(String text) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");

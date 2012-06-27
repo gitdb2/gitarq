@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.travellers.utiles;
 
 import java.io.ByteArrayInputStream;
@@ -14,6 +10,7 @@ import javax.xml.bind.Unmarshaller;
 import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
+ * Clase utilidad para facilitar la serializacion y deserializacion a XML
  *
  * @author rodrigo
  */
@@ -21,10 +18,11 @@ public class MarshallUnmarshallUtil<T> {
 
     /**
      * a partir de un XML genera un objeto del tipo classname
+     *
      * @param className
      * @param payload
      * @return
-     * @throws JAXBException 
+     * @throws JAXBException
      */
     public T unmarshall(Class<T> className, String payload) throws JAXBException {
 
@@ -35,8 +33,8 @@ public class MarshallUnmarshallUtil<T> {
         try {
             input.close();
         } catch (IOException ex) {
-           Logger.error(this.getClass(), ex.getMessage());
-           Logger.error(this.getClass(), Logger.getStackTrace(ex));
+            Logger.error(MarshallUnmarshallUtil.class, ex.getMessage());
+            Logger.error(MarshallUnmarshallUtil.class, Logger.getStackTrace(ex));
         }
         return ret;
     }
@@ -57,11 +55,11 @@ public class MarshallUnmarshallUtil<T> {
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         m.marshal(object, out);
         String ret = out.toString();
-         try {
+        try {
             out.close();
         } catch (IOException ex) {
-           Logger.error(this.getClass(), ex.getMessage());
-           Logger.error(this.getClass(), Logger.getStackTrace(ex));
+            Logger.error(this.getClass(), ex.getMessage());
+            Logger.error(this.getClass(), Logger.getStackTrace(ex));
         }
         return ret;
     }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.travellers.datatype;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,7 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Bean para serializacion a XML que representa un elemento de un listado
+ * de entidades
  * @author tanquista
  */
 @XmlAccessorType(XmlAccessType.FIELD)

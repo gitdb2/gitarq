@@ -1,12 +1,5 @@
 package uy.edu.ort.laboratorio.travellers.datatype;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 /**
- * Clase que representa las entradas de blog.
+ * Bean que representa las entradas de blog para la serializacion a XML.
  * Se le agregaron contstructor por defecto, getters y setters para
  * poder persistirla.
  * @author Rodrigo
@@ -40,7 +33,8 @@ public class EntradaBlogTraveller implements Serializable {
     public EntradaBlogTraveller() {
     }
     
-    public EntradaBlogTraveller(String titulo, String nombreAutor, String texto, List<String> tags, Date fechaPublicacion) {
+    public EntradaBlogTraveller(String titulo, String nombreAutor, String texto, 
+            List<String> tags, Date fechaPublicacion) {
         this.titulo = titulo;
         this.nombreAutor = nombreAutor;
         this.texto = texto;

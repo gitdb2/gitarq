@@ -1,47 +1,50 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.ejb.webservice;
 
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 import uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadLocal;
+import uy.edu.ort.laboratorio.logger.Logger;
 
 /**
+ * Implementacion del webservice de autenticacion
  *
  * @author rodrigo
  */
 @WebService(serviceName = "AutenticarWebService")
 @Stateless()
 public class AutenticarWebService {
+
     @EJB
     private BeanSeguridadLocal ejbRef;
 
+    /**
+     * Metodo para el logueo inicial en el sistema y obtener el idUsuario del 
+     * usuario autenticado, en caso de no poder autenticar se tira excepcion
+     * no el mensaje usuario o password incorrecta
+     * @param login
+     * @param passwordEncriptdo
+     * @return
+     * @throws ArquitecturaException 
+     */
     @WebMethod(operationName = "autenticar")
-    public Long autenticar(@WebParam(name = "login") String login, @WebParam(name = "passwordEncriptdo") String passwordEncriptdo) throws ArquitecturaException {
+    public Long autenticar(@WebParam(name = "login") String login,
+            @WebParam(name = "passwordEncriptdo") String passwordEncriptdo)
+            throws ArquitecturaException {
+        Logger.error(AutenticarWebService.class, "autenticar: "
+                + " login=" + login);
         Long ret = ejbRef.autenticar(login, passwordEncriptdo);;
-        if(ret == null)
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
-        return  ret;
-    }
+        if (ret == null) {
+            Logger.error(AutenticarWebService.class, "No se pudo autenticar: "
+                    + " login=" + login);
 
-//    @WebMethod(operationName = "tienePermiso")
-//    public boolean tienePermiso(@WebParam(name = "login") String login, @WebParam(name = "rol") String rol) {
-//        return ejbRef.tienePermiso(login, rol);
-//    }
-//
-//    @WebMethod(operationName = "altaUsuario")
-//    @Oneway
-//    public void altaUsuario(@WebParam(name = "login") String login, @WebParam(name = "pass") String pass, @WebParam(name = "roles") List<String> roles) {
-//        ejbRef.altaUsuario(login, pass, roles);
-//    }
-    
+            throw new ArquitecturaException(
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
+        }
+        return ret;
+    }
 }

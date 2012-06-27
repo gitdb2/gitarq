@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.dominio;
 
 import java.io.Serializable;
@@ -10,26 +6,26 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- *
- * @author tanquista
+ *Rol de los usuarios, la visibilidad es desde el rol hacia el usuario, y con 
+ * una tabla de join
+ * @author Rodrigo
  */
 @Entity
-@Table(name="ROL")
+@Table(name = "ROL")
 public class Rol implements Serializable {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
-    
-    @OneToMany 
-    @JoinTable(name="ROL_USUARIO", 
-         joinColumns=@JoinColumn(name="ROL_ID"),
-          inverseJoinColumns=@JoinColumn(name="USUARIO_ID"))
-    private List<Usuario> usuario;
 
-    @Column(name="NOMBRE", unique=true, nullable=false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @OneToMany
+    @JoinTable(name = "ROL_USUARIO",
+    joinColumns =
+    @JoinColumn(name = "ROL_ID"),
+    inverseJoinColumns =
+    @JoinColumn(name = "USUARIO_ID"))
+    private List<Usuario> usuario;
+    @Column(name = "NOMBRE", unique = true, nullable = false)
     private String nombre;
-    
 
     public long getId() {
         return id;
@@ -55,10 +51,11 @@ public class Rol implements Serializable {
         this.usuario = usuario;
     }
 
-    public void addUsuario(Usuario usaurio){
-        
-        if(this.usuario == null)
+    public void addUsuario(Usuario usaurio) {
+
+        if (this.usuario == null) {
             this.usuario = new ArrayList<Usuario>();
+        }
         this.usuario.add(usaurio);
     }
 
@@ -66,6 +63,4 @@ public class Rol implements Serializable {
     public String toString() {
         return "Rol{" + "id=" + id + ", usuario=" + usuario + ", nombre=" + nombre + '}';
     }
-    
-    
 }

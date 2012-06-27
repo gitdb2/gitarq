@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.datatype;
 
 /**
+ * Bean usado para retornar las listas de elementos resutlado de las busquedas
  *
  * @author tanquista
  */

@@ -38,7 +38,8 @@ public class Main {
             InitialContext ctx = new InitialContext(props);
 
             BeanSeguridadRemote  ejbRef = (BeanSeguridadRemote) ctx.lookup(
-                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote");
+                    "uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote#uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote");
+//                    "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.negocio.seguridad.BeanSeguridadRemote");
 //                  "java:global/ManejadorContenidos/ManejadorContenidos-ejb/BeanSeguridad!uy.edu.ort.laboratorio.ejb.seguridad.BeanSeguridadRemote");
 
             try {

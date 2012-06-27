@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.travellers.datatype;
 
 import java.io.Serializable;
@@ -11,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Clase que representa las paginas web.
+ * Clase que representa las paginas web para la serializacion a XML
  * Se le agregaron contstructor por defecto, getters y setters para
  * poder persistirla.
  * @author Rodrigo

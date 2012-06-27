@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.ejb.webservice;
 
 import java.util.Date;
@@ -33,7 +29,7 @@ import uy.edu.ort.laboratorio.travellers.utiles.MarshallUnmarshallUtil;
  */
 @WebService(serviceName = "ManejadorContenidosWebService")
 @Stateless()
-@HandlerChain(file = "autenticacion_handler.xml")
+@HandlerChain(file = "autenticacion_handler.xml")//interceptor del webservice
 public class ManejadorContenidosWebService {
 
     @EJB
@@ -44,8 +40,13 @@ public class ManejadorContenidosWebService {
     /**
      * crea un Contenido del tipo entrada de blog.
      *
-     * @param dataIn
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un xml (encriptado) que se corresponda con el objeto
+     * serializado: EntradaBlogTraveller
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: El id de la
+     * entrada de blog creada
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearEntradaBlogEncripted")
@@ -89,17 +90,24 @@ public class ManejadorContenidosWebService {
                 ret = utilTraveller.marshall(inObject);
 
             } catch (Exception e) {
-                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
-                Logger.debug(ManejadorContenidosWebService.class, "params:" + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", " + texto + ", " + tags);
-                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
+                Logger.error(ManejadorContenidosWebService.class,
+                        e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, "params:"
+                        + titulo + ", " + nombreAutor + ", " + fechaPublicacion + ", "
+                        + texto + ", " + tags);
+                Logger.debug(ManejadorContenidosWebService.class,
+                        Logger.getStackTrace(e));
+                throw new ArquitecturaException(
+                        LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
             }
 
         } catch (JAXBException e) {
-            Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+            Logger.error(ManejadorContenidosWebService.class,
+                    e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
 
-            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
+            throw new ArquitecturaException(
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearEntradaBlog"), e);
         }
 
         return ret;
@@ -109,8 +117,13 @@ public class ManejadorContenidosWebService {
     /**
      * actualiza el contenido de una entrada de blog
      *
-     * @param dataIn
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un xml (encriptado) que se corresponda con el objeto
+     * serializado: EntradaBlogTraveller
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: El id de la
+     * entrada de blog creada
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "modificarEntradaBlogEncripted")
@@ -176,6 +189,14 @@ public class ManejadorContenidosWebService {
     /**
      * crea un Contenido del tipo pagina web.
      *
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un xml (encriptado) que se corresponda con el objeto
+     * serializado: PaginaWebTraveller
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: El id de la
+     * Pagina web creada
+     * @throws ArquitecturaException
      */
     @WebMethod(operationName = "crearPaginaWebEncripted")
     public String crearContenidoPaginaWebEncripted(@WebParam(name = "data") String dataIn)
@@ -215,24 +236,28 @@ public class ManejadorContenidosWebService {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
                 Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
                 Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-                throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb", e);
+                throw new ArquitecturaException(
+                        LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearPaginaWeb"), e);
             }
         } catch (JAXBException e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al crearContenidoPaginaWeb", e);
+            throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.crearPaginaWeb"), e);
         }
 
         return ret;
     }
 
     /**
-     * crea un Contenido del tipo pagina web.
+     * Modifica el contenido de una pagina web
      *
-     * @param nombre
-     * @param fechaPublicacion
-     * @param html
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un xml (encriptado) que se corresponda con el objeto
+     * serializado: PaginaWebTraveller
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: El id de la
+     * Pagina web creada
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "modificarPaginaWebEncripted")
@@ -273,12 +298,13 @@ public class ManejadorContenidosWebService {
                 Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
                 Logger.debug(ManejadorContenidosWebService.class, "params:" + nombre + ", " + fechaPublicacion + ", " + html);
                 Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-                throw new ArquitecturaException("Ocurrio un error al modificarPaginaWeb", e);
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"), e);
             }
         } catch (JAXBException e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
-            throw new ArquitecturaException("Ocurrio un error al modificarPaginaWeb", e);
+            throw new ArquitecturaException(
+                    LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.modificarPaginaWeb"), e);
         }
 
         return ret;
@@ -288,8 +314,13 @@ public class ManejadorContenidosWebService {
     /**
      * elimina una entrada de blog
      *
-     * @param idEntradaBlog
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un String (encriptado) que se corresponda con el id de
+     * la entrada de blog a eliminar
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: un boolean
+     * que indica true si se elimino o false de lo contrario
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "eliminarEntradaBlogEncripted")
@@ -299,7 +330,6 @@ public class ManejadorContenidosWebService {
 
         try {
             MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
-            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -336,8 +366,14 @@ public class ManejadorContenidosWebService {
     /**
      * elimina una pagina web
      *
-     * @param idPaginaWeb
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera un String (encriptado) que se corresponda con el id de
+     * la Pagina web a eliminar
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a: un boolean
+     * que indica true si se elimino o false de lo contrario
+     *
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "eliminarPaginaWebEncripted")
@@ -347,7 +383,6 @@ public class ManejadorContenidosWebService {
 
         try {
             MarshallUnmarshallUtil<Traveller> utilTraveller = new MarshallUnmarshallUtil<Traveller>();
-            MarshallUnmarshallUtil<ListWrapperTraveller> utilReturner = new MarshallUnmarshallUtil<ListWrapperTraveller>();
 
             Traveller inObject = utilTraveller.unmarshall(Traveller.class, dataIn);
             Long id = inObject.getId();
@@ -385,7 +420,14 @@ public class ManejadorContenidosWebService {
     /**
      * lista todas las paginas web
      *
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload no se espera nada, por lo que ni se desencripta
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto ListWrapperTraveller, conteniendo el id de la pagina
+     * y el nombre
+     *
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "listarPaginasWebEncripted")
@@ -422,7 +464,14 @@ public class ManejadorContenidosWebService {
     /**
      * lista todas las entradas de blog
      *
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload no se espera nada, por lo que ni se desencripta
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto ListWrapperTraveller, conteniendo el id de la
+     * entrade de blog y el nombre del autor
+     *
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "listarEntradasDeBlogEncripted")
@@ -459,8 +508,14 @@ public class ManejadorContenidosWebService {
     /**
      * devuelve la pagina web asociada al identificador
      *
-     * @param idPaginaWeb
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera el string encriptado correspondiente al id de la pagina
+     * web a obtener
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto PaginaWebTraveller, conteniendo la informacion de la
+     * pagina web
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "obtenerPaginaWebEncripted")
@@ -492,11 +547,14 @@ public class ManejadorContenidosWebService {
                 ret = utilTraveller.marshall(inObject);
 
             } catch (Exception e) {
-                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"), e);
             }
 
         } catch (ArquitecturaException e) {
             throw e;
+            //en caso que se produzca una excepcion de las nuestras se vuelve a trirar para que llegue al cliente
         } catch (Exception e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
@@ -508,13 +566,18 @@ public class ManejadorContenidosWebService {
     /**
      * devuelve la pagina web asociada al identificador
      *
-     * @param idEntradaBlog
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera el string encriptado correspondiente al id de la
+     * entrada de blog a obtener
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto EntradaBlogTraveller, conteniendo la informacion de
+     * la entrada de blog pedida
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "obtenerEntradaBlogEncripted")
     public String obtenerEntradaBlogEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
-        //(@WebParam(name = "idEntradaBlog") long idEntradaBlog) throws ArquitecturaException {
         String ret = null;
 
         try {
@@ -548,11 +611,16 @@ public class ManejadorContenidosWebService {
                 ret = utilTraveller.marshall(inObject);
 
             } catch (Exception e) {
-                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
+                Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
+                Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
+
+                throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"), e);
             }
 
         } catch (ArquitecturaException e) {
             throw e;
+            //en caso que se produzca una excepcion de las nuestras se vuelve a trirar para que llegue al cliente
+
         } catch (Exception e) {
             Logger.error(ManejadorContenidosWebService.class, e.getClass().getName() + e.getMessage());
             Logger.debug(ManejadorContenidosWebService.class, Logger.getStackTrace(e));
@@ -563,10 +631,17 @@ public class ManejadorContenidosWebService {
     }
 
     /**
+     * Realiza una busqueda parametrizada sobre las paginas web, retornando los
+     * <id, nombre> que matcheen
      *
-     * @param nombre
-     * @param fechaPublicacion
-     * @return
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera el string encriptado correspondiente al xml de
+     * serializar el objeto FilterQueryTraveller con los filtros de busqueda
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto ListWrapperTraveller, conteniendo la lista de las
+     * tuplas <id ,nombre>
      * @throws ArquitecturaException
      */
     @WebMethod(operationName = "listarPaginasWebFiltrandoEncripted")
@@ -608,6 +683,20 @@ public class ManejadorContenidosWebService {
         return ret;
     }
 
+    /**
+     * Realiza una busqueda parametrizada sobre las entradas de blog, retornando
+     * los <id, nombre> que matcheen
+     *
+     * @param dataIn contiene el xml del objeto Traveller: en el id debe venir
+     * el idDelusuario obtenido al llamar al ws de autenticacionen. En el
+     * payload se espera el string encriptado correspondiente al xml de
+     * serializar el objeto FilterQueryTraveller con los filtros de busqueda
+     * @return Se retorna el xml correspondiente a un objeto Traveller, con el
+     * payload cargado con el string encriptado correspondiente a XML de
+     * serializar el objeto ListWrapperTraveller, conteniendo la lista de las
+     * tuplas <id ,nombre>
+     * @throws ArquitecturaException
+     */
     @WebMethod(operationName = "listarEntradaBlogFiltrandoEncripted")
     public String listarEntradaBlogFiltrandoEncripted(@WebParam(name = "data") String dataIn) throws ArquitecturaException {
 
@@ -704,6 +793,17 @@ public class ManejadorContenidosWebService {
         }
     }
 
+    /**
+     * Chequea la correctitud de los parametros para actualizar una entrada de blog
+     *
+     * @param idEntradaBlog
+     * @param titulo
+     * @param nombreAutor
+     * @param fechaPublicacion
+     * @param texto
+     * @param tags
+     * @throws ArquitecturaException
+     */
     private void checkParametosActualizarEntradaBlog(long idEntradaBlog, String titulo, String nombreAutor, Date fechaPublicacion, String texto, List<String> tags) throws ArquitecturaException {
         if (idEntradaBlog == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));
@@ -713,6 +813,15 @@ public class ManejadorContenidosWebService {
 
     }
 
+    /**
+     * Chequea la correctitud de los parametros para actualizar una pagina web
+     *
+     * @param idPaginaWeb
+     * @param nombre
+     * @param fechaPublicacion
+     * @param html
+     * @throws ArquitecturaException
+     */
     private void checkParametosActualizarPaginaWeb(long idPaginaWeb, String nombre, Date fechaPublicacion, byte[] html) throws ArquitecturaException {
         if (idPaginaWeb == 0) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.formatoIdentificadorIncorrecto"));

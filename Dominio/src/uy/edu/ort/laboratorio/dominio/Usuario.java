@@ -1,31 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.dominio;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 
 /**
- *
- * @author tanquista
+ *Ebtidad que representa al usaurio en la base de datos
+ * @author Rodrigo
  */
 @Entity
-@Table(name="USUARIO")
+@Table(name = "USUARIO")
 public class Usuario implements Serializable {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @Column(name="LOGIN", unique=true, nullable=false)
+    @Column(name = "LOGIN", unique = true, nullable = false)
     private String login;
-    
-    @Column(name="CONTRASENA", unique=false, nullable=false)
+    @Column(name = "CONTRASENA", unique = false, nullable = false)
     private String contrasena;
-    
+
     public String getContrasena() {
         return contrasena;
     }
@@ -81,5 +74,4 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Usuario{" + "id=" + id + ", login=" + login + ", contrasena=" + contrasena + '}';
     }
-    
 }

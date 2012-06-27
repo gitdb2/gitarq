@@ -11,46 +11,41 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * Clase que representa las entradas de blog.
- * Se le agregaron contstructor por defecto, getters y setters para
- * poder persistirla.
+ * Clase que representa las entradas de blog. Se le agregaron contstructor por
+ * defecto, getters y setters para poder persistirla.
+ *
  * @author tanquista
  */
 @Entity
-@Table(name="ENTRADA_BLOG")
+@Table(name = "ENTRADA_BLOG")
 @NamedQueries({
-    @NamedQuery(name="EntradaBlog.findAll", query="SELECT e FROM EntradaBlog e")
+    @NamedQuery(name = "EntradaBlog.findAll", query = "SELECT e FROM EntradaBlog e")
 })
 public class EntradaBlog implements Serializable {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @Column(name="TITULO", length=100, unique=false, nullable=false)
+    @Column(name = "TITULO", length = 100, unique = false, nullable = false)
     private String titulo;
-    
-    @Column(name="NOMBRE_AUTOR", length=50, unique=false, nullable=false)
+    @Column(name = "NOMBRE_AUTOR", length = 50, unique = false, nullable = false)
     private String nombreAutor;
-    
-    @Column(name="TEXTO", unique=false, nullable=false)
+    @Column(name = "TEXTO", unique = false, nullable = false)
     private String texto;
-    
     @Temporal(TemporalType.DATE)
-    @Column(name="FECHA_PUBLICACION", unique=false, nullable=false)
+    @Column(name = "FECHA_PUBLICACION", unique = false, nullable = false)
     private Date fechaPublicacion;
-    
     @ElementCollection
-    @CollectionTable(
-        name="ENTRADA_BLOG_TAGS",
-        joinColumns=@JoinColumn(name="ENTRADA_BLOG_ID")
-    )
+    @CollectionTable(name = "ENTRADA_BLOG_TAGS",
+    joinColumns =
+    @JoinColumn(name = "ENTRADA_BLOG_ID"))
     private List<String> tags = new ArrayList<String>();
 
     public EntradaBlog() {
     }
-    
-    public EntradaBlog(String titulo, String nombreAutor, String texto, List<String> tags, Date fechaPublicacion) {
+
+    public EntradaBlog(String titulo, String nombreAutor, 
+            String texto, List<String> tags, Date fechaPublicacion) {
         this.titulo = titulo;
         this.nombreAutor = nombreAutor;
         this.texto = texto;
@@ -105,5 +100,4 @@ public class EntradaBlog implements Serializable {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
 }

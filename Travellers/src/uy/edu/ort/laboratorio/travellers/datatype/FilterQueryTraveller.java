@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.travellers.datatype;
 
 import java.util.Date;
@@ -10,7 +6,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ *Bean usado para serializar a XML los parametros de los listados parametricos, 
+ * tanto de paginas web ocmo de entradas de blog
  * @author rodrigo
  */
 @XmlAccessorType(XmlAccessType.FIELD)

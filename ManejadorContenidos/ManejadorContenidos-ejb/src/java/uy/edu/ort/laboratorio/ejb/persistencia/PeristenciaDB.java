@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uy.edu.ort.laboratorio.ejb.persistencia;
 
 import java.util.Date;
@@ -19,7 +15,7 @@ import uy.edu.ort.laboratorio.ejb.configuracion.LectorDeConfiguracion;
 import uy.edu.ort.laboratorio.ejb.excepciones.ArquitecturaException;
 
 /**
- *
+ * implementacion de persistencia sobre base de datos
  * @author rodrigo
  */
 @Stateless
@@ -50,31 +46,49 @@ public class PeristenciaDB implements PeristenciaLocal {
 
     @Override
     public List<PaginaWeb> findAllPaginasWb() {
-        return manejadorPersistenciaDB.createNamedQuery("PaginaWeb.findAll", PaginaWeb.class).getResultList();
+        return manejadorPersistenciaDB.createNamedQuery("PaginaWeb.findAll", 
+                PaginaWeb.class).getResultList();
     }
 
     @Override
     public List<EntradaBlog> findAllBlogs() {
-        return manejadorPersistenciaDB.createNamedQuery("EntradaBlog.findAll", EntradaBlog.class).getResultList();
+        return manejadorPersistenciaDB.createNamedQuery("EntradaBlog.findAll", 
+                EntradaBlog.class).getResultList();
     }
 
     @Override
-    public List<PaginaWeb> listarPaginasWebFiltrando(String nombre, Date fechaPublicacion) throws ArquitecturaException {
+    public List<PaginaWeb> listarPaginasWebFiltrando(String nombre, 
+    Date fechaPublicacion) throws ArquitecturaException {
         CriteriaQuery query = obtenerCriteriaQueryPaginaWeb(nombre, fechaPublicacion);
         return manejadorPersistenciaDB.createQuery(query).getResultList();
     }
 
     @Override
-    public List<EntradaBlog> listarEntradaBlogFiltrando(String titulo, Date fechaPublicacion, String contenido, String autor, String tag) throws ArquitecturaException {
-        CriteriaQuery query = obtenerCriteriaQueryEntradaBlog(titulo, fechaPublicacion, contenido, autor, tag);
+    public List<EntradaBlog> listarEntradaBlogFiltrando(String titulo, 
+    Date fechaPublicacion, String contenido, String autor, String tag) 
+            throws ArquitecturaException {
+        CriteriaQuery query = obtenerCriteriaQueryEntradaBlog(titulo, 
+                fechaPublicacion, contenido, autor, tag);
         return manejadorPersistenciaDB.createQuery(query).getResultList();
     }
 
+    /**
+     * indica si un string es vacio
+     * @param parametro
+     * @return 
+     */
     private boolean stringEsVacio(String parametro) {
         return parametro == null || parametro.trim().isEmpty();
     }
-
-    private CriteriaQuery obtenerCriteriaQueryPaginaWeb(String nombre, Date fechaPublicacion) throws ArquitecturaException {
+    /**
+     * GEnera una query parametrizada dependiendo de los parametros, para paginas web
+     * @param nombre
+     * @param fechaPublicacion
+     * @return
+     * @throws ArquitecturaException 
+     */
+    private CriteriaQuery obtenerCriteriaQueryPaginaWeb(String nombre, 
+            Date fechaPublicacion) throws ArquitecturaException {
         if (stringEsVacio(nombre) && fechaPublicacion == null) {
             throw new ArquitecturaException(LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.obtenerCriteriaQueryPaginaWeb.sinFiltros"));
         } else {
@@ -86,7 +100,6 @@ public class PeristenciaDB implements PeristenciaLocal {
 
             if (!stringEsVacio(nombre)) {
                 filtros = qb.and(filtros, qb.like(paginaWeb.get("nombre").as(String.class), "%" + nombre.replaceAll("%", "") + "%"));
-                //qb.equal(paginaWeb.get("nombre"), nombre));
             }
 
             if (fechaPublicacion != null) {
@@ -97,6 +110,16 @@ public class PeristenciaDB implements PeristenciaLocal {
         }
     }
 
+    /**
+     * GEnera una query parametrizada dependiendo de los parametros, para entradas de blog
+     * @param titulo
+     * @param fechaPublicacion
+     * @param contenido
+     * @param autor
+     * @param tag
+     * @return
+     * @throws ArquitecturaException 
+     */
     private CriteriaQuery obtenerCriteriaQueryEntradaBlog(String titulo, Date fechaPublicacion,
             String contenido, String autor, String tag) throws ArquitecturaException {
         if (stringEsVacio(titulo)
@@ -114,7 +137,6 @@ public class PeristenciaDB implements PeristenciaLocal {
 
             if (!stringEsVacio(titulo)) {
                 filtros = qb.and(filtros, qb.like(entradaBlog.get("titulo").as(String.class), "%" + titulo.replaceAll("%", "") + "%"));
-                //qb.equal(entradaBlog.get("titulo"), titulo));
             }
 
             if (fechaPublicacion != null) {
@@ -123,7 +145,6 @@ public class PeristenciaDB implements PeristenciaLocal {
 
             if (!stringEsVacio(autor)) {
                 filtros = qb.and(filtros, qb.like(entradaBlog.get("nombreAutor").as(String.class), "%" + autor.replaceAll("%", "") + "%"));
-//                                          qb.equal(entradaBlog.get("nombreAutor"), autor));
             }
 
             if (!stringEsVacio(contenido)) {
@@ -132,7 +153,6 @@ public class PeristenciaDB implements PeristenciaLocal {
 
             if (!stringEsVacio(tag)) {
                 filtros = qb.and(filtros, qb.like(entradaBlog.get("tags").as(String.class), "%" + tag.replaceAll("%", "") + "%"));
-                //qb.equal(entradaBlog.get("tags"), tag));
             }
 
             return query.where(filtros);
