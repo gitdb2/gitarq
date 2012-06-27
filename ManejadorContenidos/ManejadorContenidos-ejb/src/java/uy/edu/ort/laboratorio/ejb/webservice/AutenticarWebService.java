@@ -33,15 +33,15 @@ public class AutenticarWebService {
         return  ret;
     }
 
-    @WebMethod(operationName = "tienePermiso")
-    public boolean tienePermiso(@WebParam(name = "login") String login, @WebParam(name = "rol") String rol) {
-        return ejbRef.tienePermiso(login, rol);
-    }
-
-    @WebMethod(operationName = "altaUsuario")
-    @Oneway
-    public void altaUsuario(@WebParam(name = "login") String login, @WebParam(name = "pass") String pass, @WebParam(name = "roles") List<String> roles) {
-        ejbRef.altaUsuario(login, pass, roles);
-    }
+//    @WebMethod(operationName = "tienePermiso")
+//    public boolean tienePermiso(@WebParam(name = "login") String login, @WebParam(name = "rol") String rol) {
+//        return ejbRef.tienePermiso(login, rol);
+//    }
+//
+//    @WebMethod(operationName = "altaUsuario")
+//    @Oneway
+//    public void altaUsuario(@WebParam(name = "login") String login, @WebParam(name = "pass") String pass, @WebParam(name = "roles") List<String> roles) {
+//        ejbRef.altaUsuario(login, pass, roles);
+//    }
     
 }

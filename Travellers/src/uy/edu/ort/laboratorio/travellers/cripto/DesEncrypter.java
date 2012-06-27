@@ -16,7 +16,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 /**
  *
- * @author rodrigo
+ *http://www.exampledepot.com/egs/javax.crypto/desstring.html
  */
 public class DesEncrypter {
 

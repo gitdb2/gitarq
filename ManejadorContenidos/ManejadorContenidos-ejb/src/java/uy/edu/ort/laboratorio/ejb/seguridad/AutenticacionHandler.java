@@ -67,18 +67,23 @@ public class AutenticacionHandler implements SOAPHandler<SOAPMessageContext> {
 
     private Long checkAutenticacion(SOAPMessageContext messageContext, SOAPMessage msg) {
         // now we can access the header, body, attachments etc ..
-        Map<String, Object> header = (Map<String, Object>) messageContext.get(MessageContext.HTTP_REQUEST_HEADERS);
-        System.err.println("---" + header);
-        List<String> data = (List<String>) header.get(("authorization"));
-        System.err.println("---" + data);
-        String aut = data.get(0);
-        String pass = aut.split(" ")[1];
-        pass = Base64.base64Decode(pass);
-        String login = pass.split(":")[0];
-        pass = pass.split(":")[1];
+        Long autenticado;
+        try{
+            Map<String, Object> header = (Map<String, Object>) messageContext.get(MessageContext.HTTP_REQUEST_HEADERS);
+            System.err.println("---" + header);
+            List<String> data = (List<String>) header.get(("authorization"));
+            System.err.println("---" + data);
+            String aut = data.get(0);
+            String pass = aut.split(" ")[1];
+            pass = Base64.base64Decode(pass);
+            String login = pass.split(":")[0];
+            pass = pass.split(":")[1];
 
-        Long autenticado = seguridad.autenticar(login, pass);
-        System.err.println("---" + autenticado);
+            autenticado = seguridad.autenticar(login, pass);
+            System.err.println("---" + autenticado);
+        }catch(Exception e){//si algo revienta, entoces no se mando con seguridad o algo raro
+            autenticado = null;
+        }
         if(null == autenticado){
             generateSOAPErrMessage(msg, LectorDeConfiguracion.getInstance().getMensaje("errors.ejb.webservice.autenticar"));
         }
